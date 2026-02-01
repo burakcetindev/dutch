@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS vocabulary (
   practice TEXT[],
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
-  CONSTRAINT vocabulary_level_check CHECK (level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
+  CONSTRAINT vocabulary_level_check CHECK (level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'A1-A2', 'B1-B2', 'C1-C2')),
   CONSTRAINT vocabulary_progress_check CHECK (progress IN ('new', 'learning', 'mastered'))
 );
 

@@ -392,9 +392,9 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
           </div>
         )}
 
-        {/* Action Menu - Bottom Right Corner with Gear Icon */}
+        {/* Action Menu - Floating at Bottom Right Corner */}
         {!isEditing && (onEdit || onDelete) && (
-          <div className="absolute bottom-4 right-4 flex flex-col-reverse gap-2 z-50">
+          <div className="fixed bottom-8 right-8 flex flex-col-reverse gap-2 z-40">
             {showActionMenu && (
               <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
                 {onEdit && (

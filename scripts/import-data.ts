@@ -43,6 +43,30 @@ function normalizeValue(value: string): string {
   return value.trim();
 }
 
+function parseLevelValue(levelStr: string): string {
+  if (!levelStr || levelStr.trim() === '') return 'A1-A2';
+  
+  levelStr = levelStr.trim().toLowerCase();
+  
+  // Handle grouped format: "a1 a2 | b1 b2 | c1 c2" - extract first group
+  if (levelStr.includes('|')) {
+    levelStr = levelStr.split('|')[0].trim();
+  }
+  
+  // Extract the first level mentioned (a1, a2, b1, b2, c1, c2)
+  const match = levelStr.match(/([a-c])([12])/);
+  if (!match) return 'A1-A2';
+  
+  const letter = match[1].toUpperCase();
+  
+  // Convert individual level to grouped level
+  if (letter === 'A') return 'A1-A2';
+  if (letter === 'B') return 'B1-B2';
+  if (letter === 'C') return 'C1-C2';
+  
+  return 'A1-A2';
+}
+
 function parseCSV(csvContent: string): VocabularyRecord[] {
   const lines = csvContent.trim().split('\n');
   const headerLine = lines[0];
@@ -95,9 +119,9 @@ function parseCSV(csvContent: string): VocabularyRecord[] {
     const english = normalizeValue(record['English'] || '');
     if (!english || english === '-') continue;
 
-    // Map CSV headers to normalized names
-    const levelRaw = record['Level'] || 'A1';
-    const level = levelRaw.split('-')[0] || 'A1';
+    // Map CSV headers to normalized names with proper level parsing
+    const levelRaw = record['Level'] || 'A1-A2';
+    const level = parseLevelValue(levelRaw);
     
     const categories = (record['Categories'] || '')
       .split(',')
@@ -148,7 +172,7 @@ async function importCSVFile(filePath: string): Promise<{ inserted: number; upda
 
     for (const record of records) {
       try {
-        const validLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        const validLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'A1-A2', 'B1-B2', 'C1-C2'];
         if (!validLevels.includes(record.level)) {
           stats.errors.push({ word: record.dutch, reason: `Invalid level: ${record.level}` });
           continue;
@@ -202,6 +226,10 @@ async function importCSVFile(filePath: string): Promise<{ inserted: number; upda
     console.log(`   ✓ Inserted: ${stats.inserted}, Duplicates skipped: ${stats.duplicates}`);
     if (stats.errors.length > 0) {
       console.log(`   ⚠ Errors: ${stats.errors.length}`);
+      // Show first 3 errors for debugging
+      stats.errors.slice(0, 3).forEach(err => {
+        console.log(`      - "${err.word}": ${err.reason}`);
+      });
     }
 
     return stats;

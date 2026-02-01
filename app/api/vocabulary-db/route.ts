@@ -66,9 +66,9 @@ export async function POST(request: NextRequest) {
       const duplicates = [];
       
       for (const word of words) {
-        // Check for duplicate
+        // Check for duplicate (case-insensitive)
         const existing = await client.query(
-          'SELECT id FROM vocabulary WHERE dutch = $1',
+          'SELECT id FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
           [word.dutch]
         );
         
@@ -202,13 +202,14 @@ export async function PUT(request: NextRequest) {
       );
     }
     
+    const idIndex = valueIndex;
     setClauses.push(`updated_at = CURRENT_TIMESTAMP`);
     values.push(id);
     
     const query = `
       UPDATE vocabulary 
       SET ${setClauses.join(', ')}
-      WHERE id = $${valueIndex}
+      WHERE id = $${idIndex}
       RETURNING *
     `;
     
