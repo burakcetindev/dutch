@@ -92,16 +92,18 @@ dutch/
 │   ├── db.ts             # PostgreSQL connection pool
 │   └── levelMapper.ts    # CEFR level normalization
 ├── scripts/              # Build & maintenance scripts
-│   ├── migrate.ts        # Database migrations
-│   ├── import-csv.ts     # CSV importer
-│   ├── cleanup_bad_entries.ts  # Data cleanup
+│   ├── import-full-backup.js  # Import CSV backups
+│   ├── first-run.sh      # First-time setup
 │   └── start.sh          # Docker startup script
-├── input/                # Vocabulary data (CSV)
+├── input/                # Vocabulary backup files (gitignored)
+├── infra/                # Docker infrastructure
+│   ├── Dockerfile        # Container definition
+│   ├── docker-compose.yml # Multi-container orchestration
+│   └── init.sql          # Database initialization
 ├── docs/                 # Documentation
 │   ├── ARCHITECTURE.md   # System architecture
-│   └── DATA-FLOW.md      # Data flow diagrams
-├── Dockerfile            # Container definition (in infra/)
-├── docker-compose.yml    # Multi-container orchestration (in infra/)
+│   ├── DATA-FLOW.MD      # Data flow diagrams
+│   └── QUICK-START.md    # Quick start guide
 └── next.config.mjs       # Next.js configuration
 ```
 
@@ -152,23 +154,19 @@ CREATE TABLE vocabulary (
 ## 📝 Scripts
 
 ```bash
-# Database
-npm run migrate              # Run database migrations
-npx tsx scripts/import-csv.ts   # Import vocabulary from CSV
+# First-time setup
+./scripts/first-run.sh       # Create .env and setup environment
+
+# Start application
+./scripts/start.sh           # Build and start Docker containers
 
 # Development
 npm run dev                  # Start dev server (port 3000)
 npm run build                # Production build
 npm start                    # Start production server
 
-# Docker
-docker-compose up --build    # Build and start all services
-docker-compose down          # Stop all services
-docker-compose logs -f app   # View app logs
-docker-compose logs -f db    # View database logs
-
 # Data Management
-npx tsx scripts/cleanup_bad_entries.ts  # Remove duplicates & low-quality entries
+docker exec dutch-app node scripts/import-full-backup.js  # Import backup CSV
 ```
 
 ## 🐳 Docker Commands
@@ -215,18 +213,17 @@ Words progress through three stages:
 
 ### Adding New Words
 
-1. Edit `input/merged-vocabulary.csv`
-2. Run the importer:
-   ```bash
-   npx tsx scripts/import-csv.ts
-   ```
+Use the web interface at http://localhost:3000:
+1. Click "Add Word" button
+2. Fill in Dutch word, English translation, and level
+3. Optional: Add categories, examples, and practice sentences
+4. Click "Save State" to export backups
 
-### CSV Format
+### Backup Format
 
-```csv
-Dutch,English,Grammar Note,Present Tense,Past Tense,Future Tense,Example Sentence (Dutch),Example Sentence (English),Practice Sentences,Level,Categories,Progress,Notes
-huis,house,"noun, het",-,-,-,Ik woon in een klein huis.,I live in a small house.,,A1-A2,home,new,
-```
+Backup files are automatically created in `input/` folder with timestamps when you click "Save State":
+- CSV format: `vocabulary_backup_YYYY-MM-DD_HH-MM-SS.csv`
+- JSON format: `vocabulary_backup_YYYY-MM-DD_HH-MM-SS.json`
 
 ## 🤝 Contributing
 
