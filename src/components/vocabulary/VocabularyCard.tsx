@@ -3,7 +3,7 @@
 import { VocabularyWord } from "@/types/vocabulary";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Circle, CircleDot, CheckCircle2, Volume2, ChevronDown, ChevronUp, Plus, X, Edit2, Trash2, Save } from "lucide-react";
+import { Circle, CircleDot, CheckCircle2, Volume2, ChevronDown, ChevronUp, Plus, X, Edit2, Trash2, Save, Settings } from "lucide-react";
 import { useState } from "react";
 import { YouGlish } from "./YouGlish";
 
@@ -392,7 +392,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
           </div>
         )}
 
-        {/* Action Menu - Bottom Right Corner */}
+        {/* Action Menu - Bottom Right Corner with Gear Icon */}
         {!isEditing && (onEdit || onDelete) && (
           <div className="absolute bottom-4 right-4 flex flex-col-reverse gap-2 z-50">
             {showActionMenu && (
@@ -424,16 +424,12 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
               onClick={() => setShowActionMenu(!showActionMenu)}
               className={`p-3 glass rounded-2xl transition-all duration-300 hover:shadow-lg ${
                 showActionMenu 
-                  ? "bg-purple-100 dark:bg-purple-900/30 scale-110 rotate-180" 
-                  : "bg-gray-100 dark:bg-gray-800/30 hover:scale-105"
+                  ? "bg-purple-100 dark:bg-purple-900/30 scale-110" 
+                  : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105"
               }`}
-              title={showActionMenu ? "Close menu" : "Edit or delete"}
+              title={showActionMenu ? "Close menu" : "Open menu"}
             >
-              {showActionMenu ? (
-                <X className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              )}
+              <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform ${showActionMenu ? "rotate-45" : ""}`} />
             </button>
           </div>
         )}

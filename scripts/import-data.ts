@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import pool from '../lib/db';
 
 interface VocabularyRecord {
@@ -35,46 +36,93 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
+function normalizeValue(value: string): string {
+  if (!value || value.trim() === '') {
+    return '-';
+  }
+  return value.trim();
+}
+
 function parseCSV(csvContent: string): VocabularyRecord[] {
   const lines = csvContent.trim().split('\n');
   const headerLine = lines[0];
   const headers = parseCSVLine(headerLine);
+  
+  // Map common header variations
+  const headerMap: Record<string, string> = {
+    'Dutch Word': 'Dutch',
+    'Dutch': 'Dutch',
+    'dutch': 'Dutch',
+    'English Translation': 'English',
+    'English': 'English',
+    'english': 'English',
+    'Grammar Note (POS, gender, separable verb, etc.)': 'Functions',
+    'Functions': 'Functions',
+    'functions': 'Functions',
+    'Level': 'Level',
+    'level': 'Level',
+    'Categories': 'Categories',
+    'categories': 'Categories',
+    'Example Sentence (Dutch)': 'Example (NL)',
+    'Example Sentence (English)': 'Example (EN)',
+    'Example (NL)': 'Example (NL)',
+    'Example (EN)': 'Example (EN)',
+    'Present Tense': 'Present',
+    'Past Tense': 'Past',
+    'Future Tense': 'Future',
+    'Progress': 'Progress',
+    'progress': 'Progress'
+  };
   
   const records: VocabularyRecord[] = [];
 
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
     
-    if (values.length < 2 || !values[0]) continue; // Skip empty lines
+    if (values.length < 1 || !values[0] || !values[0].trim()) continue;
 
     const record: Record<string, string> = {};
     headers.forEach((header, index) => {
-      record[header] = values[index] || '';
+      const normalizedHeader = headerMap[header] || header;
+      record[normalizedHeader] = values[index] || '';
     });
+
+    // Extract Dutch word (required)
+    const dutch = normalizeValue(record['Dutch'] || '');
+    if (!dutch || dutch === '-') continue;
+
+    // Extract English translation (required for this app)
+    const english = normalizeValue(record['English'] || '');
+    if (!english || english === '-') continue;
 
     // Map CSV headers to normalized names
     const levelRaw = record['Level'] || 'A1';
-    // Convert "A1-A2" to "A1" or "B1-B2" to "B1" etc
     const level = levelRaw.split('-')[0] || 'A1';
     
-    const categories = record['Categories'] ? 
-      record['Categories'].split(',').map(c => c.trim()).filter(c => c) : [];
+    const categories = (record['Categories'] || '')
+      .split(',')
+      .map(c => normalizeValue(c))
+      .filter(c => c !== '-');
     
-    const functions = record['Functions'] ? 
-      record['Functions'].split(',').map(f => f.trim()).filter(f => f) : [];
+    const functions = (record['Functions'] || '')
+      .split(',')
+      .map(f => normalizeValue(f))
+      .filter(f => f !== '-');
       
-    const practice = record['Practice'] ? 
-      record['Practice'].split(',').map(p => p.trim()).filter(p => p) : [];
+    const practice = (record['Practice'] || record['practice'] || '')
+      .split(',')
+      .map(p => normalizeValue(p))
+      .filter(p => p !== '-');
 
     records.push({
-      dutch: record['Dutch'],
-      english: record['English'],
+      dutch,
+      english,
       level,
       categories,
       functions,
-      example_nl: record['Example (NL)'] || '',
-      example_en: record['Example (EN)'] || '',
-      progress: record['Progress'] || 'new',
+      example_nl: normalizeValue(record['Example (NL)'] || ''),
+      example_en: normalizeValue(record['Example (EN)'] || ''),
+      progress: normalizeValue(record['Progress'] || 'new'),
       practice
     });
   }
@@ -82,79 +130,139 @@ function parseCSV(csvContent: string): VocabularyRecord[] {
   return records;
 }
 
-async function importCSV() {
+async function importCSVFile(filePath: string): Promise<{ inserted: number; updated: number; duplicates: number; errors: Array<{word: string; reason: string}> }> {
+  const stats = {
+    inserted: 0,
+    updated: 0,
+    duplicates: 0,
+    errors: [] as Array<{word: string; reason: string}>
+  };
+
   try {
-    const csvPath = '/app/input/vocabulary_backup_2026-02-01.csv';
-    const fileContent = fs.readFileSync(csvPath, 'utf-8');
-    
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
     const records = parseCSV(fileContent);
+    const fileName = path.basename(filePath);
 
-    console.log(`Processing ${records.length} records...`);
+    console.log(`\n📄 Importing: ${fileName}`);
+    console.log(`   Found ${records.length} records`);
 
-    const batchSize = 100;
-    let inserted = 0;
-    let updated = 0;
-    let skipped = 0;
-
-    for (let i = 0; i < records.length; i += batchSize) {
-      const batch = records.slice(i, i + batchSize);
-      
-      for (const record of batch) {
-        try {
-          // Skip records without required fields
-          if (!record.dutch || !record.english) {
-            skipped++;
-            continue;
-          }
-          
-          // Validate level
-          const validLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-          if (!validLevels.includes(record.level)) {
-            console.warn(`Skipping "${record.dutch}" - invalid level: ${record.level}`);
-            skipped++;
-            continue;
-          }
-
-          // Create unique ID from dutch word
-          const id = record.dutch.toLowerCase().replace(/\s+/g, '-').substring(0, 255);
-          
-          const result = await pool.query(
-            `INSERT INTO vocabulary 
-            (id, dutch, english, level, categories, functions, example_nl, example_en, progress, practice)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            ON CONFLICT (id) DO UPDATE SET
-            dutch = $2, english = $3, level = $4, categories = $5, 
-            functions = $6, example_nl = $7, example_en = $8, 
-            progress = $9, practice = $10, updated_at = NOW()`,
-            [
-              id,
-              record.dutch.substring(0, 255),
-              record.english.substring(0, 255),
-              record.level,
-              record.categories,
-              record.functions,
-              record.example_nl.substring(0, 500),
-              record.example_en.substring(0, 500),
-              record.progress,
-              record.practice
-            ]
-          );
-
-          if (result.command === 'INSERT') {
-            inserted++;
-          } else {
-            updated++;
-          }
-        } catch (err) {
-          console.error(`Error inserting record for "${record.dutch}":`, (err as Error).message);
+    for (const record of records) {
+      try {
+        const validLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        if (!validLevels.includes(record.level)) {
+          stats.errors.push({ word: record.dutch, reason: `Invalid level: ${record.level}` });
+          continue;
         }
+
+        // Create unique ID from dutch word
+        const id = record.dutch.toLowerCase().replace(/\s+/g, '-').substring(0, 255);
+        
+        // Check for duplicates
+        const existingCheck = await pool.query(
+          'SELECT id FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
+          [record.dutch]
+        );
+
+        if (existingCheck.rows.length > 0) {
+          stats.duplicates++;
+          continue;
+        }
+
+        await pool.query(
+          `INSERT INTO vocabulary 
+          (id, dutch, english, level, categories, functions, example_nl, example_en, progress, practice)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          ON CONFLICT (id) DO UPDATE SET
+          dutch = $2, english = $3, level = $4, categories = $5, 
+          functions = $6, example_nl = $7, example_en = $8, 
+          progress = $9, practice = $10, updated_at = NOW()`,
+          [
+            id,
+            record.dutch.substring(0, 255),
+            record.english.substring(0, 255),
+            record.level,
+            record.categories.length > 0 ? record.categories : null,
+            record.functions.length > 0 ? record.functions : null,
+            record.example_nl.substring(0, 1000),
+            record.example_en.substring(0, 1000),
+            record.progress,
+            record.practice.length > 0 ? record.practice : null
+          ]
+        );
+
+        stats.inserted++;
+      } catch (err) {
+        stats.errors.push({
+          word: record.dutch,
+          reason: (err as Error).message
+        });
       }
-      
-      const processed = Math.min(i + batchSize, records.length);
-      console.log(`Processed ${processed}/${records.length}`);
     }
 
-    console.log(`✅ Import complete! Inserted: ${inserted}, Updated: ${updated}, Skipped: ${skipped}`);
+    console.log(`   ✓ Inserted: ${stats.inserted}, Duplicates skipped: ${stats.duplicates}`);
+    if (stats.errors.length > 0) {
+      console.log(`   ⚠ Errors: ${stats.errors.length}`);
+    }
+
+    return stats;
+  } catch (error) {
+    console.error(`❌ Failed to import ${filePath}:`, error);
+    return stats;
+  }
+}
+
+async function importAllCSVs() {
+  try {
+    const inputDir = '/app/input/remove_after_use';
+    const backupDir = '/app/input';
+
+    if (!fs.existsSync(inputDir)) {
+      console.log(`ℹ Directory not found: ${inputDir}`);
+      process.exit(0);
+    }
+
+    const csvFiles = fs.readdirSync(inputDir)
+      .filter(f => f.toLowerCase().endsWith('.csv'))
+      .map(f => path.join(inputDir, f));
+
+    if (csvFiles.length === 0) {
+      console.log('ℹ No CSV files found');
+      process.exit(0);
+    }
+
+    console.log(`\n🚀 Starting import of ${csvFiles.length} CSV file(s)...\n`);
+
+    let totalInserted = 0;
+    let totalDuplicates = 0;
+    let totalErrors = 0;
+    const allErrorDetails: Array<{file: string; word: string; reason: string}> = [];
+
+    for (const csvFile of csvFiles) {
+      const result = await importCSVFile(csvFile);
+      totalInserted += result.inserted;
+      totalDuplicates += result.duplicates;
+      totalErrors += result.errors.length;
+      result.errors.forEach(err => {
+        allErrorDetails.push({
+          file: path.basename(csvFile),
+          word: err.word,
+          reason: err.reason
+        });
+      });
+    }
+
+    console.log(`\n✅ Import complete!`);
+    console.log(`   Total inserted: ${totalInserted}`);
+    console.log(`   Total duplicates skipped: ${totalDuplicates}`);
+    console.log(`   Total errors: ${totalErrors}`);
+
+    if (allErrorDetails.length > 0 && allErrorDetails.length <= 10) {
+      console.log(`\n⚠ Error details:`);
+      allErrorDetails.forEach(err => {
+        console.log(`   ${err.file}: "${err.word}" - ${err.reason}`);
+      });
+    }
+
     process.exit(0);
   } catch (error) {
     console.error('❌ Import failed:', error);
@@ -162,4 +270,4 @@ async function importCSV() {
   }
 }
 
-importCSV();
+importAllCSVs();

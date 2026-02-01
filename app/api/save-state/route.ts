@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/lib/db';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request: NextRequest) {
   let client;
@@ -28,39 +30,46 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Check for duplicates in the batch
+    const dutchWords = new Set<string>();
+    const duplicateWords: string[] = [];
+    
+    for (const word of validatedVocab) {
+      const dutchLower = word.dutch.toLowerCase();
+      if (dutchWords.has(dutchLower)) {
+        duplicateWords.push(word.dutch);
+      }
+      dutchWords.add(dutchLower);
+    }
+    
+    let saved = 0;
+    let duplicatesFound = 0;
+    
     try {
-      await client.query('BEGIN');
-      
-      // Clear existing data
-      await client.query('DELETE FROM vocabulary');
-      
-      // Insert all words
       for (const word of validatedVocab) {
-        const level = word.level || 'A1'; // Default to A1 if not specified
+        // Check if word already exists in database
+        const existing = await client.query(
+          'SELECT id FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
+          [word.dutch]
+        );
+        
+        if (existing.rows.length > 0) {
+          duplicatesFound++;
+          continue;
+        }
+        
+        const level = word.level || 'A1';
         const progress = word.progress || 'new';
         
-        // Validate level is in correct format (A1-C2)
         const validLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
         const finalLevel = validLevels.includes(level) ? level : 'A1';
-        
-        // Validate progress
         const validProgress = ['new', 'learning', 'mastered'].includes(progress) ? progress : 'new';
         
         await client.query(
           `INSERT INTO vocabulary 
            (id, dutch, english, level, categories, functions, example_nl, example_en, progress, practice)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-           ON CONFLICT (id) DO UPDATE SET
-           dutch = EXCLUDED.dutch,
-           english = EXCLUDED.english,
-           level = EXCLUDED.level,
-           categories = EXCLUDED.categories,
-           functions = EXCLUDED.functions,
-           example_nl = EXCLUDED.example_nl,
-           example_en = EXCLUDED.example_en,
-           progress = EXCLUDED.progress,
-           practice = EXCLUDED.practice,
-           updated_at = CURRENT_TIMESTAMP`,
+           ON CONFLICT (id) DO NOTHING`,
           [
             word.id,
             word.dutch,
@@ -74,21 +83,36 @@ export async function POST(request: NextRequest) {
             word.practice ? Array.isArray(word.practice) ? word.practice : [] : []
           ]
         );
+        
+        saved++;
       }
       
-      await client.query('COMMIT');
+      // Try to backup to input folder (non-blocking)
+      try {
+        const inputDir = '/app/input';
+        if (fs.existsSync(inputDir)) {
+          const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+          const backupPath = path.join(inputDir, `vocabulary_backup_${timestamp}.json`);
+          
+          // Only create backup if it doesn't already exist today
+          if (!fs.existsSync(backupPath)) {
+            fs.writeFileSync(backupPath, JSON.stringify(vocabulary, null, 2));
+          }
+        }
+      } catch (backupError) {
+        // Silently fail on backup - don't affect the main save
+        console.warn('Backup write skipped (expected in read-only mode):', (backupError as Error).message);
+      }
       
       return NextResponse.json({
         success: true,
-        saved: validatedVocab.length,
-        message: `✅ Successfully saved ${validatedVocab.length} words to database!`
+        saved,
+        duplicates: duplicatesFound,
+        message: saved > 0 
+          ? `✅ Successfully saved ${saved} word${saved !== 1 ? 's' : ''}!${duplicatesFound > 0 ? ` (${duplicatesFound} duplicate${duplicatesFound !== 1 ? 's' : ''} skipped)` : ''}`
+          : `⚠️ All ${duplicatesFound} word${duplicatesFound !== 1 ? 's' : ''} already exist in the database`
       });
     } catch (error) {
-      try {
-        await client.query('ROLLBACK');
-      } catch (rollbackError) {
-        console.error('Rollback error:', rollbackError);
-      }
       throw error;
     }
   } catch (error) {
