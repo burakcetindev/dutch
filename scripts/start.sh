@@ -59,7 +59,7 @@ echo "⏳ Waiting for services to be ready..."
 sleep 5
 
 # Check if containers are running
-if docker compose -f infra/docker-compose.yml ps | grep -q "running"; then
+if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutch-app"; then
   echo ""
   echo "✅ Application started successfully!"
   echo ""

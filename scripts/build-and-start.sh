@@ -64,7 +64,7 @@ echo "⏳ Waiting for services to be ready..."
 sleep 5
 
 # Check if containers are running
-if docker compose -f infra/docker-compose.yml ps | grep -q "running"; then
+if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutch-app"; then
   echo ""
   echo "✅ Application started successfully!"
   echo ""
@@ -78,7 +78,7 @@ if docker compose -f infra/docker-compose.yml ps | grep -q "running"; then
   echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f app"
   echo "   Stop app:         docker compose -f infra/docker-compose.yml down"
   echo "   Restart app:      docker compose -f infra/docker-compose.yml restart app"
-  echo "   Import backup:    docker compose -f infra/docker-compose.yml exec app node scripts/import-full-backup.js"
+  echo "   Import backup:    docker exec dutch-app node scripts/import-full-backup.js"
   echo ""
   echo "🎉 Happy learning Dutch! 🇳🇱"
 else
