@@ -1,91 +1,123 @@
 # Dutch Vocabulary App - Data Flow Documentation
 
 ## Overview
-This document explains how data moves through the Dutch Vocabulary Learning Application, from file import to user interaction and export.
+This document explains how data moves through the Dutch Vocabulary Learning Application, from database initialization to user interaction and backup.
 
 ## Data Flow Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                         INPUT LAYER                                  │
-│                                                                      │
-│  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐        │
-│  │  Excel Files  │────▶│ Merge Script │────▶│  Merged CSV  │        │
-│  │  (Original)   │     │merge-vocab.js│     │merged-vocab  │        │
-│  └──────────────┘     └──────────────┘     │.csv/.xlsx    │        │
-│                                             └──────┬───────┘        │
-└────────────────────────────────────────────────────┼────────────────┘
+│                         INFRASTRUCTURE LAYER                        │
+│                                                                     |
+│  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐         │
+│  │ Docker       │────▶│ PostgreSQL   │────▶│ Init Schema  │         │
+│  │ Compose      │     │ Container    │     │ (init.sql)   │         │
+│  └──────────────┘     └──────────────┘     └──────┬───────┘         │
+│                                                     │               │
+│                                             ┌───────▼────────┐      │
+│                                             │ vocabulary     │      │
+│                                             │ table          │      │
+│                                             └────────────────┘      │
+└─────────────────────────────────────────────────────────────────────┘
                                                      │
                                                      ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    SERVER LAYER (Next.js API)                        │
-│                                                                      │
-│  ┌──────────────┐                                                   │
-│  │GET /api/vocab│  1. Read files from input/                        │
-│  │  route.ts    │  2. Parse Excel using xlsx library                │
-│  │              │  3. Handle column name variations                 │
-│  │              │  4. Deduplicate by Dutch word                     │
-│  │              │  5. Auto-categorize                               │
-│  │              │  6. Return JSON                                   │
-│  └──────┬───────┘                                                   │
-└─────────┼────────────────────────────────────────────────────────────┘
+│                    SERVER LAYER (Next.js API)                       │
+│                                                                     │
+│  ┌──────────────────┐                                               │
+│  │GET /api/         │  1. Query PostgreSQL via connection pool      │
+│  │vocabulary-db     │  2. Map database rows to VocabularyWord       │
+│  │                  │  3. Return JSON array                         │
+│  └──────┬───────────┘                                               │
+│         │                                                           │
+│  ┌──────▼───────────┐                                               │
+│  │POST /api/        │  1. Insert new words (check duplicates)       │
+│  │vocabulary-db     │  2. Return inserted count                     │
+│  └──────────────────┘                                               │
+│         │                                                           │
+│  ┌──────▼───────────┐                                               │
+│  │PUT /api/         │  1. Update word by ID                         │
+│  │vocabulary-db     │  2. Support partial updates                   │
+│  │                  │  3. Return updated word                       │
+│  └──────────────────┘                                               │
+│         │                                                           │
+│  ┌──────▼───────────┐                                               │
+│  │DELETE /api/      │  1. Delete word by ID                         │
+│  │vocabulary-db     │  2. Return success status                     │
+│  └──────────────────┘                                               │
+│         │                                                           │
+│  ┌──────▼───────────┐                                               │
+│  │POST /api/        │  1. Sync all vocabulary to DB                 │
+│  │save-state        │  2. Insert new + update existing              │
+│  │                  │  3. Create CSV/JSON backups with timestamp    │
+│  │                  │  4. Return saved count + backup files         │
+│  └──────────────────┘                                               │
+└─────────────────────────────────────────────────────────────────────┘
           │
           ▼ HTTP Response (JSON)
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    CLIENT LAYER (React/Next.js)                      │
-│                                                                      │
+│                    CLIENT LAYER (React/Next.js)                     │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────┐       │
+│  │                  Dashboard (app/page.tsx)                │       │
+│  │                                                          │       │
+│  │  useEffect → Fetch /api/vocabulary-db                    │       │
+│  │                    ▼                                     │       │
+│  │            ┌────────────────┐                            │       │
+│  │            │  Vocabulary    │                            │       │
+│  │            │  State Array   │                            │       │
+│  │            └───────┬────────┘                            │       │
+│  │                    │                                     |       │
+│  │         ┌──────────┼──────────┐                          │       │
+│  │         ▼          ▼          ▼                          │       │
+│  │    ┌────────┐ ┌────────┐ ┌────────┐                      │       │
+│  │    │Stats   │ │Add Word│ │ Save   │                      │       │
+│  │    │Display │ │ Modal  │ │ State  │                      │       │
+│  │    └────────┘ └────────┘ └────────┘                      │       │
+│  └──────────────────────────────────────────────────────────┘       │
+│                                                                     │
 │  ┌─────────────────────────────────────────────────────────┐        │
-│  │                  Dashboard (app/page.tsx)                │        │
-│  │                                                          │        │
-│  │  useEffect → Fetch API → Merge with localStorage        │        │
-│  │                    ▼                                     │        │
-│  │            ┌────────────────┐                            │        │
-│  │            │  Vocabulary    │                            │        │
-│  │            │  State Array   │                            │        │
-│  │            └───────┬────────┘                            │        │
-│  │                    │                                     │        │
-│  │         ┌──────────┼──────────┐                          │        │
-│  │         ▼          ▼          ▼                          │        │
-│  │    ┌────────┐ ┌────────┐ ┌────────┐                     │        │
-│  │    │Stats   │ │Upload  │ │Export  │                     │        │
-│  │    │Display │ │Handler │ │Handler │                     │        │
-│  │    └────────┘ └────────┘ └────────┘                     │        │
-│  └──────────────────────────────────────────────────────────┘        │
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────┐        │
-│  │          Vocabulary Browser (app/vocabulary/page.tsx)    │        │
-│  │                                                          │        │
-│  │  loadFromStorage → Set State                            │        │
-│  │         ▼                                                │        │
-│  │    ┌────────────┐                                        │        │
+│  │          Vocabulary Browser (app/vocabulary/page.tsx)   │        │
+│  │                                                         │        │
+│  │  useEffect → Fetch /api/vocabulary-db                   │        │
+│  │         ▼                                               │        │
+│  │    ┌────────────┐                                       │        │
 │  │    │  Filters   │→ filterVocabulary()                   │        │
-│  │    │  & Sorts   │                                        │        │
-│  │    └─────┬──────┘                                        │        │
-│  │          ▼                                                │        │
-│  │   ┌──────────────┐                                       │        │
-│  │   │ VocabularyCard│ (for each word)                      │        │
-│  │   │  Components   │                                       │        │
-│  │   └──────┬────────┘                                       │        │
-│  │          │                                                │        │
+│  │    │  & Sorts   │   (useMemo - optimized)               │        │
+│  │    └─────┬──────┘                                       │        │
+│  │          ▼                                              │        │
+│  │   ┌──────────────┐                                      │        │
+│  │   │ VocabularyCard│ (optimized animations)              │        │
+│  │   │  Components   │                                     │        │
+│  │   └──────┬────────┘                                     │        │
+│  │          │                                              │        │
 │  │    ┌─────┴──────┬──────────┬──────────┐                 │        │
 │  │    ▼            ▼          ▼          ▼                 │        │
-│  │ Progress   Practice    Expand    Categories             │        │
-│  │  Update      Add      Toggle                            │        │
+│  │ Progress   Practice    Edit      Delete                 │        │
+│  │  Update      Add      (inline)   (confirm)              │        │
 │  │    │            │          │          │                 │        │
 │  │    └────────────┴──────────┴──────────┘                 │        │
-│  │                 ▼                                        │        │
-│  │        saveVocabularyToStorage()                        │        │
-│  └──────────────────────────────────────────────────────────┘        │
+│  │                 ▼                                       │        │
+│  │        PUT /api/vocabulary-db                           │        │
+│  │        (immediate DB update + toast notification)       │        │
+│  └─────────────────────────────────────────────────────────┘        │
 └─────────────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    STORAGE LAYER                                     │
-│                                                                      │
+│                    STORAGE & BACKUP LAYER                           │
+│                                                                     │
 │  ┌────────────────────┐                                             │
-│  │  localStorage      │  Key: "dutch-vocabulary"                    │
-│  │  (Browser)         │  Format: JSON array of VocabularyWord       │
-│  │                    │  Persistent across sessions                 │
+│  │  PostgreSQL DB     │  Primary storage (persistent)               │
+│  │  vocabulary table  │  605 words with all metadata                │
+│  └────────────────────┘                                             │
+│           │                                                         │
+│           ▼ (on save-state)                                         │
+│  ┌────────────────────┐                                             │
+│  │ input/ folder      │  Backup files with timestamp                │
+│  │ ├─ backup_YYYY-MM- │  - CSV format (Excel compatible)            │
+│  │ │  DD_HH-MM-SS.csv │  - JSON format (full structure)             │
+│  │ └─ backup_...json  │                                             │
 │  └────────────────────┘                                             │
 └─────────────────────────────────────────────────────────────────────┘
 ```

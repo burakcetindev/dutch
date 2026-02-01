@@ -19,12 +19,15 @@
   }
 
   .glass-card {
-    @apply glass rounded-3xl transition-all duration-500;
-    animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    @apply glass rounded-3xl;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s ease;
+    will-change: transform;
   }
 
   .glass-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-4px) translateZ(0);
     box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.3);
   }
 
@@ -34,11 +37,12 @@
 
   .category-badge {
     @apply glass rounded-full px-3 py-1 text-xs font-medium backdrop-blur-md;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s ease-out;
+    will-change: transform;
   }
 
   .category-badge:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   /* Shimmer animation for loading states */
@@ -55,15 +59,15 @@
     animation: shimmer 2s infinite linear;
   }
 
-  /* Apple-style animations */
+  /* Optimized animations with GPU acceleration */
   @keyframes fadeInScale {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.98) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateZ(0);
     }
   }
 
@@ -79,73 +83,132 @@
   @keyframes slideInFromTop {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-10px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   @keyframes slideInFromBottom {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(10px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   @keyframes pulse-glow {
     0%, 100% {
-      opacity: 0.6;
-      transform: scale(1);
+      opacity: 0.7;
     }
     50% {
       opacity: 1;
-      transform: scale(1.05);
+    }
+  }
+
+  @keyframes subtle-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateZ(0);
+    }
+    50% {
+      transform: translateY(-5px) translateZ(0);
+    }
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.9) translateZ(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05) translateZ(0);
+    }
+    100% {
+      transform: scale(1) translateZ(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(20px) translateZ(0);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0) translateZ(0);
+      opacity: 1;
     }
   }
 
   @keyframes blob {
     0%, 100% {
-      transform: translate(0, 0) scale(1);
+      transform: translate(0, 0) scale(1) translateZ(0);
     }
-    25% {
-      transform: translate(20px, -50px) scale(1.1);
+    33% {
+      transform: translate(10px, -20px) scale(1.05) translateZ(0);
     }
-    50% {
-      transform: translate(-20px, 20px) scale(0.9);
-    }
-    75% {
-      transform: translate(50px, 50px) scale(1.05);
+    66% {
+      transform: translate(-10px, 10px) scale(0.95) translateZ(0);
     }
   }
 
   .animate-fade-in-scale {
-    animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: fadeInScale 0.3s ease-out;
+    will-change: transform, opacity;
   }
 
   .animate-fadeIn {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.2s ease-in-out;
   }
 
   .animate-slide-in-top {
-    animation: slideInFromTop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideInFromTop 0.3s ease-out;
+    will-change: transform, opacity;
   }
 
   .animate-slide-in-bottom {
-    animation: slideInFromBottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideInFromBottom 0.3s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+    will-change: transform, opacity;
   }
 
   .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-subtle-glow {
+    animation: subtle-glow 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
   .animate-blob {
-    animation: blob 7s infinite;
+    animation: blob 15s infinite ease-in-out;
+    will-change: transform;
   }
 
   .animation-delay-2000 {

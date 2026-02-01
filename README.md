@@ -2,68 +2,33 @@
 
 A modern, full-stack web application for learning Dutch vocabulary with an elegant glassmorphism UI, smart categorization, and spaced repetition learning.
 
-![Dutch Vocabulary App](docs/images/app-preview.png)
+## 📸 Screenshots
+
+<div align="center">
+
+### Light Mode
+![Dutch Vocabulary App - Light Mode](docs/images/day_mode.png)
+
+### Dark Mode
+![Dutch Vocabulary App - Dark Mode](docs/images/night_mode.png)
+
+</div>
 
 ## ✨ Features
 
-- 📚 **500+ Dutch Words** with English translations and example sentences
-- 🎯 **Smart Categorization** (A1-A2, B1-B2, C1-C2 levels)
-- 🔄 **Spaced Repetition** learning system
-- 🎨 **Glassmorphism UI** with smooth animations
+- 📚 **600+ Dutch Words** with English translations, categories, and example sentences
+- 🎯 **Smart Categorization** (A1-A2, B1-B2, C1-C2 CEFR levels)
+- 🔄 **Spaced Repetition** learning system with progress tracking
+- 🎨 **Glassmorphism UI** with smooth animations and dark mode support
 - 📊 **Progress Tracking** (New → Learning → Mastered)
-- 🔍 **Advanced Filtering** by level, category, and progress
-- 💾 **Auto-save** progress in database
+- 🔍 **Advanced Filtering** by level, category, and progress status
+- 💾 **PostgreSQL Database** with full CRUD operations
 - 📤 **Import/Export** vocabulary in CSV format
 - 🐳 **Dockerized** for easy deployment
-- ✅ **CRUD Operations**: Add, edit, delete, and manage vocabulary
+- ✅ **Complete CRUD**: Add, edit, delete, and manage all vocabulary
 - 🔤 **Verb Conjugations**: Display present, past, and future tense forms
-- 📝 **Practice Sentences**: Add custom sentences for each word
-
-## ✅ Recent Updates
-
-- **Grammar/Tenses Support**: All verbs now support present, past, and future tense conjugations (85 words imported)
-- **Add Word Form**: Fixed level validation errors - words can now be added successfully with all optional fields
-- **Practice Sentences Persistence**: Practice sentences are now properly saved to database and persist across sessions
-- **Bulk Grammar Import**: Direct SQL import ensures 100% data integrity
-- **Enhanced Animations**: Float, pulse, glow, and spin animations throughout the app
-- **Fixed UI Rendering**: Resolved black boxes on scroll with CSS optimizations
-- **Edit/Delete Menu**: Expandable action menu at bottom-right corner with smooth animations
-- **Comprehensive Test Suite**: 50+ tests covering API, components, and data validation
-- **Accessibility**: Proper ARIA labels and keyboard navigation support
-
-## 🧪 Testing
-
-Comprehensive test suite with 50+ tests:
-
-```bash
-# Run all tests
-npm test
-
-# Run with coverage report
-npm test:coverage
-
-# Watch mode for development
-npm test:watch
-
-# CI mode (for GitHub Actions)
-npm test:ci
-```
-
-**Test Coverage**:
-- ✅ API Integration (CRUD operations, error handling)
-- ✅ Component Testing (rendering, interactions, accessibility)
-- ✅ Data Validation (grammar data, vocabulary structure)
-- ✅ Error Handling (network errors, malformed requests)
-- ✅ Data Persistence (cross-request consistency)
-
-See [__tests__/README.md](__tests__/README.md) for detailed testing documentation.
-
-## ✅ Recent Updates
-
-- **Grammar/Tenses Support**: All verbs now support present, past, and future tense conjugations
-- **Add Word Form**: Fixed level validation errors - words can now be added successfully with all optional fields
-- **Practice Sentences Persistence**: Practice sentences are now properly saved to database and persist across sessions
-- **Bulk Grammar Import**: 84 verbs updated with conjugation data from CSV files
+- 📝 **Practice Sentences**: Dutch and English example sentences
+- 🎭 **Part of Speech**: Track nouns, verbs, adjectives, and more
 
 ## 🚀 Quick Start
 
@@ -72,31 +37,37 @@ See [__tests__/README.md](__tests__/README.md) for detailed testing documentatio
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (recommended)
 - Or: Node.js 20+, PostgreSQL 16+
 
-### Option 1: Docker (Recommended)
+### First Time Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/burakcetindev/dutch.git
 cd dutch
 
-# Start the application
+# Run first-time setup (creates .env, installs dependencies, sets up Docker)
+./scripts/first-run.sh
+```
+
+### Starting the Application
+
+```bash
+# Start the application (after first-run.sh)
 ./scripts/start.sh
 ```
 
 The app will be available at **http://localhost:3000**
+PostgreSQL database runs on **localhost:5432**
 
-### Option 2: Local Development
+> **💡 Tip:** The `first-run.sh` script automatically creates your `.env` file and sets up everything you need. No manual configuration required!
+
+### Local Development (Without Docker)
 
 ```bash
-# Install dependencies
-npm install
+# Run first-time setup
+./scripts/first-run.sh
 
-# Set up environment
-cp .env.example .env
-# Edit .env with your PostgreSQL credentials
-
-# Run database migrations
-npm run migrate
+# Start dev server
+npm run dev
 
 # Import vocabulary
 npx tsx scripts/import-csv.ts
@@ -129,8 +100,8 @@ dutch/
 ├── docs/                 # Documentation
 │   ├── ARCHITECTURE.md   # System architecture
 │   └── DATA-FLOW.md      # Data flow diagrams
-├── Dockerfile            # Container definition
-├── docker-compose.yml    # Multi-container orchestration
+├── Dockerfile            # Container definition (in infra/)
+├── docker-compose.yml    # Multi-container orchestration (in infra/)
 └── next.config.mjs       # Next.js configuration
 ```
 
@@ -203,42 +174,24 @@ npx tsx scripts/cleanup_bad_entries.ts  # Remove duplicates & low-quality entrie
 ## 🐳 Docker Commands
 
 ```bash
-# Start everything
+# Start everything (recommended)
 ./scripts/start.sh
 
-# View logs
-docker-compose logs -f
-
-# Restart app only
-docker-compose restart app
+# Manual Docker commands
+docker compose -f infra/docker-compose.yml up --build    # Build and start all services
+docker compose -f infra/docker-compose.yml down          # Stop all services
+docker compose -f infra/docker-compose.yml logs -f app   # View app logs
+docker compose -f infra/docker-compose.yml logs -f db    # View database logs
+docker compose -f infra/docker-compose.yml restart app   # Restart app only
 
 # Access database
-docker-compose exec db psql -U dutch_user -d dutch_vocabulary
-
-# Stop everything
-docker-compose down
+docker compose -f infra/docker-compose.yml exec db psql -U dutch_user -d dutch_vocabulary
 
 # Stop and remove volumes (fresh start)
-docker-compose down -v
+docker compose -f infra/docker-compose.yml down -v
 ```
 
-## 🔧 Environment Variables
-
-Create a `.env` file (see `.env.example`):
-
-```env
-# Database
-POSTGRES_USER=dutch_user
-POSTGRES_PASSWORD=dutch_password
-POSTGRES_DB=dutch_vocabulary
-POSTGRES_PORT=5432
-
-# Application
-APP_PORT=3000
-DATABASE_URL=postgresql://dutch_user:dutch_password@localhost:5432/dutch_vocabulary
-```
-
-## 📊 Features in Detail
+##  Features in Detail
 
 ### Spaced Repetition Learning
 Words progress through three stages:

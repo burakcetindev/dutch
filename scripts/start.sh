@@ -46,46 +46,45 @@ fi
 
 # Stop any existing containers
 echo "🧹 Cleaning up existing containers..."
-docker compose down 2>/dev/null || true
+docker compose -f infra/docker-compose.yml down 2>/dev/null || true
 echo ""
 
 # Build and start containers
 echo "🏗️  Building Docker images..."
 echo "   (This may take a few minutes the first time)"
 echo ""
-docker compose build
+docker compose -f infra/docker-compose.yml build
 
 echo ""
 echo "🚀 Starting containers..."
-docker compose up -d
+docker compose -f infra/docker-compose.yml up -d
 
 echo ""
 echo "⏳ Waiting for services to be ready..."
 sleep 5
 
 # Check if containers are running
-if docker compose ps | grep -q "running"; then
+if docker compose -f infra/docker-compose.yml ps | grep -q "running"; then
   echo ""
   echo "✅ Application started successfully!"
   echo ""
   echo "📊 Services:"
-  docker compose ps
+  docker compose -f infra/docker-compose.yml ps
   echo ""
   echo "🌐 Your app is available at: http://localhost:3000"
   echo "🐘 PostgreSQL is running on: localhost:5432"
   echo ""
   echo "📝 Useful commands:"
-  echo "   View logs:        docker compose logs -f app"
-  echo "   Stop app:         docker compose down"
-  echo "   Restart app:      docker compose restart app"
-  echo "   Run migration:    docker compose exec app npx tsx scripts/migrate.ts"
-  echo "   Import CSV:       docker compose exec app npx tsx scripts/import-csv.ts"
+  echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f app"
+  echo "   Stop app:         docker compose -f infra/docker-compose.yml down"
+  echo "   Restart app:      docker compose -f infra/docker-compose.yml restart app"
+  echo "   Import backup:    docker compose -f infra/docker-compose.yml exec app node scripts/import-full-backup.js"
   echo ""
   echo "🎉 Happy learning Dutch! 🇳🇱"
 else
   echo ""
   echo "❌ Error: Containers failed to start"
-  echo "   Check logs with: docker compose logs"
+  echo "   Check logs with: docker compose -f infra/docker-compose.yml logs"
   exit 1
 fi
 

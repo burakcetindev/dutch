@@ -8,39 +8,50 @@ A full-stack Dutch language learning application built with Next.js 15, featurin
 ### Frontend
 - **Framework**: Next.js 15.5.11 (App Router)
 - **Language**: TypeScript 5.7.2
-- **Styling**: Tailwind CSS 3.4.17
+- **Styling**: Tailwind CSS 3.4.17 (optimized animations with GPU acceleration)
 - **UI Components**: Custom components with Shadcn/ui base
 - **Icons**: Lucide React
 - **State Management**: React Hooks (useState, useEffect, useMemo)
 
 ### Backend
+- **Database**: PostgreSQL 16 (Docker container)
 - **Runtime**: Node.js (Server-side API routes)
-- **File Processing**: xlsx 0.18.5 for Excel/CSV operations
-- **Storage**: Browser localStorage (client-side persistence)
+- **ORM**: Direct pg (node-postgres) connection pool
+- **File Processing**: CSV generation for backups
+
+### Infrastructure & Deployment
+- **Containerization**: Docker & Docker Compose
+- **Database Schema**: Full relational schema with migrations
+- **Backup Strategy**: Automatic CSV/JSON backups with timestamps
 
 ### Build & Development
 - **Package Manager**: npm
-- **Bundler**: Next.js built-in (Turbopack/Webpack)
+- **Bundler**: Next.js built-in (Turbopack)
 - **TypeScript**: Strict mode enabled
+- **Performance**: Optimized animations, will-change properties, GPU acceleration
 
 ## Project Structure
 
 ```
 dutch/
-├── app/                           # Next.js App Router pages
+├── app/                           # Next.js App Router
 │   ├── page.tsx                  # Dashboard homepage
 │   ├── vocabulary/               
-│   │   └── page.tsx              # Vocabulary browser with filters/sorts
+│   │   └── page.tsx              # Vocabulary browser with filters
 │   ├── api/
-│   │   └── vocabulary/
-│   │       └── route.ts          # Server-side API for auto-loading files
+│   │   ├── vocabulary-db/
+│   │   │   └── route.ts          # PostgreSQL CRUD operations
+│   │   └── save-state/
+│   │       └── route.ts          # Save & backup functionality
 │   ├── layout.tsx                # Root layout with metadata
-│   └── globals.css               # Global styles + glassmorphism utilities
+│   └── globals.css               # Global styles + optimized animations
 │
 ├── src/
 │   └── components/
 │       └── vocabulary/
-│           └── VocabularyCard.tsx  # Expandable word card component
+│           ├── VocabularyCard.tsx    # Expandable word card with inline editing
+│           ├── AddWordModal.tsx      # Add new word modal
+│           └── YouGlish.tsx          # YouTube pronunciation integration
 │
 ├── components/
 │   └── ui/                       # Reusable UI primitives
@@ -51,36 +62,40 @@ dutch/
 │       └── select.tsx
 │
 ├── lib/                          # Business logic & utilities
-│   ├── vocabulary.ts            # Excel/CSV import/export functions
-│   ├── stats.ts                 # Statistics and filtering logic
-│   ├── categorization.ts        # Auto-categorization engine
-│   └── utils.ts                 # Helper functions (cn, etc.)
+│   ├── db.ts                    # PostgreSQL connection pool
+│   ├── vocabulary.ts            # Excel/CSV import/export
+│   ├── stats.ts                 # Statistics and filtering
+│   └── utils.ts                 # Helper functions
 │
 ├── types/
 │   └── vocabulary.ts            # TypeScript interfaces
-│       - VocabularyWord
+│       - VocabularyWord (dutch, english, level, categories, etc.)
 │       - VocabularyStats
-│       - ExcelRow
-│       - CEFRLevel
-│       - ProgressStatus
+│       - CEFRLevel (A1-A2, B1-B2, C1-C2)
+│       - ProgressStatus (new, learning, mastered)
 │
-├── scripts/                      # Utility scripts
-│   ├── start.sh                 # App startup automation
-│   ├── merge-vocabulary.js      # Merge multiple files
-│   ├── validate-merge.js        # Validation utility
-│   ├── inspect-files.js         # File structure inspector
-│   └── test-api.js              # API testing utility
+├── infra/                        # Infrastructure & deployment
+│   ├── docker-compose.yml       # Multi-container orchestration
+│   ├── Dockerfile               # Next.js app container
+│   ├── init.sql                 # PostgreSQL schema
+│   └── .dockerignore            # Docker ignore patterns
+│
+├── scripts/                      # Automation scripts
+│   ├── first-run.sh             # Initial setup (creates .env, installs deps)
+│   ├── start.sh                 # Start Docker containers
+│   ├── import-full-backup.js    # Import complete backup
+│   └── create-backup.js         # Generate backup files
 │
 ├── docs/                         # Documentation
 │   ├── ARCHITECTURE.md          # This file
 │   ├── DATA-FLOW.md             # Data flow documentation
-│   ├── CATEGORIZATION.md        # Category system details
-│   ├── FIXES.md                 # Change history
-│   └── CSV-FIX.md               # CSV merge fix details
+│   ├── QUICK-START.md           # Getting started guide
+│   └── images/                  # App screenshots
+│       ├── day_mode.png
+│       └── night_mode.png
 │
-└── input/                        # Vocabulary data files
-    ├── merged-vocabulary.csv    # Main vocabulary database
-    └── merged-vocabulary.xlsx   # Excel backup
+└── input/                        # Data backup storage
+    └── vocabulary_backup_*.csv  # Timestamped backups
 ```
 
 ## Core Components

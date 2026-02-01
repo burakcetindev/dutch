@@ -20,8 +20,8 @@ services:
 
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: infra/Dockerfile
     container_name: dutch-app
     restart: unless-stopped
     ports:
@@ -33,7 +33,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./input:/app/input:ro
+      - ../input:/app/input
     command: >
       sh -c "
         echo 'Waiting for database...' &&

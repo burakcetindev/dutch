@@ -77,7 +77,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
   return (
     <div className="animate-fade-in-scale">
       {/* Main card with glass effect */}
-      <div className="relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.01] transition-all duration-500 hover:border-purple-300/50 overflow-visible group animate-glow-pulse">
+      <div className="relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 hover:border-purple-300/50 dark:hover:border-purple-500/50 overflow-visible group animate-subtle-glow">
         <div className="flex items-start justify-between mb-8">
           <div className="flex-1">
             {isEditing ? (

@@ -184,11 +184,11 @@ export default function Home() {
       
       if (response.ok) {
         const data = await response.json();
-        if (data.backupFiles && data.backupFiles.length > 0) {
-          alert(`✅ Successfully saved ${data.saved} words to database!\nBackup files: ${data.backupFiles.join(", ")}`);
-        } else {
-          alert(`✅ Successfully saved ${data.saved} words to database!`);
-        }
+        const message = data.message || `✅ Successfully saved ${data.saved} words to database!`;
+        const backupInfo = data.backupFiles && data.backupFiles.length > 0 
+          ? `\n\n📦 Backup files created:\n${data.backupFiles.map((f: string) => `  • ${f}`).join('\n')}`
+          : '';
+        alert(message + backupInfo);
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `Failed to save state (${response.status})`);
@@ -218,9 +218,9 @@ export default function Home() {
 
       <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 animate-slide-in-top">
           <div className="inline-flex items-center gap-3 mb-4">
-            <Sparkles className="w-12 h-12 text-yellow-500 dark:text-yellow-400 animate-pulse drop-shadow-lg" />
+            <Sparkles className="w-12 h-12 text-yellow-500 dark:text-yellow-400 animate-float drop-shadow-lg" />
             <h1 className="text-6xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-2xl">
               Dutch Vocab
             </h1>
@@ -230,17 +230,17 @@ export default function Home() {
           </p>
           {/* Level Filter Pills */}
           <div className="flex justify-center gap-3 mt-6">
-            <Link href="/vocabulary?level=A1-A2" className="glass-card px-6 py-2 hover:scale-105 transition-all">
+            <Link href="/vocabulary?level=A1-A2" className="glass-card px-6 py-2 hover:scale-110 transition-transform duration-300 animate-bounce-in">
               <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 A1-A2
               </span>
             </Link>
-            <Link href="/vocabulary?level=B1-B2" className="glass-card px-6 py-2 hover:scale-105 transition-all">
+            <Link href="/vocabulary?level=B1-B2" className="glass-card px-6 py-2 hover:scale-110 transition-transform duration-300 animate-bounce-in" style={{animationDelay: '0.1s'}}>
               <span className="text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                 B1-B2
               </span>
             </Link>
-            <Link href="/vocabulary?level=C1-C2" className="glass-card px-6 py-2 hover:scale-105 transition-all">
+            <Link href="/vocabulary?level=C1-C2" className="glass-card px-6 py-2 hover:scale-110 transition-transform duration-300 animate-bounce-in" style={{animationDelay: '0.2s'}}>
               <span className="text-sm font-semibold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
                 C1-C2
               </span>
@@ -252,19 +252,19 @@ export default function Home() {
         <div className="flex justify-center gap-3 mb-12 flex-wrap items-center">
           {/* Import Dropdown */}
           <div className="relative group">
-            <button className="glass-card px-6 py-3 hover:scale-105 flex items-center gap-2">
-              <Upload className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+            <button className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
+              <Upload className="w-5 h-5 text-gray-800 dark:text-gray-200 group-hover:scale-110 transition-transform" />
               <span className="text-gray-800 dark:text-gray-200 font-semibold">Import</span>
             </button>
-            <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <label htmlFor="file-upload-excel" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-colors">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+            <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 animate-slide-in-top">
+              <label htmlFor="file-upload-excel" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
                   <Upload className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from Excel</span>
               </label>
-              <label htmlFor="file-upload-csv" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-colors">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+              <label htmlFor="file-upload-csv" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
                   <Upload className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from CSV</span>
@@ -276,19 +276,19 @@ export default function Home() {
           
           {/* Export Dropdown */}
           <div className="relative group">
-            <button className="glass-card px-6 py-3 hover:scale-105 flex items-center gap-2">
-              <Download className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+            <button className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
+              <Download className="w-5 h-5 text-gray-800 dark:text-gray-200 group-hover:scale-110 transition-transform" />
               <span className="text-gray-800 dark:text-gray-200 font-semibold">Export</span>
             </button>
-            <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-colors">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+            <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 animate-slide-in-top">
+              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
                   <Download className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Export as Excel</span>
               </button>
-              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-colors">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
                   <Download className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Export as CSV</span>
@@ -296,23 +296,23 @@ export default function Home() {
             </div>
           </div>
 
-          <button onClick={() => setIsAddModalOpen(true)} className="glass-card px-6 py-3 hover:scale-105">
+          <button onClick={() => setIsAddModalOpen(true)} className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
-              <PlusCircle className="w-5 h-5" />
+              <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
               Add Word
             </div>
           </button>
 
-          <button onClick={handleReload} className="glass-card px-6 py-3 hover:scale-105">
+          <button onClick={handleReload} className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
-              <TrendingUp className="w-5 h-5" />
+              <TrendingUp className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Reload
             </div>
           </button>
 
-          <button onClick={handleSaveState} className="glass-card px-6 py-3 hover:scale-105">
+          <button onClick={handleSaveState} className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
             <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
-              <Save className="w-5 h-5" />
+              <Save className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Save State
             </div>
           </button>
@@ -321,7 +321,7 @@ export default function Home() {
 
           <ThemeToggleButton />
 
-          <Link href="/about" className="glass-card px-6 py-3 hover:scale-105">
+          <Link href="/about" className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
               <BookOpen className="w-5 h-5" />
               About Me

@@ -84,17 +84,17 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="glass-card p-8 bg-white/95 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="glass-card p-8 bg-white/95 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-bounce-in">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Add New Word
           </h2>
           <button
             onClick={onClose}
-            className="p-2 glass rounded-xl hover:bg-red-100 transition-colors"
+            className="p-2 glass rounded-xl hover:bg-red-100 hover:scale-110 transition-all duration-300"
           >
-            <X className="w-6 h-6 text-gray-600" />
+            <X className="w-6 h-6 text-gray-600 hover:rotate-90 transition-transform duration-300" />
           </button>
         </div>
 

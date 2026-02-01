@@ -162,11 +162,25 @@ function VocabularyContent() {
     
     // Save to database
     try {
-      await fetch("/api/vocabulary-db", {
+      const response = await fetch("/api/vocabulary-db", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: wordId, updates })
       });
+      
+      if (response.ok) {
+        // Show success message
+        const Toast = document.createElement('div');
+        Toast.textContent = '✅ Word updated successfully!';
+        Toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: linear-gradient(to right, #10b981, #059669); color: white; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-weight: 600; animation: slideIn 0.3s ease;';
+        document.body.appendChild(Toast);
+        setTimeout(() => {
+          Toast.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => Toast.remove(), 300);
+        }, 2000);
+      } else {
+        throw new Error('Failed to update word');
+      }
     } catch (error) {
       console.error("Error updating word in database:", error);
       alert("Failed to update word. Please try again.");
@@ -375,6 +389,14 @@ function VocabularyContent() {
           25% { transform: translate(20px, -50px) scale(1.1); }
           50% { transform: translate(-20px, 20px) scale(0.9); }
           75% { transform: translate(50px, 50px) scale(1.05); }
+        }
+        @keyframes slideIn {
+          from { transform: translateX(400px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(400px); opacity: 0; }
         }
         .animate-blob {
           animation: blob 20s infinite;

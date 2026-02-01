@@ -38,6 +38,7 @@ next-env.d.ts
 # Database backups and exports
 /input/vocabulary_backup_*.csv
 /input/vocabulary_backup_*.xlsx
+/input/vocabulary_backup_*.json
 /input/merged-vocabulary.*
 
 # User data
