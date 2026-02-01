@@ -14,9 +14,15 @@ cd dutch
 ./scripts/first-run.sh
 ```
 
-### Step 3: Start the Application
+### Step 3: Build and Start
 ```bash
-# After first-run.sh completes
+# First time only - builds Docker images
+./scripts/build-and-start.sh
+```
+
+### Step 4: Daily Starts
+```bash
+# Use this for subsequent starts (much faster!)
 ./scripts/start.sh
 ```
 
@@ -33,12 +39,17 @@ The `first-run.sh` script:
 3. 📁 Creates required directories
 4. ✅ Validates environment setup
 
-The `start.sh` script:
+The `build-and-start.sh` script (first time):
 1. ✅ Checks if Docker is running
-2. 🐳 Builds Docker containers from infra/
+2. 🐳 Builds Docker images from infra/
 3. 🗄️ Sets up PostgreSQL database
 4. 📚 Loads vocabulary data (605 words)
 5. 🚀 Starts the Next.js application
+
+The `start.sh` script (daily use):
+1. ✅ Checks if Docker is running
+2. 🚀 Starts existing containers (no build - fast!)
+3. ✅ Verifies services are healthy
 
 ## Useful Commands
 

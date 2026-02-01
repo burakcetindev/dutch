@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# 🚀 Dutch Vocabulary App - Quick Start (No Build)
-# This script starts existing Docker containers without rebuilding
+# 🚀 Dutch Vocabulary App - Docker Quick Start
+# This script builds and starts the application with Docker
 
 set -e  # Exit on error
 
-echo "🇳🇱 Dutch Vocabulary App - Quick Start"
+echo "🇳🇱 Dutch Vocabulary App - Docker Startup"
 echo ""
 
 # Check if Docker is installed
@@ -26,15 +26,17 @@ echo "✓ Docker found: $(docker --version)"
 echo "✓ Docker Compose found: $(docker compose version)"
 echo ""
 
-# Check if .env file exists
+# Check if .env file exists, if not create from .env.example
 if [ ! -f ".env" ]; then
   if [ -f ".env.example" ]; then
     echo "📝 Creating .env file from .env.example..."
     cp .env.example .env
     echo "✅ .env file created"
+    echo "   You can edit .env to customize database credentials"
     echo ""
   else
-    echo "⚠️  Warning: No .env file found, using defaults"
+    echo "⚠️  Warning: No .env file found"
+    echo "   Using default environment variables"
     echo ""
   fi
 else
@@ -42,15 +44,18 @@ else
   echo ""
 fi
 
-# Check if images exist
-if ! docker images | grep -q "infra-app"; then
-  echo "⚠️  Docker image not found!"
-  echo "   Running first-time build..."
-  echo ""
-  ./scripts/build-and-start.sh
-  exit 0
-fi
+# Stop any existing containers
+echo "🧹 Cleaning up existing containers..."
+docker compose -f infra/docker-compose.yml down 2>/dev/null || true
+echo ""
 
+# Build and start containers
+echo "🏗️  Building Docker images..."
+echo "   (This may take a few minutes the first time)"
+echo ""
+docker compose -f infra/docker-compose.yml build
+
+echo ""
 echo "🚀 Starting containers..."
 docker compose -f infra/docker-compose.yml up -d
 
@@ -73,13 +78,13 @@ if docker compose -f infra/docker-compose.yml ps | grep -q "running"; then
   echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f app"
   echo "   Stop app:         docker compose -f infra/docker-compose.yml down"
   echo "   Restart app:      docker compose -f infra/docker-compose.yml restart app"
-  echo "   Rebuild:          ./scripts/build-and-start.sh"
+  echo "   Import backup:    docker compose -f infra/docker-compose.yml exec app node scripts/import-full-backup.js"
   echo ""
   echo "🎉 Happy learning Dutch! 🇳🇱"
 else
   echo ""
   echo "❌ Error: Containers failed to start"
-  echo "   Try rebuilding with: ./scripts/build-and-start.sh"
-  echo "   Or check logs: docker compose -f infra/docker-compose.yml logs"
+  echo "   Check logs with: docker compose -f infra/docker-compose.yml logs"
   exit 1
 fi
+

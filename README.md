@@ -51,14 +51,17 @@ cd dutch
 ### Starting the Application
 
 ```bash
-# Start the application (after first-run.sh)
+# First time only - builds Docker images
+./scripts/build-and-start.sh
+
+# Subsequent starts - uses existing images
 ./scripts/start.sh
 ```
 
 The app will be available at **http://localhost:3000**
 PostgreSQL database runs on **localhost:5432**
 
-> **💡 Tip:** The `first-run.sh` script automatically creates your `.env` file and sets up everything you need. No manual configuration required!
+> **💡 Tip:** Use `build-and-start.sh` only when you change code. Use `start.sh` for daily use - it's much faster!
 
 ### Local Development (Without Docker)
 
@@ -94,7 +97,8 @@ dutch/
 ├── scripts/              # Build & maintenance scripts
 │   ├── import-full-backup.js  # Import CSV backups
 │   ├── first-run.sh      # First-time setup
-│   └── start.sh          # Docker startup script
+│   ├── build-and-start.sh # Build images and start (first time)
+│   └── start.sh          # Quick start (daily use)
 ├── input/                # Vocabulary backup files (gitignored)
 ├── infra/                # Docker infrastructure
 │   ├── Dockerfile        # Container definition
@@ -155,15 +159,18 @@ CREATE TABLE vocabulary (
 
 ```bash
 # First-time setup
-./scripts/first-run.sh       # Create .env and setup environment
+./scripts/first-run.sh           # Create .env and setup environment
 
-# Start application
-./scripts/start.sh           # Build and start Docker containers
+# Docker - First time or after code changes
+./scripts/build-and-start.sh     # Build images and start containers
+
+# Docker - Daily use (fast startup)
+./scripts/start.sh               # Start existing containers
 
 # Development
-npm run dev                  # Start dev server (port 3000)
-npm run build                # Production build
-npm start                    # Start production server
+npm run dev                      # Start dev server (port 3000)
+npm run build                    # Production build
+npm start                        # Start production server
 
 # Data Management
 docker exec dutch-app node scripts/import-full-backup.js  # Import backup CSV
@@ -172,14 +179,17 @@ docker exec dutch-app node scripts/import-full-backup.js  # Import backup CSV
 ## 🐳 Docker Commands
 
 ```bash
-# Start everything (recommended)
+# Quick start (recommended for daily use)
 ./scripts/start.sh
 
+# Build and start (first time or after code changes)
+./scripts/build-and-start.sh
+
 # Manual Docker commands
-docker compose -f infra/docker-compose.yml up --build    # Build and start all services
+docker compose -f infra/docker-compose.yml up -d         # Start containers (no build)
+docker compose -f infra/docker-compose.yml build         # Build images only
 docker compose -f infra/docker-compose.yml down          # Stop all services
 docker compose -f infra/docker-compose.yml logs -f app   # View app logs
-docker compose -f infra/docker-compose.yml logs -f db    # View database logs
 docker compose -f infra/docker-compose.yml restart app   # Restart app only
 
 # Access database
