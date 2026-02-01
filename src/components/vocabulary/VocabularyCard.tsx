@@ -146,7 +146,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
           </div>
 
           {/* Progress and action buttons */}
-          <div className="flex gap-2 ml-4">
+          <div className="flex gap-2 ml-4 items-center">
             {isEditing ? (
               <>
                 <button
@@ -199,6 +199,49 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                 >
                   <CheckCircle2 className={`w-5 h-5 ${word.progress === "mastered" ? "text-white" : "text-green-600"}`} />
                 </button>
+                
+                {/* Gear icon dropdown - next to progress buttons */}
+                {(onEdit || onDelete) && (
+                  <div className="relative ml-2">
+                    <button
+                      onClick={() => setShowActionMenu(!showActionMenu)}
+                      className={`p-3 glass rounded-2xl transition-all duration-300 ${
+                        showActionMenu 
+                          ? "bg-purple-100 dark:bg-purple-900/30 scale-110" 
+                          : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105"
+                      }`}
+                      title={showActionMenu ? "Close menu" : "Open menu"}
+                    >
+                      <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform ${showActionMenu ? "rotate-45" : ""}`} />
+                    </button>
+                    
+                    {showActionMenu && (
+                      <div className="absolute right-0 top-full mt-2 flex flex-col-reverse gap-2 animate-in fade-in slide-in-from-top-2 duration-200 z-40">
+                        {onEdit && (
+                          <button
+                            onClick={() => {
+                              setIsEditing(true);
+                              setShowActionMenu(false);
+                            }}
+                            className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 animate-in fade-in slide-in-from-top-2 duration-150"
+                            title="Edit word"
+                          >
+                            <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          </button>
+                        )}
+                        {onDelete && (
+                          <button
+                            onClick={handleDelete}
+                            className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 animate-in fade-in slide-in-from-top-4 duration-200"
+                            title="Delete word"
+                          >
+                            <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -397,48 +440,6 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
           <YouGlish word={word.dutch} />
         )}
       </div>
-
-      {/* Action Menu - Fixed at Bottom Right - OUTSIDE card div for proper fixed positioning */}
-      {!isEditing && (onEdit || onDelete) && (
-        <div className="fixed bottom-8 right-8 flex flex-col-reverse gap-2 z-40">
-          {showActionMenu && (
-            <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-              {onEdit && (
-                <button
-                  onClick={() => {
-                    setIsEditing(true);
-                    setShowActionMenu(false);
-                  }}
-                  className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 animate-in fade-in slide-in-from-top-2 duration-150"
-                  title="Edit word"
-                >
-                  <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  onClick={handleDelete}
-                  className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 animate-in fade-in slide-in-from-top-4 duration-200"
-                  title="Delete word"
-                >
-                  <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
-                </button>
-              )}
-            </div>
-          )}
-          <button
-            onClick={() => setShowActionMenu(!showActionMenu)}
-            className={`p-3 glass rounded-2xl transition-all duration-300 hover:shadow-lg ${
-              showActionMenu 
-                ? "bg-purple-100 dark:bg-purple-900/30 scale-110" 
-                : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105"
-            }`}
-            title={showActionMenu ? "Close menu" : "Open menu"}
-          >
-            <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform ${showActionMenu ? "rotate-45" : ""}`} />
-          </button>
-        </div>
-      )}
     </div>
   );
 }

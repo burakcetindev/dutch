@@ -66,6 +66,11 @@ export async function POST(request: NextRequest) {
       const duplicates = [];
       
       for (const word of words) {
+        // Validate required fields
+        if (!word.dutch || !word.english) {
+          continue; // Skip words without required fields
+        }
+
         // Check for duplicate (case-insensitive)
         const existing = await client.query(
           'SELECT id FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
@@ -80,7 +85,7 @@ export async function POST(request: NextRequest) {
         // Generate unique ID if not provided
         const wordId = word.id || `${word.dutch}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         
-        // Insert new word with all fields including grammar
+        // Insert new word with all fields, using defaults for optional ones
         await client.query(
           `INSERT INTO vocabulary 
            (id, dutch, english, pos, level, categories, functions, example_nl, example_en, progress, practice, 
@@ -88,24 +93,24 @@ export async function POST(request: NextRequest) {
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
           [
             wordId,
-            word.dutch,
-            word.english,
-            word.pos || '',
+            word.dutch.trim(),
+            word.english.trim(),
+            word.pos?.trim() || null,
             word.level || 'A1-A2',
-            word.categories || [],
-            word.functions || [],
-            word.example?.nl || null,
-            word.example?.en || null,
+            (word.categories && word.categories.length > 0) ? word.categories : null,
+            (word.functions && word.functions.length > 0) ? word.functions : null,
+            word.example?.nl?.trim() || null,
+            word.example?.en?.trim() || null,
             word.progress || 'new',
-            word.practice || [],
-            word.grammar?.present || null,
-            word.grammar?.past || null,
-            word.grammar?.future || null,
+            (word.practice && word.practice.length > 0) ? word.practice : null,
+            word.grammar?.present?.trim() || null,
+            word.grammar?.past?.trim() || null,
+            word.grammar?.future?.trim() || null,
             word.grammar?.separable || false,
-            word.notes || null
+            word.notes?.trim() || null
           ]
         );
-        
+
         inserted.push(wordId);
       }
       
