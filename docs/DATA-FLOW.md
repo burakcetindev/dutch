@@ -152,19 +152,21 @@ Result: 467 unique words (from 526 total, 59 duplicates removed)
 **Step 2: Server-Side API Loading**
 ```
 GET /api/vocabulary (route.ts)
-  ├─ fs.readdirSync('input/') → Find .xlsx files
+  ├─ fs.readdirSync('input/') → Find .xlsx, .xls, .csv, .json files
   ├─ For each file:
-  │   ├─ fs.readFileSync() → Read buffer
-  │   ├─ XLSX.read(buffer) → Parse workbook
-  │   ├─ XLSX.utils.sheet_to_json() → Convert to array
-  │   └─ Parse each row:
-  │       ├─ Handle column name variations
+  │   ├─ Detect format (.xlsx, .xls, .csv, .json)
+  │   ├─ Parse accordingly:
+  │   │   ├─ Excel: XLSX.read(buffer) → sheet_to_json()
+  │   │   ├─ CSV: Custom parser with quote handling
+  │   │   └─ JSON: JSON.parse() with flexible field mapping
+  │   └─ Parse each row/object:
+  │       ├─ Handle column/field name variations (case-insensitive)
   │       ├─ Extract grammar data
-  │       ├─ Parse comma-separated values
+  │       ├─ Parse comma-separated or array values
+  │       ├─ Deduplicate by Dutch word (case-insensitive)
   │       └─ Create VocabularyWord object
-  ├─ Deduplicate by word.id
   ├─ Auto-categorize words without categories
-  └─ Return JSON response
+  └─ Return JSON response with all merged vocabulary
 ```
 
 **Step 3: Client-Side Loading**

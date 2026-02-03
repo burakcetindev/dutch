@@ -1,0 +1,3134 @@
+[
+  {
+    "id": "verb-001-zijn",
+    "dutch": "zijn",
+    "english": "to be",
+    "level": "A1-A2",
+    "categories": [
+      "core verbs",
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ben",
+      "past": "was",
+      "future": "zal zijn",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ben thuis.",
+        "en": "I am home."
+      }
+    ],
+    "example": {
+      "nl": "Ik ben vandaag thuis omdat ik geen afspraken heb en rustig wil werken.",
+      "en": "I am home today because I have no appointments and want to work calmly."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-002-hebben",
+    "dutch": "hebben",
+    "english": "to have",
+    "level": "A1-A2",
+    "categories": [
+      "core verbs",
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "heb",
+      "past": "had",
+      "future": "zal hebben",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik heb tijd.",
+        "en": "I have time."
+      }
+    ],
+    "example": {
+      "nl": "Ik heb morgen genoeg tijd om mijn taken rustig af te maken.",
+      "en": "I have enough time tomorrow to finish my tasks calmly."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-003-gaan",
+    "dutch": "gaan",
+    "english": "to go",
+    "level": "A1-A2",
+    "categories": [
+      "movement",
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ga",
+      "past": "ging",
+      "future": "zal gaan",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ga weg.",
+        "en": "I am leaving."
+      }
+    ],
+    "example": {
+      "nl": "Ik ga na het werk naar huis om te koken en te ontspannen.",
+      "en": "After work I go home to cook and relax."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-004-komen",
+    "dutch": "komen",
+    "english": "to come",
+    "level": "A1-A2",
+    "categories": [
+      "movement"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "kom",
+      "past": "kwam",
+      "future": "zal komen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Hij komt.",
+        "en": "He comes."
+      }
+    ],
+    "example": {
+      "nl": "Mijn collega komt morgen naar kantoor om samen te werken.",
+      "en": "My colleague is coming to the office tomorrow to work together."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-005-doen",
+    "dutch": "doen",
+    "english": "to do",
+    "level": "A1-A2",
+    "categories": [
+      "core verbs"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "doe",
+      "past": "deed",
+      "future": "zal doen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik doe het.",
+        "en": "I do it."
+      }
+    ],
+    "example": {
+      "nl": "Ik doe mijn best om elke dag Nederlands te oefenen.",
+      "en": "I do my best to practice Dutch every day."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-006-maken",
+    "dutch": "maken",
+    "english": "to make",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "maak",
+      "past": "maakte",
+      "future": "zal maken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik maak eten.",
+        "en": "I make food."
+      }
+    ],
+    "example": {
+      "nl": "Ik maak elke ochtend een planning voor mijn werkdag.",
+      "en": "I make a plan for my workday every morning."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-007-werken",
+    "dutch": "werken",
+    "english": "to work",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "werk",
+      "past": "werkte",
+      "future": "zal werken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik werk vandaag.",
+        "en": "I work today."
+      }
+    ],
+    "example": {
+      "nl": "Ik werk meestal thuis, maar soms ga ik naar kantoor.",
+      "en": "I usually work from home, but sometimes I go to the office."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-008-zeggen",
+    "dutch": "zeggen",
+    "english": "to say",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "zeg",
+      "past": "zei",
+      "future": "zal zeggen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik zeg ja.",
+        "en": "I say yes."
+      }
+    ],
+    "example": {
+      "nl": "Ik zeg eerlijk wat ik denk tijdens vergaderingen.",
+      "en": "I honestly say what I think during meetings."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-009-zien",
+    "dutch": "zien",
+    "english": "to see",
+    "level": "A1-A2",
+    "categories": [
+      "perception"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "zie",
+      "past": "zag",
+      "future": "zal zien",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik zie je.",
+        "en": "I see you."
+      }
+    ],
+    "example": {
+      "nl": "Ik zie mijn vrienden vooral in het weekend.",
+      "en": "I mainly see my friends on the weekend."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-010-geven",
+    "dutch": "geven",
+    "english": "to give",
+    "level": "A1-A2",
+    "categories": [
+      "interaction"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "geef",
+      "past": "gaf",
+      "future": "zal geven",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik geef hulp.",
+        "en": "I give help."
+      }
+    ],
+    "example": {
+      "nl": "Ik geef mijn collega feedback zodat hij kan groeien.",
+      "en": "I give my colleague feedback so he can grow."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-015-kunnen",
+    "dutch": "kunnen",
+    "english": "can / to be able to",
+    "level": "A1-A2",
+    "categories": [
+      "modal verbs"
+    ],
+    "functions": [
+      "modal verb"
+    ],
+    "grammar": {
+      "present": "kan",
+      "past": "kon",
+      "future": "zal kunnen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik kan helpen.",
+        "en": "I can help."
+      }
+    ],
+    "example": {
+      "nl": "Ik kan vandaag langer blijven om alles af te maken.",
+      "en": "I can stay longer today to finish everything."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-016-moeten",
+    "dutch": "moeten",
+    "english": "must",
+    "level": "A1-A2",
+    "categories": [
+      "modal verbs"
+    ],
+    "functions": [
+      "modal verb"
+    ],
+    "grammar": {
+      "present": "moet",
+      "past": "moest",
+      "future": "zal moeten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik moet werken.",
+        "en": "I must work."
+      }
+    ],
+    "example": {
+      "nl": "Ik moet dit vandaag afmaken vanwege de deadline.",
+      "en": "I must finish this today because of the deadline."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-017-willen",
+    "dutch": "willen",
+    "english": "to want",
+    "level": "A1-A2",
+    "categories": [
+      "modal verbs"
+    ],
+    "functions": [
+      "modal verb"
+    ],
+    "grammar": {
+      "present": "wil",
+      "past": "wilde",
+      "future": "zal willen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik wil koffie.",
+        "en": "I want coffee."
+      }
+    ],
+    "example": {
+      "nl": "Ik wil mijn Nederlands verbeteren om beter te communiceren.",
+      "en": "I want to improve my Dutch to communicate better."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-018-mogen",
+    "dutch": "mogen",
+    "english": "may / to be allowed",
+    "level": "A1-A2",
+    "categories": [
+      "modal verbs",
+      "formal"
+    ],
+    "functions": [
+      "modal verb"
+    ],
+    "grammar": {
+      "present": "mag",
+      "past": "mocht",
+      "future": "zal mogen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Mag ik?",
+        "en": "May I?"
+      }
+    ],
+    "example": {
+      "nl": "Mag ik u iets vragen over dit document?",
+      "en": "May I ask you something about this document?"
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-019-blijven",
+    "dutch": "blijven",
+    "english": "to stay",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "blijf",
+      "past": "bleef",
+      "future": "zal blijven",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik blijf hier.",
+        "en": "I stay here."
+      }
+    ],
+    "example": {
+      "nl": "Ik blijf vanavond thuis om uit te rusten en rustig te lezen.",
+      "en": "I am staying home tonight to rest and read calmly."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-020-lopen",
+    "dutch": "lopen",
+    "english": "to walk",
+    "level": "A1-A2",
+    "categories": [
+      "movement"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "loop",
+      "past": "liep",
+      "future": "zal lopen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik loop.",
+        "en": "I walk."
+      }
+    ],
+    "example": {
+      "nl": "Ik loop elke dag na het eten een rondje door de buurt.",
+      "en": "I walk around the neighborhood every day after eating."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-021-rijden",
+    "dutch": "rijden",
+    "english": "to drive",
+    "level": "A1-A2",
+    "categories": [
+      "transport"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "rijd",
+      "past": "reed",
+      "future": "zal rijden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik rijd.",
+        "en": "I drive."
+      }
+    ],
+    "example": {
+      "nl": "Ik rijd met de auto naar kantoor omdat dat sneller is.",
+      "en": "I drive to the office because it is faster."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-022-eten",
+    "dutch": "eten",
+    "english": "to eat",
+    "level": "A1-A2",
+    "categories": [
+      "food"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "eet",
+      "past": "at",
+      "future": "zal eten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik eet nu.",
+        "en": "I eat now."
+      }
+    ],
+    "example": {
+      "nl": "Ik eet meestal later omdat ik vaak tot laat werk.",
+      "en": "I usually eat later because I often work late."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-023-drinken",
+    "dutch": "drinken",
+    "english": "to drink",
+    "level": "A1-A2",
+    "categories": [
+      "food"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "drink",
+      "past": "dronk",
+      "future": "zal drinken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik drink water.",
+        "en": "I drink water."
+      }
+    ],
+    "example": {
+      "nl": "Ik drink veel water tijdens mijn werkdag om fit te blijven.",
+      "en": "I drink a lot of water during my workday to stay fit."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-024-slapen",
+    "dutch": "slapen",
+    "english": "to sleep",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "slaap",
+      "past": "sliep",
+      "future": "zal slapen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik slaap goed.",
+        "en": "I sleep well."
+      }
+    ],
+    "example": {
+      "nl": "Ik slaap beter wanneer ik op tijd naar bed ga.",
+      "en": "I sleep better when I go to bed on time."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-025-beginnen",
+    "dutch": "beginnen",
+    "english": "to start",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "begin",
+      "past": "begon",
+      "future": "zal beginnen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik begin nu.",
+        "en": "I start now."
+      }
+    ],
+    "example": {
+      "nl": "Ik begin de dag met het lezen van mijn e-mails.",
+      "en": "I start the day by reading my emails."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-026-stoppen",
+    "dutch": "stoppen",
+    "english": "to stop",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "stop",
+      "past": "stopte",
+      "future": "zal stoppen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik stop.",
+        "en": "I stop."
+      }
+    ],
+    "example": {
+      "nl": "Ik stop met werken rond zes uur om te ontspannen.",
+      "en": "I stop working around six to relax."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-027-helpen",
+    "dutch": "helpen",
+    "english": "to help",
+    "level": "A1-A2",
+    "categories": [
+      "interaction"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "help",
+      "past": "hielp",
+      "future": "zal helpen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik help je.",
+        "en": "I help you."
+      }
+    ],
+    "example": {
+      "nl": "Ik help mijn collega wanneer hij vastloopt in zijn werk.",
+      "en": "I help my colleague when he gets stuck in his work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-028-leren",
+    "dutch": "leren",
+    "english": "to learn",
+    "level": "A1-A2",
+    "categories": [
+      "education"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "leer",
+      "past": "leerde",
+      "future": "zal leren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik leer.",
+        "en": "I learn."
+      }
+    ],
+    "example": {
+      "nl": "Ik leer Nederlands door elke dag te oefenen.",
+      "en": "I learn Dutch by practicing every day."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-029-praten",
+    "dutch": "praten",
+    "english": "to talk",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "praat",
+      "past": "praatte",
+      "future": "zal praten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "We praten.",
+        "en": "We talk."
+      }
+    ],
+    "example": {
+      "nl": "We praten na het werk rustig over de dag en onze plannen.",
+      "en": "After work we calmly talk about the day and our plans."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-030-luisteren",
+    "dutch": "luisteren",
+    "english": "to listen",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "luister",
+      "past": "luisterde",
+      "future": "zal luisteren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik luister.",
+        "en": "I listen."
+      }
+    ],
+    "example": {
+      "nl": "Ik luister goed tijdens uitleg zodat ik alles begrijp.",
+      "en": "I listen carefully during explanations so I understand everything."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-031-vragen",
+    "dutch": "vragen",
+    "english": "to ask",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "vraag",
+      "past": "vroeg",
+      "future": "zal vragen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik vraag iets.",
+        "en": "I ask something."
+      }
+    ],
+    "example": {
+      "nl": "Ik vraag om hulp wanneer ik iets niet begrijp.",
+      "en": "I ask for help when I don’t understand something."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-032-antwoorden",
+    "dutch": "antwoorden",
+    "english": "to answer",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "antwoord",
+      "past": "antwoordde",
+      "future": "zal antwoorden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik antwoord.",
+        "en": "I answer."
+      }
+    ],
+    "example": {
+      "nl": "Ik antwoord zo snel mogelijk op belangrijke berichten.",
+      "en": "I answer important messages as quickly as possible."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-033-kopen",
+    "dutch": "kopen",
+    "english": "to buy",
+    "level": "A1-A2",
+    "categories": [
+      "shopping"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "koop",
+      "past": "kocht",
+      "future": "zal kopen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik koop brood.",
+        "en": "I buy bread."
+      }
+    ],
+    "example": {
+      "nl": "Ik koop mijn boodschappen meestal na het werk.",
+      "en": "I usually buy my groceries after work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-034-betalen",
+    "dutch": "betalen",
+    "english": "to pay",
+    "level": "A1-A2",
+    "categories": [
+      "shopping"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "betaal",
+      "past": "betaalde",
+      "future": "zal betalen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik betaal.",
+        "en": "I pay."
+      }
+    ],
+    "example": {
+      "nl": "Ik betaal liever met mijn kaart dan met contant geld.",
+      "en": "I prefer to pay by card rather than with cash."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-035-openen",
+    "dutch": "openen",
+    "english": "to open",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "open",
+      "past": "opende",
+      "future": "zal openen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik open het.",
+        "en": "I open it."
+      }
+    ],
+    "example": {
+      "nl": "Ik open elke ochtend mijn laptop om te beginnen met werken.",
+      "en": "I open my laptop every morning to start working."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-036-sluiten",
+    "dutch": "sluiten",
+    "english": "to close",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "sluit",
+      "past": "sloot",
+      "future": "zal sluiten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik sluit.",
+        "en": "I close."
+      }
+    ],
+    "example": {
+      "nl": "De winkel sluit om zes uur in de avond.",
+      "en": "The shop closes at six in the evening."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-037-bellen",
+    "dutch": "bellen",
+    "english": "to call",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "bel",
+      "past": "belde",
+      "future": "zal bellen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik bel je.",
+        "en": "I call you."
+      }
+    ],
+    "example": {
+      "nl": "Ik bel mijn ouders elke week om even bij te praten.",
+      "en": "I call my parents every week to catch up."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-038-sturen",
+    "dutch": "sturen",
+    "english": "to send",
+    "level": "A1-A2",
+    "categories": [
+      "communication"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "stuur",
+      "past": "stuurde",
+      "future": "zal sturen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik stuur het.",
+        "en": "I send it."
+      }
+    ],
+    "example": {
+      "nl": "Ik stuur je later vandaag een e-mail met informatie.",
+      "en": "I will send you an email with information later today."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-039-ontvangen",
+    "dutch": "ontvangen",
+    "english": "to receive",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ontvang",
+      "past": "ontving",
+      "future": "zal ontvangen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ontvang het.",
+        "en": "I receive it."
+      }
+    ],
+    "example": {
+      "nl": "Ik ontvang vandaag een pakket dat ik online heb besteld.",
+      "en": "I receive a package today that I ordered online."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-040-wonen",
+    "dutch": "wonen",
+    "english": "to live",
+    "level": "A1-A2",
+    "categories": [
+      "housing"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "woon",
+      "past": "woonde",
+      "future": "zal wonen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik woon hier.",
+        "en": "I live here."
+      }
+    ],
+    "example": {
+      "nl": "Ik woon al jaren in deze stad en voel me hier thuis.",
+      "en": "I have lived in this city for years and feel at home here."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-041-reizen",
+    "dutch": "reizen",
+    "english": "to travel",
+    "level": "A1-A2",
+    "categories": [
+      "travel"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "reis",
+      "past": "reisde",
+      "future": "zal reizen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik reis.",
+        "en": "I travel."
+      }
+    ],
+    "example": {
+      "nl": "Ik reis regelmatig voor mijn werk naar het buitenland.",
+      "en": "I regularly travel abroad for my work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-042-wachten",
+    "dutch": "wachten",
+    "english": "to wait",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "wacht",
+      "past": "wachtte",
+      "future": "zal wachten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik wacht.",
+        "en": "I wait."
+      }
+    ],
+    "example": {
+      "nl": "Ik wacht tot de vergadering klaar is voordat ik vertrek.",
+      "en": "I wait until the meeting is finished before I leave."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-043-gebruiken",
+    "dutch": "gebruiken",
+    "english": "to use",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "gebruik",
+      "past": "gebruikte",
+      "future": "zal gebruiken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik gebruik dit.",
+        "en": "I use this."
+      }
+    ],
+    "example": {
+      "nl": "Ik gebruik deze app elke dag om te oefenen.",
+      "en": "I use this app every day to practice."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-044-proberen",
+    "dutch": "proberen",
+    "english": "to try",
+    "level": "A1-A2",
+    "categories": [
+      "mental actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "probeer",
+      "past": "probeerde",
+      "future": "zal proberen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik probeer.",
+        "en": "I try."
+      }
+    ],
+    "example": {
+      "nl": "Ik probeer rustig te blijven in stressvolle situaties.",
+      "en": "I try to stay calm in stressful situations."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-045-veranderen",
+    "dutch": "veranderen",
+    "english": "to change",
+    "level": "A1-A2",
+    "categories": [
+      "mental actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verander",
+      "past": "veranderde",
+      "future": "zal veranderen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Het verandert.",
+        "en": "It changes."
+      }
+    ],
+    "example": {
+      "nl": "Mijn situatie verandert langzaam door ervaring.",
+      "en": "My situation changes slowly through experience."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-046-voelen",
+    "dutch": "voelen",
+    "english": "to feel",
+    "level": "A1-A2",
+    "categories": [
+      "emotions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "voel",
+      "past": "voelde",
+      "future": "zal voelen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik voel me goed.",
+        "en": "I feel good."
+      }
+    ],
+    "example": {
+      "nl": "Ik voel me beter wanneer ik genoeg slaap.",
+      "en": "I feel better when I get enough sleep."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-047-horen",
+    "dutch": "horen",
+    "english": "to hear",
+    "level": "A1-A2",
+    "categories": [
+      "perception"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "hoor",
+      "past": "hoorde",
+      "future": "zal horen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik hoor je.",
+        "en": "I hear you."
+      }
+    ],
+    "example": {
+      "nl": "Ik hoor vaak nieuwe woorden tijdens gesprekken.",
+      "en": "I often hear new words during conversations."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-048-kijken",
+    "dutch": "kijken",
+    "english": "to watch",
+    "level": "A1-A2",
+    "categories": [
+      "daily life"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "kijk",
+      "past": "keek",
+      "future": "zal kijken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik kijk tv.",
+        "en": "I watch TV."
+      }
+    ],
+    "example": {
+      "nl": "Ik kijk ’s avonds tv om te ontspannen na het werk.",
+      "en": "I watch TV in the evening to relax after work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-049-kiezen",
+    "dutch": "kiezen",
+    "english": "to choose",
+    "level": "A1-A2",
+    "categories": [
+      "decisions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "kies",
+      "past": "koos",
+      "future": "zal kiezen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik kies dit.",
+        "en": "I choose this."
+      }
+    ],
+    "example": {
+      "nl": "Ik kies bewust voor een rustige aanpak.",
+      "en": "I consciously choose a calm approach."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-050-begrijpen",
+    "dutch": "begrijpen",
+    "english": "to understand",
+    "level": "A1-A2",
+    "categories": [
+      "mental actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "begrijp",
+      "past": "begreep",
+      "future": "zal begrijpen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik begrijp het.",
+        "en": "I understand it."
+      }
+    ],
+    "example": {
+      "nl": "Ik begrijp de uitleg beter wanneer iemand een voorbeeld geeft.",
+      "en": "I understand the explanation better when someone gives an example."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-035-studeren",
+    "dutch": "studeren",
+    "english": "to study",
+    "level": "A1-A2",
+    "categories": [
+      "education"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "studeer",
+      "past": "studeerde",
+      "future": "zal studeren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik studeer.",
+        "en": "I study."
+      }
+    ],
+    "example": {
+      "nl": "Ik studeer Nederlands in de avond na mijn werk.",
+      "en": "I study Dutch in the evening after work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-038-verkopen",
+    "dutch": "verkopen",
+    "english": "to sell",
+    "level": "A1-A2",
+    "categories": [
+      "shopping"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verkoop",
+      "past": "verkocht",
+      "future": "zal verkopen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik verkoop iets.",
+        "en": "I sell something."
+      }
+    ],
+    "example": {
+      "nl": "Hij verkoopt zijn oude fiets omdat hij een nieuwe wil.",
+      "en": "He sells his old bike because he wants a new one."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-039-brengen",
+    "dutch": "brengen",
+    "english": "to bring",
+    "level": "A1-A2",
+    "categories": [
+      "movement"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "breng",
+      "past": "bracht",
+      "future": "zal brengen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik breng het.",
+        "en": "I bring it."
+      }
+    ],
+    "example": {
+      "nl": "Ik breng morgen de documenten naar kantoor.",
+      "en": "I will bring the documents to the office tomorrow."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-040-halen",
+    "dutch": "halen",
+    "english": "to get / fetch",
+    "level": "A1-A2",
+    "categories": [
+      "movement"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "haal",
+      "past": "haalde",
+      "future": "zal halen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik haal koffie.",
+        "en": "I get coffee."
+      }
+    ],
+    "example": {
+      "nl": "Ik haal koffie voor mijn collega tijdens de pauze.",
+      "en": "I get coffee for my colleague during the break."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-044-lukken",
+    "dutch": "lukken",
+    "english": "to succeed",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "lukt",
+      "past": "lukte",
+      "future": "zal lukken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Het lukt.",
+        "en": "It works."
+      }
+    ],
+    "example": {
+      "nl": "Het lukt vandaag beter omdat ik rustig werk.",
+      "en": "It works better today because I work calmly."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-045-denken",
+    "dutch": "denken",
+    "english": "to think",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "denk",
+      "past": "dacht",
+      "future": "zal denken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik denk.",
+        "en": "I think."
+      }
+    ],
+    "example": {
+      "nl": "Ik denk na over mijn volgende stap in mijn carrière.",
+      "en": "I think about my next step in my career."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-046-weten",
+    "dutch": "weten",
+    "english": "to know (a fact)",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "weet",
+      "past": "wist",
+      "future": "zal weten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik weet het.",
+        "en": "I know it."
+      }
+    ],
+    "example": {
+      "nl": "Ik weet precies wat ik moet doen.",
+      "en": "I know exactly what I need to do."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-047-kennen",
+    "dutch": "kennen",
+    "english": "to know (a person/place)",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ken",
+      "past": "kende",
+      "future": "zal kennen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ken hem.",
+        "en": "I know him."
+      }
+    ],
+    "example": {
+      "nl": "Ik ken deze stad goed omdat ik hier lang woon.",
+      "en": "I know this city well because I have lived here a long time."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-048-vinden",
+    "dutch": "vinden",
+    "english": "to find / think",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "vind",
+      "past": "vond",
+      "future": "zal vinden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik vind het leuk.",
+        "en": "I like it."
+      }
+    ],
+    "example": {
+      "nl": "Ik vind dit een goede manier om te leren.",
+      "en": "I think this is a good way to learn."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-051-nemen",
+    "dutch": "nemen",
+    "english": "to take",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "neem",
+      "past": "nam",
+      "future": "zal nemen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik neem het.",
+        "en": "I take it."
+      }
+    ],
+    "example": {
+      "nl": "Ik neem mijn laptop mee naar kantoor om daar te werken.",
+      "en": "I take my laptop with me to the office to work there."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-053-houden",
+    "dutch": "houden",
+    "english": "to hold / like",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "houd",
+      "past": "hield",
+      "future": "zal houden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik houd ervan.",
+        "en": "I like it."
+      }
+    ],
+    "example": {
+      "nl": "Ik houd van rustige avonden thuis na een drukke dag.",
+      "en": "I like calm evenings at home after a busy day."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-054-krijgen",
+    "dutch": "krijgen",
+    "english": "to get / receive",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "krijg",
+      "past": "kreeg",
+      "future": "zal krijgen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik krijg hulp.",
+        "en": "I get help."
+      }
+    ],
+    "example": {
+      "nl": "Ik krijg morgen feedback van mijn manager.",
+      "en": "I will get feedback from my manager tomorrow."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-055-verliezen",
+    "dutch": "verliezen",
+    "english": "to lose",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verlies",
+      "past": "verloor",
+      "future": "zal verliezen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik verlies iets.",
+        "en": "I lose something."
+      }
+    ],
+    "example": {
+      "nl": "Ik verlies soms tijd omdat ik te veel tegelijk doe.",
+      "en": "I sometimes lose time because I do too many things at once."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-056-winnen",
+    "dutch": "winnen",
+    "english": "to win",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "win",
+      "past": "won",
+      "future": "zal winnen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik win.",
+        "en": "I win."
+      }
+    ],
+    "example": {
+      "nl": "Ik win vertrouwen door consistent goed werk te leveren.",
+      "en": "I gain trust by consistently delivering good work."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-057-bouwen",
+    "dutch": "bouwen",
+    "english": "to build",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "bouw",
+      "past": "bouwde",
+      "future": "zal bouwen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik bouw iets.",
+        "en": "I build something."
+      }
+    ],
+    "example": {
+      "nl": "Ik bouw stap voor stap aan mijn carrière.",
+      "en": "I build my career step by step."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-060-produceren",
+    "dutch": "produceren",
+    "english": "to produce",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "produceer",
+      "past": "produceerde",
+      "future": "zal produceren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "We produceren.",
+        "en": "We produce."
+      }
+    ],
+    "example": {
+      "nl": "Het team produceert elke maand nieuwe resultaten.",
+      "en": "The team produces new results every month."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-061-controleren",
+    "dutch": "controleren",
+    "english": "to check",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "controleer",
+      "past": "controleerde",
+      "future": "zal controleren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik controleer.",
+        "en": "I check."
+      }
+    ],
+    "example": {
+      "nl": "Ik controleer mijn werk voordat ik het verstuur.",
+      "en": "I check my work before sending it."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-062-plannen",
+    "dutch": "plannen",
+    "english": "to plan",
+    "level": "A1-A2",
+    "categories": [
+      "work"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "plan",
+      "past": "plande",
+      "future": "zal plannen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik plan.",
+        "en": "I plan."
+      }
+    ],
+    "example": {
+      "nl": "Ik plan mijn week zodat ik minder stress heb.",
+      "en": "I plan my week so I have less stress."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-063-beslissen",
+    "dutch": "beslissen",
+    "english": "to decide",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "beslis",
+      "past": "besliste",
+      "future": "zal beslissen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik beslis.",
+        "en": "I decide."
+      }
+    ],
+    "example": {
+      "nl": "Ik beslis vandaag of ik het aanbod accepteer.",
+      "en": "I decide today whether I accept the offer."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-065-volgen",
+    "dutch": "volgen",
+    "english": "to follow",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "volg",
+      "past": "volgde",
+      "future": "zal volgen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik volg het.",
+        "en": "I follow it."
+      }
+    ],
+    "example": {
+      "nl": "Ik volg een cursus om mijn Nederlands te verbeteren.",
+      "en": "I follow a course to improve my Dutch."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-066-oefenen",
+    "dutch": "oefenen",
+    "english": "to practice",
+    "level": "A1-A2",
+    "categories": [
+      "education"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "oefen",
+      "past": "oefende",
+      "future": "zal oefenen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik oefen.",
+        "en": "I practice."
+      }
+    ],
+    "example": {
+      "nl": "Ik oefen elke dag spreken om zelfverzekerder te worden.",
+      "en": "I practice speaking every day to become more confident."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-067-verbeteren",
+    "dutch": "verbeteren",
+    "english": "to improve",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verbeter",
+      "past": "verbeterde",
+      "future": "zal verbeteren",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik verbeter iets.",
+        "en": "I improve something."
+      }
+    ],
+    "example": {
+      "nl": "Ik verbeter mijn vaardigheden door feedback te gebruiken.",
+      "en": "I improve my skills by using feedback."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-068-focussen",
+    "dutch": "focussen",
+    "english": "to focus",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "focus",
+      "past": "focuste",
+      "future": "zal focussen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik focus me.",
+        "en": "I focus."
+      }
+    ],
+    "example": {
+      "nl": "Ik focus me op mijn taken zonder afleiding.",
+      "en": "I focus on my tasks without distraction."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-070-versturen",
+    "dutch": "versturen",
+    "english": "to send",
+    "level": "A1-A2",
+    "categories": [
+      "interaction"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verstuur",
+      "past": "verstuurde",
+      "future": "zal versturen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik verstuur het.",
+        "en": "I send it."
+      }
+    ],
+    "example": {
+      "nl": "Ik verstuur het rapport aan het einde van de dag.",
+      "en": "I send the report at the end of the day."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-071-ontmoeten",
+    "dutch": "ontmoeten",
+    "english": "to meet",
+    "level": "A1-A2",
+    "categories": [
+      "social"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ontmoet",
+      "past": "ontmoette",
+      "future": "zal ontmoeten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ontmoet hem.",
+        "en": "I meet him."
+      }
+    ],
+    "example": {
+      "nl": "Ik ontmoet mijn vrienden dit weekend in de stad.",
+      "en": "I meet my friends in the city this weekend."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-072-bezoeken",
+    "dutch": "bezoeken",
+    "english": "to visit",
+    "level": "A1-A2",
+    "categories": [
+      "social"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "bezoek",
+      "past": "bezocht",
+      "future": "zal bezoeken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik bezoek hen.",
+        "en": "I visit them."
+      }
+    ],
+    "example": {
+      "nl": "Ik bezoek mijn familie wanneer ik tijd heb.",
+      "en": "I visit my family when I have time."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-073-uitnodigen",
+    "dutch": "uitnodigen",
+    "english": "to invite",
+    "level": "A1-A2",
+    "categories": [
+      "social"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "nodig uit",
+      "past": "nodigde uit",
+      "future": "zal uitnodigen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik nodig uit.",
+        "en": "I invite."
+      }
+    ],
+    "example": {
+      "nl": "Ik nodig mijn collega’s uit voor een etentje.",
+      "en": "I invite my colleagues for dinner."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-074-afspreken",
+    "dutch": "afspreken",
+    "english": "to arrange / meet up",
+    "level": "A1-A2",
+    "categories": [
+      "social"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "spreek af",
+      "past": "sprak af",
+      "future": "zal afspreken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "We spreken af.",
+        "en": "We meet up."
+      }
+    ],
+    "example": {
+      "nl": "We spreken morgen af om samen te werken.",
+      "en": "We meet tomorrow to work together."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-076-zoeken",
+    "dutch": "zoeken",
+    "english": "to search",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "zoek",
+      "past": "zocht",
+      "future": "zal zoeken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik zoek iets.",
+        "en": "I search for something."
+      }
+    ],
+    "example": {
+      "nl": "Ik zoek online naar extra oefeningen om beter te leren.",
+      "en": "I search online for extra exercises to learn better."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-081-mislukken",
+    "dutch": "mislukken",
+    "english": "to fail",
+    "level": "A1-A2",
+    "categories": [
+      "results"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "mislukt",
+      "past": "mislukte",
+      "future": "zal mislukken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Het mislukt.",
+        "en": "It fails."
+      }
+    ],
+    "example": {
+      "nl": "Soms mislukt iets, maar daarvan leer ik het meest.",
+      "en": "Sometimes something fails, but that’s when I learn the most."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-084-groeien",
+    "dutch": "groeien",
+    "english": "to grow",
+    "level": "A1-A2",
+    "categories": [
+      "results"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "groei",
+      "past": "groeide",
+      "future": "zal groeien",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik groei.",
+        "en": "I grow."
+      }
+    ],
+    "example": {
+      "nl": "Ik groei elke maand een beetje in zelfvertrouwen.",
+      "en": "I grow a bit in confidence every month."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-085-starten",
+    "dutch": "starten",
+    "english": "to start",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "start",
+      "past": "startte",
+      "future": "zal starten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik start.",
+        "en": "I start."
+      }
+    ],
+    "example": {
+      "nl": "Ik start morgen met een nieuw leerplan voor Nederlands.",
+      "en": "I start a new Dutch learning plan tomorrow."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-086-eindigen",
+    "dutch": "eindigen",
+    "english": "to end",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "eindig",
+      "past": "eindigde",
+      "future": "zal eindigen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Het eindigt.",
+        "en": "It ends."
+      }
+    ],
+    "example": {
+      "nl": "De vergadering eindigt later dan gepland.",
+      "en": "The meeting ends later than planned."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-087-verdienen",
+    "dutch": "verdienen",
+    "english": "to earn",
+    "level": "A1-A2",
+    "categories": [
+      "finance"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "verdien",
+      "past": "verdiende",
+      "future": "zal verdienen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik verdien geld.",
+        "en": "I earn money."
+      }
+    ],
+    "example": {
+      "nl": "Ik wil genoeg verdienen om comfortabel te leven.",
+      "en": "I want to earn enough to live comfortably."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-088-kosten",
+    "dutch": "kosten",
+    "english": "to cost",
+    "level": "A1-A2",
+    "categories": [
+      "finance"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "kost",
+      "past": "kostte",
+      "future": "zal kosten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Het kost tijd.",
+        "en": "It costs time."
+      }
+    ],
+    "example": {
+      "nl": "Deze cursus kost tijd, maar levert veel op.",
+      "en": "This course costs time but gives a lot in return."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-089-besparen",
+    "dutch": "besparen",
+    "english": "to save (money)",
+    "level": "A1-A2",
+    "categories": [
+      "finance"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "bespaar",
+      "past": "bespaarde",
+      "future": "zal besparen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik bespaar.",
+        "en": "I save."
+      }
+    ],
+    "example": {
+      "nl": "Ik bespaar geld door thuis te koken.",
+      "en": "I save money by cooking at home."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-090-uitgeven",
+    "dutch": "uitgeven",
+    "english": "to spend",
+    "level": "A1-A2",
+    "categories": [
+      "finance"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "geef uit",
+      "past": "gaf uit",
+      "future": "zal uitgeven",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik geef uit.",
+        "en": "I spend."
+      }
+    ],
+    "example": {
+      "nl": "Ik geef minder geld uit sinds ik mijn budget plan.",
+      "en": "I spend less money since I plan my budget."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-091-herhalen",
+    "dutch": "herhalen",
+    "english": "to repeat",
+    "level": "A1-A2",
+    "categories": [
+      "education"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "herhaal",
+      "past": "herhaalde",
+      "future": "zal herhalen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik herhaal.",
+        "en": "I repeat."
+      }
+    ],
+    "example": {
+      "nl": "Ik herhaal nieuwe woorden om ze beter te onthouden.",
+      "en": "I repeat new words to remember them better."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-092-onthouden",
+    "dutch": "onthouden",
+    "english": "to remember",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "onthoud",
+      "past": "onthield",
+      "future": "zal onthouden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik onthoud het.",
+        "en": "I remember it."
+      }
+    ],
+    "example": {
+      "nl": "Ik onthoud woorden beter als ik ze in context leer.",
+      "en": "I remember words better when I learn them in context."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-093-vergeten",
+    "dutch": "vergeten",
+    "english": "to forget",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "vergeet",
+      "past": "vergat",
+      "future": "zal vergeten",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik vergeet.",
+        "en": "I forget."
+      }
+    ],
+    "example": {
+      "nl": "Ik vergeet soms woorden als ik zenuwachtig ben.",
+      "en": "I sometimes forget words when I’m nervous."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-094-geloven",
+    "dutch": "geloven",
+    "english": "to believe",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "geloof",
+      "past": "geloofde",
+      "future": "zal geloven",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik geloof je.",
+        "en": "I believe you."
+      }
+    ],
+    "example": {
+      "nl": "Ik geloof dat dagelijks oefenen echt helpt.",
+      "en": "I believe daily practice really helps."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-095-vertrouwen",
+    "dutch": "vertrouwen",
+    "english": "to trust",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "vertrouw",
+      "past": "vertrouwde",
+      "future": "zal vertrouwen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik vertrouw.",
+        "en": "I trust."
+      }
+    ],
+    "example": {
+      "nl": "Ik vertrouw op mijn ervaring bij moeilijke beslissingen.",
+      "en": "I trust my experience when making difficult decisions."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-096-twijfelen",
+    "dutch": "twijfelen",
+    "english": "to doubt",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "twijfel",
+      "past": "twijfelde",
+      "future": "zal twijfelen",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik twijfel.",
+        "en": "I doubt."
+      }
+    ],
+    "example": {
+      "nl": "Ik twijfel soms, maar probeer toch een beslissing te nemen.",
+      "en": "I sometimes doubt, but still try to make a decision."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-097-volhouden",
+    "dutch": "volhouden",
+    "english": "to persist",
+    "level": "A1-A2",
+    "categories": [
+      "mental"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "houd vol",
+      "past": "hield vol",
+      "future": "zal volhouden",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik houd vol.",
+        "en": "I persist."
+      }
+    ],
+    "example": {
+      "nl": "Ik houd vol, ook als leren soms moeilijk is.",
+      "en": "I persist, even when learning is sometimes difficult."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-099-doorgaan",
+    "dutch": "doorgaan",
+    "english": "to continue",
+    "level": "A1-A2",
+    "categories": [
+      "actions"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "ga door",
+      "past": "ging door",
+      "future": "zal doorgaan",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik ga door.",
+        "en": "I continue."
+      }
+    ],
+    "example": {
+      "nl": "Ik ga door met oefenen tot ik me zeker voel.",
+      "en": "I continue practicing until I feel confident."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  },
+  {
+    "id": "verb-100-bereiken",
+    "dutch": "bereiken",
+    "english": "to achieve / reach",
+    "level": "A1-A2",
+    "categories": [
+      "results"
+    ],
+    "functions": [
+      "verb"
+    ],
+    "grammar": {
+      "present": "bereik",
+      "past": "bereikte",
+      "future": "zal bereiken",
+      "separable": false
+    },
+    "practice": [
+      {
+        "nl": "Ik bereik het.",
+        "en": "I achieve it."
+      }
+    ],
+    "example": {
+      "nl": "Ik bereik mijn doelen door consistent te blijven oefenen.",
+      "en": "I achieve my goals by staying consistent in practice."
+    },
+    "pos": null,
+    "progress": "new",
+    "notes": null,
+    "createdAt": "2026-02-03T14:15:19.742849Z",
+    "updatedAt": "2026-02-03T14:15:19.742849Z",
+    "lastReviewed": null
+  }
+]

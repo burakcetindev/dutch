@@ -23,7 +23,7 @@ A modern, full-stack web application for learning Dutch vocabulary with an elega
 - 📊 **Progress Tracking** (New → Learning → Mastered)
 - 🔍 **Advanced Filtering** by level, category, and progress status
 - 💾 **PostgreSQL Database** with full CRUD operations
-- 📤 **Import/Export** vocabulary in CSV format
+- 📤 **Import/Export** vocabulary in Excel (XLSX/XLS), CSV, and JSON formats
 - 🐳 **Dockerized** for easy deployment
 - ✅ **Complete CRUD**: Add, edit, delete, and manage all vocabulary
 - 🔤 **Verb Conjugations**: Display present, past, and future tense forms

@@ -21,7 +21,9 @@ services:
       retries: 5
 
   vocab:
-    image: node:20-alpine
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
     container_name: dutch-vocab-app
     restart: unless-stopped
     ports:
@@ -34,13 +36,6 @@ services:
         condition: service_healthy
     volumes:
       - ../input:/app/input
-    command: >
-      sh -c "
-        echo 'Waiting for database...' &&
-        sleep 5 &&
-        echo 'Starting application...' &&
-        node server.js
-      "
 
 volumes:
   postgres_data:
