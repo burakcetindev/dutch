@@ -2,9 +2,9 @@ import * as XLSX from "xlsx";
 import { VocabularyWord, ExcelRow, CEFRLevel, ProgressStatus } from "@/types/vocabulary";
 
 /**
- * Parse Excel file and convert to VocabularyWord array
+ * Parse CSV/JSON/Excel file and convert to VocabularyWord array
  */
-export function parseExcelToVocabulary(file: File): Promise<VocabularyWord[]> {
+export function parseFileToVocabulary(file: File): Promise<VocabularyWord[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -86,44 +86,79 @@ export function parseExcelToVocabulary(file: File): Promise<VocabularyWord[]> {
 }
 
 /**
- * Convert VocabularyWord array to Excel file and trigger download
+ * Export vocabulary to CSV file and trigger download
  */
-export function exportVocabularyToExcel(
+export function exportVocabularyToCSV(
   vocabulary: VocabularyWord[],
-  filename: string = "dutch-vocabulary.xlsx"
+  filename: string = "dutch-vocabulary.csv"
 ): void {
-  const data = vocabulary.map((word) => ({
-    Dutch: word.dutch,
-    English: word.english,
-    "Grammar Note": word.pos,
-    "Present Tense": word.grammar?.present || "",
-    "Past Tense": word.grammar?.past || "",
-    "Future Tense": word.grammar?.future || "",
-    "Example Sentence (Dutch)": word.example?.nl || "",
-    "Example Sentence (English)": word.example?.en || "",
-    "Practice Sentences": word.practice?.join(" | ") || "",
-    Level: word.level,
-    Categories: word.categories.join(", "),
-    Progress: word.progress,
-    Notes: word.notes || "",
-  }));
+  if (vocabulary.length === 0) {
+    alert("No vocabulary to export!");
+    return;
+  }
 
-  const worksheet = XLSX.utils.json_to_sheet(data);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Vocabulary");
+  const headers = [
+    "Dutch",
+    "English",
+    "Level",
+    "Categories",
+    "Functions",
+    "Example (NL)",
+    "Example (EN)",
+    "Progress",
+    "Practice",
+    "Notes"
+  ];
 
-  // Auto-size columns
-  const maxWidth = 50;
-  const colWidths = Object.keys(data[0] || {}).map((key) => {
-    const maxLength = Math.max(
-      key.length,
-      ...data.map((row) => String(row[key as keyof typeof row] || "").length)
-    );
-    return { wch: Math.min(maxLength + 2, maxWidth) };
-  });
-  worksheet["!cols"] = colWidths;
+  const rows = vocabulary.map(word => [
+    `"${(word.dutch || '').replace(/"/g, '""')}"`,
+    `"${(word.english || '').replace(/"/g, '""')}"`,
+    word.level || 'A1-A2',
+    `"${(word.categories || []).join(', ')}"`,
+    `"${(word.functions || []).join(', ')}"`,
+    `"${(word.example?.nl || '').replace(/"/g, '""')}"`,
+    `"${(word.example?.en || '').replace(/"/g, '""')}"`,
+    word.progress || 'new',
+    `"${(word.practice || []).join(', ')}"`,
+    `"${(word.notes || '').replace(/"/g, '""')}"`
+  ]);
 
-  XLSX.writeFile(workbook, filename);
+  const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+/**
+ * Export vocabulary to JSON file and trigger download
+ */
+export function exportVocabularyToJSON(
+  vocabulary: VocabularyWord[],
+  filename: string = "dutch-vocabulary.json"
+): void {
+  if (vocabulary.length === 0) {
+    alert("No vocabulary to export!");
+    return;
+  }
+
+  const jsonContent = JSON.stringify(vocabulary, null, 2);
+  
+  const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 /**

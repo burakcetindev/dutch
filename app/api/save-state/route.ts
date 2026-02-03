@@ -37,29 +37,17 @@ export async function POST(request: NextRequest) {
         fs.mkdirSync(inputDir, { recursive: true });
       }
       
-      // Delete old backup files before creating new ones
-      const existingFiles = fs.readdirSync(inputDir);
-      const oldBackups = existingFiles.filter(file => 
-        file.startsWith('vocabulary_backup_') && (file.endsWith('.csv') || file.endsWith('.json'))
-      );
-      
-      for (const oldBackup of oldBackups) {
-        try {
-          fs.unlinkSync(path.join(inputDir, oldBackup));
-          console.log(`Deleted old backup: ${oldBackup}`);
-        } catch (err) {
-          console.error(`Failed to delete ${oldBackup}:`, err);
-        }
-      }
-      
       const now = new Date();
       const timestamp = now.toISOString()
         .replace(/T/, '_')
         .replace(/:/g, '-')
         .split('.')[0]; // Format: 2026-02-01_14-30-45
       
-      // Create CSV backup in the same format as the import
+      // Create NEW backup files first (don't delete old ones yet)
       const csvPath = path.join(inputDir, `vocabulary_backup_${timestamp}.csv`);
+      const jsonPath = path.join(inputDir, `vocabulary_backup_${timestamp}.json`);
+      
+      // Create CSV backup in the same format as the import
       const csvHeader = 'Dutch,English,Level,Categories,Functions,Example (NL),Example (EN),Progress,Practice\n';
       const csvRows = allVocabulary.map(word => {
         const categories = Array.isArray(word.categories) ? word.categories.join(', ') : '';
@@ -81,7 +69,6 @@ export async function POST(request: NextRequest) {
       backupFiles.push(`vocabulary_backup_${timestamp}.csv`);
       
       // Create JSON backup with full data
-      const jsonPath = path.join(inputDir, `vocabulary_backup_${timestamp}.json`);
       const jsonData = allVocabulary.map(word => ({
         id: word.id,
         dutch: word.dutch,
@@ -109,6 +96,29 @@ export async function POST(request: NextRequest) {
       }));
       fs.writeFileSync(jsonPath, JSON.stringify(jsonData, null, 2));
       backupFiles.push(`vocabulary_backup_${timestamp}.json`);
+      
+      // Verify the backup files were created successfully
+      if (!fs.existsSync(csvPath) || !fs.existsSync(jsonPath)) {
+        throw new Error('Backup files were not created successfully');
+      }
+      
+      // Only NOW delete old backup files (after new ones are verified)
+      const existingFiles = fs.readdirSync(inputDir);
+      const oldBackups = existingFiles.filter(file => 
+        file.startsWith('vocabulary_backup_') && 
+        (file.endsWith('.csv') || file.endsWith('.json')) &&
+        file !== `vocabulary_backup_${timestamp}.csv` &&
+        file !== `vocabulary_backup_${timestamp}.json`
+      );
+      
+      for (const oldBackup of oldBackups) {
+        try {
+          fs.unlinkSync(path.join(inputDir, oldBackup));
+          console.log(`Deleted old backup: ${oldBackup}`);
+        } catch (err) {
+          console.error(`Failed to delete ${oldBackup}:`, err);
+        }
+      }
       
     } catch (backupError) {
       console.error('Backup creation failed:', backupError);

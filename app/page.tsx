@@ -11,8 +11,9 @@ import { AddWordModal } from "@/src/components/vocabulary/AddWordModal";
 import {
   loadVocabularyFromStorage,
   saveVocabularyToStorage,
-  parseExcelToVocabulary,
-  exportVocabularyToExcel,
+  parseFileToVocabulary,
+  exportVocabularyToCSV,
+  exportVocabularyToJSON,
 } from "@/lib/vocabulary";
 import { calculateStats } from "@/lib/stats";
 import {
@@ -25,6 +26,8 @@ import {
   TrendingUp,
   PlusCircle,
   Save,
+  FileText,
+  Braces,
 } from "lucide-react";
 
 const ThemeToggleButton = dynamic(
@@ -69,21 +72,40 @@ export default function Home() {
 
     setIsLoading(true);
     try {
-      const newVocabulary = await parseExcelToVocabulary(file);
-      const merged = [...vocabulary];
+      const newVocabulary = await parseFileToVocabulary(file);
       
-      newVocabulary.forEach((newWord) => {
-        const existingIndex = merged.findIndex((w) => w.id === newWord.id);
-        if (existingIndex >= 0) {
-          merged[existingIndex] = { ...merged[existingIndex], ...newWord };
-        } else {
-          merged.push(newWord);
-        }
+      // Send to API for duplicate-checked insertion
+      const response = await fetch("/api/vocabulary-db", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ words: newVocabulary })
       });
-
-      setVocabulary(merged);
-      saveVocabularyToStorage(merged);
-      setStats(calculateStats(merged));
+      
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Reload from database to get updated list
+        const dbResponse = await fetch("/api/vocabulary-db");
+        if (dbResponse.ok) {
+          const data = await dbResponse.json();
+          setVocabulary(data.vocabulary || []);
+          saveVocabularyToStorage(data.vocabulary || []);
+          setStats(calculateStats(data.vocabulary || []));
+        }
+        
+        // Show results
+        const message = `✅ Import complete!\n\nInserted: ${result.inserted} words\nDuplicates skipped: ${result.duplicates} words`;
+        if (result.duplicateWords && result.duplicateWords.length > 0) {
+          const dupList = result.duplicateWords.slice(0, 10).join(', ');
+          const more = result.duplicateWords.length > 10 ? ` (+${result.duplicateWords.length - 10} more)` : '';
+          alert(`${message}\n\nDuplicate words: ${dupList}${more}`);
+        } else {
+          alert(message);
+        }
+      } else {
+        const error = await response.json();
+        alert(`Failed to import: ${error.error || 'Unknown error'}`);
+      }
     } catch (error) {
       console.error("Error parsing file:", error);
       alert("Error parsing file. Please check the format.");
@@ -92,12 +114,20 @@ export default function Home() {
     }
   };
 
-  const handleExport = () => {
+  const handleExportCSV = () => {
     if (vocabulary.length === 0) {
       alert("No vocabulary to export!");
       return;
     }
-    exportVocabularyToExcel(vocabulary);
+    exportVocabularyToCSV(vocabulary);
+  };
+
+  const handleExportJSON = () => {
+    if (vocabulary.length === 0) {
+      alert("No vocabulary to export!");
+      return;
+    }
+    exportVocabularyToJSON(vocabulary);
   };
 
   const handleAddWord = async (newWord: VocabularyWord) => {
@@ -257,29 +287,22 @@ export default function Home() {
               <span className="text-gray-800 dark:text-gray-200 font-semibold">Import</span>
             </button>
             <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 animate-slide-in-top">
-              <label htmlFor="file-upload-excel" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <Upload className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from Excel</span>
-              </label>
               <label htmlFor="file-upload-csv" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <Upload className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center hover:rotate-6 transition-transform duration-500">
+                  <FileText className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from CSV</span>
               </label>
-                <label htmlFor="file-upload-json" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                    <Upload className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from JSON</span>
-                </label>
+              <label htmlFor="file-upload-json" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center hover:rotate-6 transition-transform duration-500">
+                  <Braces className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from JSON</span>
+              </label>
             </div>
           </div>
-          <input id="file-upload-excel" type="file" accept=".xlsx,.xls" onChange={handleFileUpload} className="hidden" />
           <input id="file-upload-csv" type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
-                    <input id="file-upload-json" type="file" accept=".json" onChange={handleFileUpload} className="hidden" />
+          <input id="file-upload-json" type="file" accept=".json" onChange={handleFileUpload} className="hidden" />
           
           {/* Export Dropdown */}
           <div className="relative group">
@@ -288,17 +311,17 @@ export default function Home() {
               <span className="text-gray-800 dark:text-gray-200 font-semibold">Export</span>
             </button>
             <div className="absolute top-full mt-2 left-0 w-56 glass-card p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 animate-slide-in-top">
-              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <Download className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Export as Excel</span>
-              </button>
-              <button onClick={handleExport} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <Download className="w-4 h-4 text-white" />
+              <button onClick={handleExportCSV} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center hover:rotate-6 transition-transform duration-500">
+                  <FileText className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Export as CSV</span>
+              </button>
+              <button onClick={handleExportJSON} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 w-full transition-all duration-200 hover:scale-105">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center hover:rotate-6 transition-transform duration-500">
+                  <Braces className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Export as JSON</span>
               </button>
             </div>
           </div>
@@ -350,7 +373,7 @@ export default function Home() {
               No vocabulary loaded
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Upload an Excel file to start your learning journey!
+              Upload a CSV or JSON file to start your learning journey!
             </p>
           </div>
         )}
