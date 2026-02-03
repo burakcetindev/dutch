@@ -37,6 +37,21 @@ export async function POST(request: NextRequest) {
         fs.mkdirSync(inputDir, { recursive: true });
       }
       
+      // Delete old backup files before creating new ones
+      const existingFiles = fs.readdirSync(inputDir);
+      const oldBackups = existingFiles.filter(file => 
+        file.startsWith('vocabulary_backup_') && (file.endsWith('.csv') || file.endsWith('.json'))
+      );
+      
+      for (const oldBackup of oldBackups) {
+        try {
+          fs.unlinkSync(path.join(inputDir, oldBackup));
+          console.log(`Deleted old backup: ${oldBackup}`);
+        } catch (err) {
+          console.error(`Failed to delete ${oldBackup}:`, err);
+        }
+      }
+      
       const now = new Date();
       const timestamp = now.toISOString()
         .replace(/T/, '_')

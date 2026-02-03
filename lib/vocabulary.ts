@@ -10,67 +10,6 @@ export function parseExcelToVocabulary(file: File): Promise<VocabularyWord[]> {
 
     reader.onload = (e) => {
       try {
-        const data = e.target?.result;
-        const workbook = XLSX.read(data, { type: "binary" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData: ExcelRow[] = XLSX.utils.sheet_to_json(worksheet);
-
-        const vocabulary: VocabularyWord[] = jsonData.map((row, index) => {
-          const dutch = row['Dutch Word'] || row.Dutch || row.dutch || "";
-          const english = row['English Translation'] || row.English || row.english || "";
-          const grammarNote = row['Grammar Note'] || row['Part of Speech'] || row.pos || row.POS || "";
-          const presentTense = row['Present Tense'] || row.PresentTense || "";
-          const pastTense = row['Past Tense'] || row.PastTense || "";
-          const futureTense = row['Future Tense'] || row.FutureTense || "";
-          const exampleNL = row['Example Sentence (Dutch)'] || row['Example (NL)'] || row.example_nl || "";
-          const exampleEN = row['Example Sentence (English)'] || row['Example (EN)'] || row.example_en || "";
-          const practiceSentences = row['Practice Sentences'] || row.Practice || "";
-
-          return {
-            id: dutch.toLowerCase().replace(/\s+/g, "-") || `word-${index}`,
-            dutch,
-            english,
-            pos: grammarNote,
-            level: (row.Level || row.level || "A1") as CEFRLevel,
-            categories: parseCommaSeparated(
-              row.Categories || row.categories || row.Category || ""
-            ),
-            functions: parseCommaSeparated(row.Functions || row.functions || ""),
-            contexts: parseCommaSeparated(row.Contexts || row.contexts || ""),
-            grammar: {
-              present: presentTense,
-              past: pastTense,
-              future: futureTense,
-            },
-            example: {
-              nl: exampleNL,
-              en: exampleEN,
-            },
-            practice: parseCommaSeparated(practiceSentences),
-            progress: (row.Progress || row.progress || "new") as ProgressStatus,
-            notes: row.Notes || row.notes || "",
-            createdAt: new Date().toISOString(),
-          };
-        });
-
-        resolve(vocabulary);
-      } catch (error) {
-        reject(error);
-      }
-    };
-
-    reader.onerror = (error) => reject(error);
-        if (file.name.endsWith('.json')) {
-          reader.readAsText(file);
-        } else if (file.name.endsWith('.csv')) {
-          reader.readAsText(file);
-        } else {
-          reader.readAsBinaryString(file);
-        }
-      };
-      
-      reader.onload = (e) => {
         if (file.name.endsWith('.json')) {
           const jsonText = e.target?.result as string;
           const jsonData = JSON.parse(jsonText);
@@ -88,9 +27,61 @@ export function parseExcelToVocabulary(file: File): Promise<VocabularyWord[]> {
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const jsonData: ExcelRow[] = XLSX.utils.sheet_to_json(worksheet);
-          const vocabulary = parseExcelRowsToVocabulary(jsonData);
+
+          const vocabulary: VocabularyWord[] = jsonData.map((row, index) => {
+            const dutch = row['Dutch Word'] || row.Dutch || row.dutch || "";
+            const english = row['English Translation'] || row.English || row.english || "";
+            const grammarNote = row['Grammar Note'] || row['Part of Speech'] || row.pos || row.POS || "";
+            const presentTense = row['Present Tense'] || row.PresentTense || "";
+            const pastTense = row['Past Tense'] || row.PastTense || "";
+            const futureTense = row['Future Tense'] || row.FutureTense || "";
+            const exampleNL = row['Example Sentence (Dutch)'] || row['Example (NL)'] || row.example_nl || "";
+            const exampleEN = row['Example Sentence (English)'] || row['Example (EN)'] || row.example_en || "";
+            const practiceSentences = row['Practice Sentences'] || row.Practice || "";
+
+            return {
+              id: dutch.toLowerCase().replace(/\s+/g, "-") || `word-${index}`,
+              dutch,
+              english,
+              pos: grammarNote,
+              level: (row.Level || row.level || "A1") as CEFRLevel,
+              categories: parseCommaSeparated(
+                row.Categories || row.categories || row.Category || ""
+              ),
+              functions: parseCommaSeparated(row.Functions || row.functions || ""),
+              contexts: parseCommaSeparated(row.Contexts || row.contexts || ""),
+              grammar: {
+                present: presentTense,
+                past: pastTense,
+                future: futureTense,
+              },
+              example: {
+                nl: exampleNL,
+                en: exampleEN,
+              },
+              practice: parseCommaSeparated(practiceSentences),
+              progress: (row.Progress || row.progress || "new") as ProgressStatus,
+              notes: row.Notes || row.notes || "",
+              createdAt: new Date().toISOString(),
+            };
+          });
+
           resolve(vocabulary);
         }
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    reader.onerror = (error) => reject(error);
+    
+    if (file.name.endsWith('.json')) {
+      reader.readAsText(file);
+    } else if (file.name.endsWith('.csv')) {
+      reader.readAsText(file);
+    } else {
+      reader.readAsBinaryString(file);
+    }
   });
 }
 
