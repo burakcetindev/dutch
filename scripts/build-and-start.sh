@@ -64,7 +64,7 @@ echo "⏳ Waiting for services to be ready..."
 sleep 5
 
 # Check if containers are running
-if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutch-app"; then
+if docker ps --filter "name=dutch-vocab-app" --filter "status=running" | grep -q "dutch-vocab-app"; then
   echo ""
   echo "✅ Application started successfully!"
   echo ""
@@ -75,10 +75,10 @@ if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutc
   echo "🐘 PostgreSQL is running on: localhost:5432"
   echo ""
   echo "📝 Useful commands:"
-  echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f app"
+  echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f vocab"
   echo "   Stop app:         docker compose -f infra/docker-compose.yml down"
-  echo "   Restart app:      docker compose -f infra/docker-compose.yml restart app"
-  echo "   Import backup:    docker exec dutch-app node scripts/import-full-backup.js"
+  echo "   Restart app:      docker compose -f infra/docker-compose.yml restart vocab"
+  echo "   Import backup:    docker exec dutch-vocab-app node scripts/import-full-backup.js"
   echo ""
   echo "🎉 Happy learning Dutch! 🇳🇱"
 else

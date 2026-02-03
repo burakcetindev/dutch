@@ -151,12 +151,33 @@ function VocabularyContent() {
     }
   };
 
+  // Helper function to show toast notifications
+  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    const colors = {
+      success: 'linear-gradient(to right, #10b981, #059669)',
+      error: 'linear-gradient(to right, #ef4444, #dc2626)',
+      info: 'linear-gradient(to right, #3b82f6, #2563eb)'
+    };
+    
+    const Toast = document.createElement('div');
+    Toast.textContent = message;
+    Toast.style.cssText = `position: fixed; bottom: 20px; right: 20px; background: ${colors[type]}; color: white; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-weight: 600; animation: slideIn 0.3s ease;`;
+    document.body.appendChild(Toast);
+    setTimeout(() => {
+      Toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => Toast.remove(), 300);
+    }, 2500);
+  };
+
   const handleEdit = async (wordId: string, updates: Partial<VocabularyWord>) => {
-    const updated = vocabulary.map(word => {
-      if (word.id === wordId) {
-        return { ...word, ...updates };
+    const word = vocabulary.find(w => w.id === wordId);
+    const wordName = word?.dutch || 'Word';
+    
+    const updated = vocabulary.map(w => {
+      if (w.id === wordId) {
+        return { ...w, ...updates };
       }
-      return word;
+      return w;
     });
     setVocabulary(updated);
     
@@ -169,26 +190,24 @@ function VocabularyContent() {
       });
       
       if (response.ok) {
-        // Show success message
-        const Toast = document.createElement('div');
-        Toast.textContent = '✅ Word updated successfully!';
-        Toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: linear-gradient(to right, #10b981, #059669); color: white; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-weight: 600; animation: slideIn 0.3s ease;';
-        document.body.appendChild(Toast);
-        setTimeout(() => {
-          Toast.style.animation = 'slideOut 0.3s ease';
-          setTimeout(() => Toast.remove(), 300);
-        }, 2000);
+        showToast(`✨ "${wordName}" is modified in the library`, 'success');
       } else {
         throw new Error('Failed to update word');
       }
     } catch (error) {
       console.error("Error updating word in database:", error);
-      alert("Failed to update word. Please try again.");
+      showToast(`❌ Failed to modify "${wordName}"`, 'error');
+      // Restore original word
+      if (word) {
+        setVocabulary(vocabulary);
+      }
     }
   };
 
   const handleDelete = async (wordId: string) => {
-    const updated = vocabulary.filter(word => word.id !== wordId);
+    const word = vocabulary.find(w => w.id === wordId);
+    const wordName = word?.dutch || 'Word';
+    const updated = vocabulary.filter(w => w.id !== wordId);
     setVocabulary(updated);
     
     // Delete from database
@@ -197,16 +216,17 @@ function VocabularyContent() {
         method: "DELETE"
       });
       
-      if (!response.ok) {
+      if (response.ok) {
+        showToast(`🗑️ "${wordName}" is deleted from the library`, 'info');
+      } else {
         throw new Error('Failed to delete word');
       }
     } catch (error) {
       console.error("Error deleting word from database:", error);
-      alert("Failed to delete word. Please try again.");
+      showToast(`❌ Failed to delete "${wordName}"`, 'error');
       // Restore the word if database delete failed
-      const original = vocabulary.find(w => w.id === wordId);
-      if (original) {
-        setVocabulary([...updated, original]);
+      if (word) {
+        setVocabulary([...updated, word]);
       }
     }
   };

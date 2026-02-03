@@ -1,60 +1,75 @@
 # Dutch Vocabulary App - System Architecture
 
 ## Overview
-A full-stack Dutch language learning application built with Next.js 15, featuring glassmorphism UI design, intelligent vocabulary management, and offline-first architecture.
+A full-stack Dutch language learning application built with Next.js 15, featuring glassmorphism UI design, intelligent vocabulary management with smart merging, and performance-optimized React components.
 
 ## Technology Stack
 
 ### Frontend
 - **Framework**: Next.js 15.5.11 (App Router)
 - **Language**: TypeScript 5.7.2
-- **Styling**: Tailwind CSS 3.4.17 (optimized animations with GPU acceleration)
-- **UI Components**: Custom components with Shadcn/ui base
+- **Styling**: Tailwind CSS 3.4.17
+  - GPU-accelerated animations
+  - Custom glassmorphism utilities
+  - Dark mode support
+- **UI Components**: Custom components with Shadcn/ui patterns
 - **Icons**: Lucide React
-- **State Management**: React Hooks (useState, useEffect, useMemo)
+- **State Management**: React Hooks (useState, useEffect, useMemo, useCallback)
+- **Performance**: React.memo, optimized re-renders, will-change properties
 
 ### Backend
-- **Database**: PostgreSQL 16 (Docker container)
-- **Runtime**: Node.js (Server-side API routes)
-- **ORM**: Direct pg (node-postgres) connection pool
-- **File Processing**: CSV generation for backups
+- **Database**: PostgreSQL 16 (Alpine Docker image)
+- **Runtime**: Node.js 20 (Alpine)
+- **Database Client**: pg (node-postgres) v8.11.3
+- **Connection Management**: Connection pooling (max 20 connections)
+- **File Processing**: csv-parse, CSV/JSON generation
 
 ### Infrastructure & Deployment
 - **Containerization**: Docker & Docker Compose
-- **Database Schema**: Full relational schema with migrations
-- **Backup Strategy**: Automatic CSV/JSON backups with timestamps
+- **Multi-stage Builds**: Optimized production images
+- **Health Checks**: Database readiness verification
+- **Volumes**: Persistent PostgreSQL data
+- **Networking**: Internal Docker network + exposed ports
 
-### Build & Development
+### Build & Development Tools
 - **Package Manager**: npm
-- **Bundler**: Next.js built-in (Turbopack)
+- **Bundler**: Next.js built-in (Turbopack in dev)
 - **TypeScript**: Strict mode enabled
-- **Performance**: Optimized animations, will-change properties, GPU acceleration
+- **Linting**: ESLint with Next.js config
+- **Code Quality**: Prettier (recommended)
 
 ## Project Structure
 
 ```
 dutch/
 ├── app/                           # Next.js App Router
-│   ├── page.tsx                  # Dashboard homepage
+│   ├── page.tsx                  # Dashboard homepage with stats
 │   ├── vocabulary/               
-│   │   └── page.tsx              # Vocabulary browser with filters
+│   │   └── page.tsx              # Main vocabulary browser
+│   ├── about/
+│   │   └── page.tsx              # About page
 │   ├── api/
 │   │   ├── vocabulary-db/
-│   │   │   └── route.ts          # PostgreSQL CRUD operations
-│   │   └── save-state/
-│   │       └── route.ts          # Save & backup functionality
-│   ├── layout.tsx                # Root layout with metadata
+│   │   │   └── route.ts          # CRUD operations with intelligent merging
+│   │   ├── save-state/
+│   │   │   └── route.ts          # Save & backup with timestamps
+│   │   └── contact/
+│   │       └── route.ts          # Contact form API
+│   ├── layout.tsx                # Root layout with theme provider
 │   └── globals.css               # Global styles + optimized animations
 │
 ├── src/
 │   └── components/
 │       └── vocabulary/
-│           ├── VocabularyCard.tsx    # Expandable word card with inline editing
+│           ├── VocabularyCard.tsx    # Main card (React.memo optimized)
 │           ├── AddWordModal.tsx      # Add new word modal
-│           └── YouGlish.tsx          # YouTube pronunciation integration
+│           └── YouGlish.tsx          # YouTube pronunciation
+│       ├── ThemeToggleButton.tsx    # Theme switcher
+│       ├── ThemeProvider.tsx        # Theme context
+│       └── HamburgerMenu.tsx        # Mobile navigation
 │
 ├── components/
-│   └── ui/                       # Reusable UI primitives
+│   └── ui/                       # Reusable UI primitives (Shadcn pattern)
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── input.tsx
@@ -62,43 +77,131 @@ dutch/
 │       └── select.tsx
 │
 ├── lib/                          # Business logic & utilities
-│   ├── db.ts                    # PostgreSQL connection pool
-│   ├── vocabulary.ts            # Excel/CSV import/export
-│   ├── stats.ts                 # Statistics and filtering
-│   └── utils.ts                 # Helper functions
+│   ├── db.ts                    # PostgreSQL connection pool setup
+│   ├── vocabulary.ts            # Import/export logic (CSV/JSON)
+│   ├── stats.ts                 # Statistics calculations
+│   ├── levelMapper.ts           # CEFR level normalization
+│   └── utils.ts                 # Helper functions (cn, etc.)
 │
 ├── types/
 │   └── vocabulary.ts            # TypeScript interfaces
-│       - VocabularyWord (dutch, english, level, categories, etc.)
-│       - VocabularyStats
-│       - CEFRLevel (A1-A2, B1-B2, C1-C2)
-│       - ProgressStatus (new, learning, mastered)
+│       - VocabularyWord         # Main word interface
+│       - VocabularyStats        # Statistics interface
+│       - CEFRLevel              # A1-A2, B1-B2, C1-C2
+│       - ProgressStatus         # new, learning, mastered
 │
 ├── infra/                        # Infrastructure & deployment
 │   ├── docker-compose.yml       # Multi-container orchestration
-│   ├── Dockerfile               # Next.js app container
-│   ├── init.sql                 # PostgreSQL schema
+│   │   - vocab: Next.js app
+│   │   - db: PostgreSQL 16
+│   ├── Dockerfile               # Multi-stage Next.js build
+│   ├── init.sql                 # Database schema with indexes
 │   └── .dockerignore            # Docker ignore patterns
 │
 ├── scripts/                      # Automation scripts
-│   ├── first-run.sh             # Initial setup (creates .env, installs deps)
-│   ├── start.sh                 # Start Docker containers
+│   ├── first-run.sh             # Initial setup (env, deps)
+│   ├── build-and-start.sh       # Build images & start
+│   ├── start.sh                 # Quick start (existing images)
 │   ├── import-full-backup.js    # Import complete backup
-│   └── create-backup.js         # Generate backup files
+│   ├── create-backup.js         # Generate timestamped backups
+│   └── merge-categories.ts      # Category normalization utility
 │
-├── docs/                         # Documentation
+├── docs/                         # Comprehensive documentation
 │   ├── ARCHITECTURE.md          # This file
-│   ├── DATA-FLOW.md             # Data flow documentation
+│   ├── DATA-FLOW.md             # Complete data flow diagrams
 │   ├── QUICK-START.md           # Getting started guide
-│   └── images/                  # App screenshots
+│   └── images/                  # Screenshots
 │       ├── day_mode.png
 │       └── night_mode.png
 │
-└── input/                        # Data backup storage
-    └── vocabulary_backup_*.csv  # Timestamped backups
+├── __tests__/                    # Test suite
+│   ├── api.integration.test.ts  # API integration tests
+│   ├── vocabulary.test.ts       # Vocabulary logic tests
+│   └── VocabularyCard.test.tsx  # Component tests
+│
+└── input/                        # Data backup storage (gitignored)
+    └── vocabulary_backup_*.{csv,json}  # Timestamped backups
 ```
 
-## Core Components
+## System Components
+
+### 1. Docker Infrastructure
+
+```
+┌──────────────────────────────────────────────┐
+│  Docker Compose (infra/docker-compose.yml)   │
+├──────────────────────────────────────────────┤
+│                                              │
+│  Service: vocab (dutch-vocab-app)            │
+│  ├─ Image: dutch-vocab-vocab                 │
+│  ├─ Build: Multi-stage Dockerfile            │
+│  ├─ Port: 3000:3000                          │
+│  ├─ Depends: db (healthcheck)                │
+│  └─ Environment: DATABASE_URL, etc.          │
+│                                              │
+│  Service: db (dutch-vocab-postgres)          │
+│  ├─ Image: postgres:16-alpine                │
+│  ├─ Port: 5432:5432                          │
+│  ├─ Volume: vocab_pg_data                    │
+│  ├─ Init: /docker-entrypoint-initdb.d/       │
+│  └─ Health: pg_isready check                 │
+└──────────────────────────────────────────────┘
+```
+
+### 2. Database Layer
+
+**PostgreSQL 16** with optimized schema:
+
+```sql
+CREATE TABLE vocabulary (
+  -- Primary identifiers
+  id               VARCHAR(255)  PRIMARY KEY,
+  dutch            VARCHAR(255)  NOT NULL UNIQUE,
+  english          VARCHAR(255)  NOT NULL,
+  
+  -- Classification
+  pos              VARCHAR(50),               -- Part of speech
+  level            VARCHAR(10),               -- CEFR level
+  
+  -- Metadata arrays
+  categories       TEXT[],                    -- Topical tags
+  functions        TEXT[],                    -- Grammar functions
+  contexts         TEXT[],                    -- Usage contexts
+  
+  -- Examples & practice
+  example_nl       TEXT,                      -- Dutch example
+  example_en       TEXT,                      -- English translation
+  practice         TEXT[],                    -- User practice sentences
+  
+  -- Grammar details
+  grammar_present  VARCHAR(255),              -- Present tense
+  grammar_past     VARCHAR(255),              -- Past tense
+  grammar_future   VARCHAR(255),              -- Future tense
+  grammar_separable BOOLEAN,                  -- Separable verb flag
+  
+  -- Notes & tracking
+  notes            TEXT,                      -- Additional notes
+  progress         VARCHAR(20)   DEFAULT 'new',
+  last_reviewed    TIMESTAMP,
+  created_at       TIMESTAMP     DEFAULT NOW(),
+  updated_at       TIMESTAMP     DEFAULT NOW()
+);
+
+-- Performance indexes
+CREATE UNIQUE INDEX idx_dutch_lower ON vocabulary(LOWER(dutch));
+CREATE INDEX idx_level ON vocabulary(level);
+CREATE INDEX idx_progress ON vocabulary(progress);
+CREATE INDEX idx_created_at ON vocabulary(created_at DESC);
+```
+
+**Connection Pool Configuration:**
+```typescript
+const pool = new Pool({
+  max: 20,                    // Maximum connections
+  idleTimeoutMillis: 30000,   // Close idle after 30s
+  connectionTimeoutMillis: 2000,  // Fail fast
+})
+```## Core Components
 
 ### 1. Dashboard (`app/page.tsx`)
 **Purpose**: Main entry point showing statistics and navigation

@@ -1,103 +1,719 @@
-# Dutch Vocabulary App - Data Flow Documentation
+# Dutch Vocabulary App - Data Flow & Architecture Diagrams
 
 ## Overview
-This document explains how data moves through the Dutch Vocabulary Learning Application, from database initialization to user interaction and backup.
+Comprehensive architectural diagrams showing how data flows through the Dutch Vocabulary Learning Application, from infrastructure to user interaction.
 
-## Data Flow Diagram
+---
+
+## 1. System Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         INFRASTRUCTURE LAYER                        │
-│                                                                     |
-│  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐         │
-│  │ Docker       │────▶│ PostgreSQL   │────▶│ Init Schema  │         │
-│  │ Compose      │     │ Container    │     │ (init.sql)   │         │
-│  └──────────────┘     └──────────────┘     └──────┬───────┘         │
-│                                                     │               │
-│                                             ┌───────▼────────┐      │
-│                                             │ vocabulary     │      │
-│                                             │ table          │      │
-│                                             └────────────────┘      │
-└─────────────────────────────────────────────────────────────────────┘
-                                                     │
-                                                     ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    SERVER LAYER (Next.js API)                       │
-│                                                                     │
-│  ┌──────────────────┐                                               │
-│  │GET /api/         │  1. Query PostgreSQL via connection pool      │
-│  │vocabulary-db     │  2. Map database rows to VocabularyWord       │
-│  │                  │  3. Return JSON array                         │
-│  └──────┬───────────┘                                               │
-│         │                                                           │
-│  ┌──────▼───────────┐                                               │
-│  │POST /api/        │  1. Insert new words (check duplicates)       │
-│  │vocabulary-db     │  2. Return inserted count                     │
-│  └──────────────────┘                                               │
-│         │                                                           │
-│  ┌──────▼───────────┐                                               │
-│  │PUT /api/         │  1. Update word by ID                         │
-│  │vocabulary-db     │  2. Support partial updates                   │
-│  │                  │  3. Return updated word                       │
-│  └──────────────────┘                                               │
-│         │                                                           │
-│  ┌──────▼───────────┐                                               │
-│  │DELETE /api/      │  1. Delete word by ID                         │
-│  │vocabulary-db     │  2. Return success status                     │
-│  └──────────────────┘                                               │
-│         │                                                           │
-│  ┌──────▼───────────┐                                               │
-│  │POST /api/        │  1. Sync all vocabulary to DB                 │
-│  │save-state        │  2. Insert new + update existing              │
-│  │                  │  3. Create CSV/JSON backups with timestamp    │
-│  │                  │  4. Return saved count + backup files         │
-│  └──────────────────┘                                               │
-└─────────────────────────────────────────────────────────────────────┘
-          │
-          ▼ HTTP Response (JSON)
-┌─────────────────────────────────────────────────────────────────────┐
-│                    CLIENT LAYER (React/Next.js)                     │
-│                                                                     │
-│  ┌──────────────────────────────────────────────────────────┐       │
-│  │                  Dashboard (app/page.tsx)                │       │
-│  │                                                          │       │
-│  │  useEffect → Fetch /api/vocabulary-db                    │       │
-│  │                    ▼                                     │       │
-│  │            ┌────────────────┐                            │       │
-│  │            │  Vocabulary    │                            │       │
-│  │            │  State Array   │                            │       │
-│  │            └───────┬────────┘                            │       │
-│  │                    │                                     |       │
-│  │         ┌──────────┼──────────┐                          │       │
-│  │         ▼          ▼          ▼                          │       │
-│  │    ┌────────┐ ┌────────┐ ┌────────┐                      │       │
-│  │    │Stats   │ │Add Word│ │ Save   │                      │       │
-│  │    │Display │ │ Modal  │ │ State  │                      │       │
-│  │    └────────┘ └────────┘ └────────┘                      │       │
-│  └──────────────────────────────────────────────────────────┘       │
-│                                                                     │
-│  ┌─────────────────────────────────────────────────────────┐        │
-│  │          Vocabulary Browser (app/vocabulary/page.tsx)   │        │
-│  │                                                         │        │
-│  │  useEffect → Fetch /api/vocabulary-db                   │        │
-│  │         ▼                                               │        │
-│  │    ┌────────────┐                                       │        │
-│  │    │  Filters   │→ filterVocabulary()                   │        │
-│  │    │  & Sorts   │   (useMemo - optimized)               │        │
-│  │    └─────┬──────┘                                       │        │
-│  │          ▼                                              │        │
-│  │   ┌──────────────┐                                      │        │
-│  │   │ VocabularyCard│ (optimized animations)              │        │
-│  │   │  Components   │                                     │        │
-│  │   └──────┬────────┘                                     │        │
-│  │          │                                              │        │
-│  │    ┌─────┴──────┬──────────┬──────────┐                 │        │
-│  │    ▼            ▼          ▼          ▼                 │        │
-│  │ Progress   Practice    Edit      Delete                 │        │
-│  │  Update      Add      (inline)   (confirm)              │        │
-│  │    │            │          │          │                 │        │
-│  │    └────────────┴──────────┴──────────┘                 │        │
-│  │                 ▼                                       │        │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            DOCKER INFRASTRUCTURE                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌────────────────────────────┐         ┌────────────────────────────┐      │
+│  │  dutch-vocab-app           │         │  dutch-vocab-postgres      │      │
+│  │  (Next.js 15 Container)    │◄───────►│  (PostgreSQL 16 Alpine)    │      │
+│  │                            │         │                            │      │
+│  │  • Node 20 Alpine          │         │  • Port: 5432             │      │
+│  │  • Port: 3000             │         │  • Volume: pg_data         │      │
+│  │  • Optimized Build        │         │  • Init: init.sql          │      │
+│  └────────────┬───────────────┘         └────────────────────────────┘      │
+│               │                                                             │
+└───────────────┼─────────────────────────────────────────────────────────────┘
+                │
+                ▼ HTTP/HTTPS
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              USER ACCESS                                    │
+│                                                                             │
+│  Browser (localhost:3000) ──► Next.js Server ──► API Routes ──► PostgreSQL │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 2. Database Schema & Initialization Flow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│           DOCKER COMPOSE STARTUP SEQUENCE                       │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                 ┌────────────────────────┐
+                 │  PostgreSQL Container  │
+                 │  Starts First          │
+                 └──────────┬─────────────┘
+                            │
+                            ▼
+                 ┌────────────────────────┐
+                 │  Execute init.sql      │
+                 │  (if DB is empty)      │
+                 └──────────┬─────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌──────────────┐  ┌──────────────────┐  ┌────────────────┐
+│ CREATE TABLE │  │ CREATE INDEXES   │  │ SET DEFAULTS   │
+│ vocabulary   │  │ - dutch (UNIQUE) │  │ - progress=new │
+└──────────────┘  │ - level          │  │ - timestamps   │
+                  └──────────────────┘  └────────────────┘
+                            │
+                            ▼
+                 ┌────────────────────────┐
+                 │   Health Check Pass    │
+                 │   Ready for            │
+                 │   Connections          │
+                 └──────────┬─────────────┘
+                            │
+                            ▼
+                 ┌────────────────────────┐
+                 │  Next.js Container     │
+                 │  Starts After DB       │
+                 │  (depends_on: healthy) │
+                 └────────────────────────┘
+
+DATABASE SCHEMA:
+┌────────────────────────────────────────────────────────────┐
+│ vocabulary TABLE                                           │
+├────────────────────────────────────────────────────────────┤
+│ id               VARCHAR(255)  PRIMARY KEY                 │
+│ dutch            VARCHAR(255)  NOT NULL UNIQUE             │
+│ english          VARCHAR(255)  NOT NULL                    │
+│ pos              VARCHAR(50)   (noun, verb, adj, etc.)     │
+│ level            VARCHAR(10)   (A1-A2, B1-B2, C1-C2)       │
+│ categories       TEXT[]        (array of tags)            │
+│ functions        TEXT[]        (grammar notes)            │
+│ example_nl       TEXT          (Dutch example)            │
+│ example_en       TEXT          (English translation)      │
+│ practice         TEXT[]        (user practice sentences)  │
+│ contexts         TEXT[]        (usage contexts)           │
+│ grammar_present  VARCHAR(255)  (present tense)            │
+│ grammar_past     VARCHAR(255)  (past tense)               │
+│ grammar_future   VARCHAR(255)  (future tense)             │
+│ grammar_separable BOOLEAN      (separable verb?)          │
+│ notes            TEXT          (additional notes)         │
+│ progress         VARCHAR(20)   DEFAULT 'new'              │
+│ last_reviewed    TIMESTAMP                                │
+│ created_at       TIMESTAMP     DEFAULT NOW()              │
+│ updated_at       TIMESTAMP     DEFAULT NOW()              │
+└────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 3. API Routes Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                    NEXT.JS API LAYER                             │
+│                    (app/api/*)                                   │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────────┐  ┌─────────────────┐  ┌──────────────────┐
+│ /api/vocabulary-db│  │ /api/save-state │  │ /api/contact     │
+│                   │  │                 │  │                  │
+│ GET    - List all │  │ POST - Save     │  │ POST - Contact   │
+│ POST   - Import   │  │        & Backup │  │        form      │
+│ PUT    - Update   │  │                 │  │                  │
+│ DELETE - Remove   │  │                 │  │                  │
+└─────────┬─────────┘  └────────┬────────┘  └──────────────────┘
+          │                     │
+          ▼                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              PostgreSQL Connection Pool                         │
+│              (lib/db.ts - pg.Pool)                             │
+│                                                                 │
+│  • Max Connections: 20                                         │
+│  • Idle Timeout: 30s                                           │
+│  • Connection Timeout: 2s                                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. Complete Data Flow - GET Request
+
+```
+┌────────────┐
+│  Browser   │  User opens app
+│  Client    │
+└─────┬──────┘
+      │
+      │ 1. Page Load
+      ▼
+┌────────────────────────────────────────────────┐
+│  app/page.tsx or app/vocabulary/page.tsx       │
+│                                                │
+│  useEffect(() => {                             │
+│    fetch('/api/vocabulary-db')                 │
+│  }, [])                                        │
+└──────────────────┬─────────────────────────────┘
+                   │
+                   │ 2. HTTP GET Request
+                   ▼
+┌────────────────────────────────────────────────┐
+│  app/api/vocabulary-db/route.ts                │
+│                                                │
+│  export async function GET() {                 │
+│    const client = await pool.connect()         │
+│    const result = await client.query(          │
+│      'SELECT * FROM vocabulary                 │
+│       ORDER BY created_at DESC'                │
+│    )                                           │
+│    return NextResponse.json({                  │
+│      data: result.rows                         │
+│    })                                          │
+│  }                                             │
+└──────────────────┬─────────────────────────────┘
+                   │
+                   │ 3. SQL Query
+                   ▼
+┌────────────────────────────────────────────────┐
+│  PostgreSQL Database                           │
+│                                                │
+│  SELECT * FROM vocabulary                      │
+│  ORDER BY created_at DESC                      │
+│                                                │
+│  Returns: VocabularyWord[]                     │
+└──────────────────┬─────────────────────────────┘
+                   │
+                   │ 4. JSON Response
+                   ▼
+┌────────────────────────────────────────────────┐
+│  Client Receives Data                          │
+│                                                │
+│  setVocabulary(data)                           │
+│  setStats(calculateStats(data))                │
+│                                                │
+│  State Updated → UI Re-renders                 │
+└────────────────────────────────────────────────┘
+```
+
+---
+
+## 5. Import Flow with Intelligent Merge
+
+```
+┌────────────┐
+│   User     │  Selects CSV/JSON file
+└─────┬──────┘
+      │
+      │ 1. File Upload
+      ▼
+┌─────────────────────────────────────────────┐
+│  app/page.tsx                               │
+│                                             │
+│  handleImport(file) {                       │
+│    const words = parseFile(file)            │
+│    POST /api/vocabulary-db                  │
+│    body: { words: VocabularyWord[] }        │
+│  }                                          │
+└──────────────┬──────────────────────────────┘
+               │
+               │ 2. HTTP POST with word array
+               ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  app/api/vocabulary-db/route.ts - POST Handler                   │
+               │ 4. Response
+               ▼
+┌────────────────────────────────────────────┐
+│  Client Alert                              │
+│                                            │
+│  "Imported 5 new words, updated 3 words,   │
+│   skipped 2 words (no new data)"           │
+│                                            │
+│  Refresh vocabulary list                   │
+└────────────────────────────────────────────┘
+```
+
+### Import Merge Logic Details
+
+```
+For each imported word:
+
+┌─────────────────────────────────────┐
+│ Check: LOWER(dutch) = LOWER(input)  │
+└────────────┬────────────────────────┘
+             │
+      ┌──────┴──────┐
+      │             │
+      ▼             ▼
+  EXISTS?        NEW WORD
+      │             │
+      │             └──► INSERT
+      │
+      ▼
+┌──────────────────────────────────────────────┐
+│  MERGE LOGIC                                 │
+│                                              │
+│  1. Example Comparison:                      │
+│     if (newLength > existingLength) {        │
+│       • Replace example with longer one      │
+│       • Move old example to practice array   │
+│     }                                        │
+│                                              │
+│  2. Practice Sentences:                      │
+│     allPractice = [                          │
+│       ...existing.practice,                  │
+│       ...oldExample (if replaced),           │
+│       ...new.practice                        │
+│     ]                                        │
+│                                              │
+│  3. Normalize Practice:                      │
+│     • Parse JSON: {"nl":"X","en":"Y"}        │
+│       → "X (Y)"                              │
+│     • Remove empty strings                   │
+│     • Trim whitespace                        │
+│     • Deduplicate (case-insensitive)         │
+│                                              │
+│  4. Other Fields (Additive Only):            │
+│     • Only add if current field is empty     │
+│     • Never overwrite existing data          │
+│                                              │
+│  5. Decision:                                │
+│     if (anyChanges) → UPDATE                 │
+│     else → SKIP                              │
+└──────────────────────────────────────────────┘
+```
+
+---
+
+## 6. CRUD Operations Flow
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                      CREATE (Add New Word)                       │
+└──────────────────────────────────────────────────────────────────┘
+
+User clicks "Add Word" → AddWordModal opens
+    │
+    ▼
+User fills form:
+  • Dutch word (required)
+  • English translation (required)
+  • Level (A1-A2, B1-B2, C1-C2)
+  • Categories
+  • Example sentences
+    │
+    ▼
+Form submission → POST /api/vocabulary-db
+    │
+    ▼
+API validates & inserts:
+  INSERT INTO vocabulary (...)
+  VALUES (...)
+    │
+    ▼
+Success → Modal closes → Refresh list → Show toast
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      READ (View Vocabulary)                      │
+└──────────────────────────────────────────────────────────────────┘
+
+Page load → useEffect
+    │
+    ▼
+GET /api/vocabulary-db
+    │
+    ▼
+SELECT * FROM vocabulary ORDER BY created_at DESC
+    │
+    ▼
+Client receives array → Apply filters → Render cards
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      UPDATE (Edit/Progress)                      │
+└──────────────────────────────────────────────────────────────────┘
+
+Two update paths:
+
+PATH 1: Inline Edit
+  Click gear icon → Edit button → Edit mode
+    │
+    ▼
+  Modify fields → Click save
+    │
+    ▼
+  PUT /api/vocabulary-db
+  body: { id, dutch, english, example }
+    │
+    ▼
+  UPDATE vocabulary SET ... WHERE id = $1
+    │
+    ▼
+  Success → Toast "✨ word modified" → Refresh
+
+PATH 2: Progress Change
+  Click progress button (new/learning/mastered)
+    │
+    ▼
+  onProgressChange(id, newProgress)
+    │
+    ▼
+  PUT /api/vocabulary-db
+  body: { id, progress: newProgress }
+    │
+    ▼
+  UPDATE vocabulary SET progress = $1 WHERE id = $2
+    │
+    ▼
+  Success → Visual update (color change)
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      DELETE (Remove Word)                        │
+└──────────────────────────────────────────────────────────────────┘
+
+Click gear → Delete button → Confirm dialog
+    │
+    ▼
+User confirms
+    │
+    ▼
+DELETE /api/vocabulary-db?id={wordId}
+    │
+    ▼
+DELETE FROM vocabulary WHERE id = $1
+    │
+    ▼
+Success → Toast "🗑️ word deleted" → Remove from list
+```
+
+---
+
+## 7. Save State & Backup Flow
+
+```
+┌────────────┐
+│   User     │  Clicks "Save State"
+└─────┬──────┘
+      │
+      ▼
+┌──────────────────────────────────────────────┐
+│  app/page.tsx                                │
+│                                              │
+│  handleSaveState() {                         │
+│    POST /api/save-state                      │
+│    body: { vocabulary: currentState }        │
+│  }                                           │
+└──────────────┬───────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────────────┐
+│  app/api/save-state/route.ts                         │
+│                                                      │
+│  1. Upsert all words to database:                   │
+│     for each word:                                   │
+│       INSERT ... ON CONFLICT (dutch)                 │
+│       DO UPDATE SET ...                              │
+│                                                      │
+│  2. Generate backups:                                │
+│     timestamp = 2026-02-03_14-30-00                  │
+│                                                      │
+│     CSV: vocabulary_backup_{timestamp}.csv           │
+│     • Export all fields as CSV                       │
+│     • Arrays as JSON strings                         │
+│                                                      │
+│     JSON: vocabulary_backup_{timestamp}.json         │
+│     • Full object export                             │
+│     • Preserves all data types                       │
+│                                                      │
+│  3. Verify backups created                           │
+│                                                      │
+│  4. Optional: Delete old backups (keep last 5)       │
+│                                                      │
+│  Return: {                                           │
+│    saved: count,                                     │
+│    backupFiles: [csv, json]                          │
+│  }                                                   │
+└──────────────┬───────────────────────────────────────┘
+               │
+               ▼
+┌────────────────────────────────────────────┐
+│  Client Alert                              │
+│                                            │
+│  "✅ Successfully saved 630 words!"        │
+│  "📦 Backup files created:"                │
+│  "  • vocabulary_backup_2026-02...csv"     │
+│  "  • vocabulary_backup_2026-02...json"    │
+└────────────────────────────────────────────┘
+
+Backup Storage:
+/input/
+  ├── vocabulary_backup_2026-02-03_14-30-00.csv
+  └── vocabulary_backup_2026-02-03_14-30-00.json
+```
+
+---
+
+## 8. Component Architecture & Performance
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  app/vocabulary/page.tsx (Main Vocabulary Browser)           │
+│                                                              │
+│  Optimizations:                                              │
+│  • useMemo for filtered/sorted vocabulary                    │
+│  • useCallback for event handlers                            │
+│  • Debounced search input                                    │
+└────────────────┬─────────────────────────────────────────────┘
+                 │
+                 │ Props
+                 ▼
+┌──────────────────────────────────────────────────────────────┐
+│  VocabularyCard Component (React.memo)                       │
+│                                                              │
+│  Optimizations:                                              │
+│  • memo() - prevents unnecessary re-renders                  │
+│  • useCallback() - stable function references                │
+│  • useMemo() - expensive calculations (getProgressColor)     │
+│                                                              │
+│  Animations (GPU-accelerated):                               │
+│  • transform: scale() - click feedback                       │
+│  • will-change: transform - GPU optimization                 │
+│  • transition-all duration-300 - smooth transitions          │
+│  • animate-blob - background animations (6 blobs)            │
+│  • animate-glow-pulse - active state highlighting            │
+│                                                              │
+│  State Management:                                           │
+│  • isExpanded (local) - card expansion                       │
+│  • isEditing (local) - inline editing mode                   │
+│  • showActionMenu (local) - gear menu visibility             │
+│  • editedWord (local) - temporary edit state                 │
+│  • newPractice (local) - new practice input                  │
+└──────────────────────────────────────────────────────────────┘
+
+Performance Flow:
+
+User Action
+    ↓
+Event Handler (useCallback)
+    ↓
+State Update (minimal)
+    ↓
+React.memo checks props
+    ↓
+Re-render only if props changed
+    ↓
+GPU-accelerated animations (transform, opacity)
+    ↓
+Smooth 60fps experience
+```
+
+---
+
+## 9. Export Flow
+
+```
+User clicks "Export CSV" or "Export JSON"
+    │
+    ▼
+┌─────────────────────────────────────────────┐
+│  Client-side export (no API call)           │
+│                                             │
+│  CSV Export:                                │
+│    1. Convert vocabulary to CSV rows        │
+│    2. Generate CSV string                   │
+│    3. Create Blob                           │
+│    4. Trigger download                      │
+│       filename: vocabulary_{date}.csv       │
+│                                             │
+│  JSON Export:                               │
+│    1. JSON.stringify(vocabulary)            │
+│    2. Create Blob                           │
+│    3. Trigger download                      │
+│       filename: vocabulary_{date}.json      │
+└─────────────────────────────────────────────┘
+    │
+    ▼
+Browser downloads file to ~/Downloads/
+```
+
+---
+
+## 10. Theme & UI Flow
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  Theme System (Tailwind Dark Mode)                          │
+└──────────────────────────────────────────────────────────────┘
+
+ThemeToggleButton (Client Component)
+    │
+    ▼
+Clicks toggle
+    │
+    ▼
+Toggle localStorage('theme')
+    │
+    ├─► 'light' → Remove .dark class
+    └─► 'dark' → Add .dark class to <html>
+    │
+    ▼
+CSS Variables Update:
+    │
+    ├─► Light Mode:
+    │   • Pastel gradients (purple → pink → yellow)
+    │   • Glass: rgba(255, 255, 255, 0.7)
+    │   • Shadows: subtle, colorful
+    │
+    └─► Dark Mode:
+        • Deep blacks (gradient: #0a0a0a → #1a1625)
+        • Glass: rgba(30, 30, 30, 0.7)
+        • Enhanced glow effects
+
+Animations (Both Modes):
+  • Background blobs (6 total, staggered delays)
+  • Card hover: translateY(-4px) + shadow increase
+  • Button active: scale(0.9)
+  • Progress glow: pulse animation (2s infinite)
+  • Smooth transitions: all 300ms ease-out
+```
+
+---
+
+## 11. Error Handling & Toast Flow
+
+```
+API Call Initiated
+    │
+    ▼
+try {
+  const response = await fetch(...)
+  
+  if (!response.ok) {
+    throw new Error(...)
+  }
+  
+  const data = await response.json()
+  
+  // Success path
+  ┌─────────────────────────────┐
+  │ showToast('success')        │
+  │ • Green background          │
+  │ • ✅ Check icon             │
+  │ • Auto-dismiss (3s)         │
+  └─────────────────────────────┘
+  
+} catch (error) {
+  
+  // Error path
+  ┌─────────────────────────────┐
+  │ showToast('error')          │
+  │ • Red background            │
+  │ • ❌ X icon                 │
+  │ • Longer duration (5s)      │
+  │ • Error message displayed   │
+  └─────────────────────────────┘
+  
+  // Rollback optimistic updates
+  setState(previousState)
+}
+
+Toast Examples:
+• ✨ "mogen" is modified in the library
+• 🗑️ "zijn" is deleted from the library
+• ✅ Successfully saved 630 words!
+• ❌ Failed to save: Network error
+```
+
+---
+
+## 12. Performance Optimization Summary
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  OPTIMIZATION STRATEGY                                       │
+└──────────────────────────────────────────────────────────────┘
+
+1. React Level:
+   ├─ React.memo() on VocabularyCard
+   ├─ useCallback() for stable function refs
+   ├─ useMemo() for expensive calculations
+   └─ Key prop optimization for lists
+
+2. CSS/Animation Level:
+   ├─ will-change: transform (GPU acceleration)
+   ├─ transform instead of top/left (GPU)
+   ├─ opacity animations (GPU)
+   └─ Reduced animation-delay spread (smoother)
+
+3. Database Level:
+   ├─ Indexes on dutch (UNIQUE), level
+   ├─ Connection pooling (max: 20)
+   ├─ Prepared statements (SQL injection prevention)
+   └─ Efficient queries (SELECT only needed fields)
+
+4. Network Level:
+   ├─ Client-side exports (no server roundtrip)
+   ├─ Debounced search (reduce API calls)
+   ├─ Optimistic UI updates
+   └─ Batch operations (import/save-state)
+
+5. Build Level:
+   ├─ Next.js production build optimization
+   ├─ Tree shaking
+   ├─ Code splitting (automatic with App Router)
+   └─ Static generation where possible
+
+Result: Smooth 60fps, fast interactions, optimized bundle
+```
+
+---
+
+## Summary
+
+This architecture provides:
+- ✅ **Data Integrity**: PostgreSQL with constraints
+- ✅ **Smart Merging**: Intelligent import logic
+- ✅ **Performance**: Optimized React & CSS
+- ✅ **UX**: Smooth animations, instant feedback
+- ✅ **Reliability**: Error handling, backups
+- ✅ **Scalability**: Connection pooling, efficient queries
+
+All data flows are designed for safety, speed, and user experience.
+
+│  For each word:                                                  │
+│    1. Check duplicate (LOWER(dutch) = LOWER($1))                 │
+│    2. If exists:                                                 │
+│       ├─ Compare example lengths                                │
+│       ├─ If new longer → replace & move old to practice          │
+│       ├─ Merge practice arrays:                                 │
+│       │  • Parse JSON strings: {"nl":"X"} → "X (Y)"             │
+│       │  • Deduplicate (case-insensitive)                       │
+│       │  • Clean formatting                                     │
+│       ├─ Add missing fields (pos, notes, grammar)               │
+│       └─ UPDATE if any changes                                  │
+│    3. If new → INSERT                                           │
+│                                                                  │
+│  Return: {                                                       │
+│    inserted: 5,                                                  │
+│    updated: 3,                                                   │
+│    skipped: 2,                                                   │
+│    insertedWords: ["nieuw", ...],                                │
+│    updatedWords: ["mogen", ...]                                  │
+│  }                                                               │
+└──────────────┬───────────────────────────────────────────────────┘
+               │
+               │ 3. Database Operations
+               ▼
+┌────────────────────────────────────────────┐
+│  PostgreSQL Transactions                   │
+│                                            │
+│  BEGIN;                                    │
+│    INSERT ... ON CONFLICT DO NOTHING       │
+│    UPDATE ... WHERE id = $1                │
+│  COMMIT;                                   │
+└──────────────┬─────────────────────────────┘
+               │
+               │ 4. Response
+               ▼
+┌────────────────────────────────────────────┐
+│  Client Alert
 │  │        PUT /api/vocabulary-db                           │        │
 │  │        (immediate DB update + toast notification)       │        │
 │  └─────────────────────────────────────────────────────────┘        │

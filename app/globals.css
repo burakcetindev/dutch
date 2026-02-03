@@ -219,6 +219,18 @@
     animation-delay: 4s;
   }
 
+  .animation-delay-6000 {
+    animation-delay: 6s;
+  }
+
+  .animation-delay-8000 {
+    animation-delay: 8s;
+  }
+
+  .animation-delay-10000 {
+    animation-delay: 10s;
+  }
+
   /* New slide-up animation */
   @keyframes slideUp {
     from {
@@ -449,10 +461,26 @@
 
   /* Smooth transitions for all interactive elements */
   button, a, input, select, textarea {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply transition-all duration-200 ease-out;
   }
 
-  button:active, a:active {
-    transform: scale(0.97);
+  /* Enhanced click feedback */
+  button:active, .clickable:active {
+    transform: scale(0.96);
   }
 }
+
+/* Pulse animation for active states */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+  }
+}
+
+.animate-glow-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+

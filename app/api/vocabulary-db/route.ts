@@ -63,7 +63,8 @@ export async function POST(request: NextRequest) {
       await client.query('BEGIN');
       
       const inserted = [];
-      const duplicates = [];
+      const updated = [];
+      const skipped = [];
       
       for (const word of words) {
         // Validate required fields
@@ -73,12 +74,126 @@ export async function POST(request: NextRequest) {
 
         // Check for duplicate (case-insensitive)
         const existing = await client.query(
-          'SELECT id FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
+          'SELECT * FROM vocabulary WHERE LOWER(dutch) = LOWER($1)',
           [word.dutch]
         );
         
         if (existing.rows.length > 0) {
-          duplicates.push(word.dutch);
+          // Word exists - check if new data has better/longer example or additional practice
+          const existingWord = existing.rows[0];
+          const existingExampleLength = (existingWord.example_nl || '').length + (existingWord.example_en || '').length;
+          const newExampleLength = (word.example?.nl || '').length + (word.example?.en || '').length;
+          
+          let shouldUpdate = false;
+          let updateFields: any = {};
+          
+          // Helper function to normalize practice sentences (remove JSON strings, clean up)
+          const normalizePractice = (practice: any[]): string[] => {
+            const normalized = practice
+              .filter(p => p && typeof p === 'string' && p.trim().length > 0)
+              .map(p => {
+                // Try to parse JSON strings
+                try {
+                  const parsed = JSON.parse(p);
+                  if (parsed.nl && parsed.en) {
+                    return `${parsed.nl} (${parsed.en})`;
+                  }
+                  return p.trim();
+                } catch {
+                  return p.trim();
+                }
+              })
+              .filter(p => p.length > 0);
+            
+            // Deduplicate (case-insensitive)
+            const seen = new Set<string>();
+            return normalized.filter(p => {
+              const lower = p.toLowerCase();
+              if (seen.has(lower)) return false;
+              seen.add(lower);
+              return true;
+            });
+          };
+          
+          // Collect all practice sentences
+          let allPractice: string[] = [];
+          
+          // Add existing practice
+          if (existingWord.practice && existingWord.practice.length > 0) {
+            allPractice.push(...existingWord.practice);
+          }
+          
+          // If new example is longer, move old example to practice and use new example
+          if (newExampleLength > existingExampleLength && newExampleLength > 0) {
+            updateFields.example_nl = word.example.nl?.trim() || null;
+            updateFields.example_en = word.example.en?.trim() || null;
+            
+            // Add old example as practice sentence (if exists)
+            if (existingWord.example_nl && existingWord.example_en) {
+              const oldExample = `${existingWord.example_nl} (${existingWord.example_en})`;
+              allPractice.push(oldExample);
+            }
+            
+            shouldUpdate = true;
+          }
+          
+          // Add new practice sentences
+          if (word.practice && word.practice.length > 0) {
+            allPractice.push(...word.practice);
+          }
+          
+          // Normalize and deduplicate all practice sentences
+          if (allPractice.length > 0) {
+            const cleanedPractice = normalizePractice(allPractice);
+            const existingClean = normalizePractice(existingWord.practice || []);
+            
+            if (cleanedPractice.length > existingClean.length || 
+                JSON.stringify(cleanedPractice.sort()) !== JSON.stringify(existingClean.sort())) {
+              updateFields.practice = cleanedPractice;
+              shouldUpdate = true;
+            }
+          }
+          
+          // Update other fields if they're more complete
+          if (word.pos && !existingWord.pos) {
+            updateFields.pos = word.pos.trim();
+            shouldUpdate = true;
+          }
+          
+          if (word.notes && !existingWord.notes) {
+            updateFields.notes = word.notes.trim();
+            shouldUpdate = true;
+          }
+          
+          if (word.grammar?.present && !existingWord.grammar_present) {
+            updateFields.grammar_present = word.grammar.present.trim();
+            shouldUpdate = true;
+          }
+          
+          if (word.grammar?.past && !existingWord.grammar_past) {
+            updateFields.grammar_past = word.grammar.past.trim();
+            shouldUpdate = true;
+          }
+          
+          if (word.grammar?.future && !existingWord.grammar_future) {
+            updateFields.grammar_future = word.grammar.future.trim();
+            shouldUpdate = true;
+          }
+          
+          if (shouldUpdate) {
+            // Build dynamic UPDATE query
+            const setClause = Object.keys(updateFields).map((key, i) => `${key} = $${i + 2}`).join(', ');
+            const values = Object.values(updateFields);
+            
+            await client.query(
+              `UPDATE vocabulary SET ${setClause}, updated_at = NOW() WHERE id = $1`,
+              [existingWord.id, ...values]
+            );
+            
+            updated.push(word.dutch);
+          } else {
+            skipped.push(word.dutch);
+          }
           continue;
         }
         
@@ -119,8 +234,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         inserted: inserted.length,
-        duplicates: duplicates.length,
-        duplicateWords: duplicates
+        updated: updated.length,
+        skipped: skipped.length,
+        updatedWords: updated,
+        skippedWords: skipped
       });
     } catch (error) {
       await client.query('ROLLBACK');
@@ -188,6 +305,14 @@ export async function PUT(request: NextRequest) {
     if (updates.functions !== undefined) {
       setClauses.push(`functions = $${valueIndex++}`);
       values.push(updates.functions);
+    }
+    
+    // Handle example object (from VocabularyCard edit)
+    if (updates.example !== undefined) {
+      setClauses.push(`example_nl = $${valueIndex++}`);
+      values.push(updates.example.nl || null);
+      setClauses.push(`example_en = $${valueIndex++}`);
+      values.push(updates.example.en || null);
     }
     
     if (updates.example_nl !== undefined) {

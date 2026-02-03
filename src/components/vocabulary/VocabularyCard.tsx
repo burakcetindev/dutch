@@ -4,7 +4,7 @@ import { VocabularyWord } from "@/types/vocabulary";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Circle, CircleDot, CheckCircle2, Volume2, ChevronDown, ChevronUp, Plus, X, Edit2, Trash2, Save, Settings } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { YouGlish } from "./YouGlish";
 
 interface VocabularyCardProps {
@@ -16,7 +16,7 @@ interface VocabularyCardProps {
   onDelete?: (wordId: string) => void;
 }
 
-export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracticeRemove, onEdit, onDelete }: VocabularyCardProps) {
+export const VocabularyCard = memo(function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracticeRemove, onEdit, onDelete }: VocabularyCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newPractice, setNewPractice] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -28,23 +28,23 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
     example_en: word.example?.en || ""
   });
 
-  const getProgressColor = (progress: string) => {
+  const getProgressColor = useCallback((progress: string) => {
     switch (progress) {
       case "new": return "from-red-500 to-pink-500";
       case "learning": return "from-yellow-500 to-orange-500";
       case "mastered": return "from-green-500 to-emerald-500";
       default: return "from-gray-400 to-gray-500";
     }
-  };
+  }, []);
 
-  const handleAddPractice = () => {
+  const handleAddPractice = useCallback(() => {
     if (newPractice.trim() && onPracticeAdd) {
       onPracticeAdd(word.id, newPractice.trim());
       setNewPractice("");
     }
-  };
+  }, [newPractice, onPracticeAdd, word.id]);
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = useCallback(() => {
     if (onEdit) {
       onEdit(word.id, {
         dutch: editedWord.dutch,
@@ -56,9 +56,9 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
       });
       setIsEditing(false);
     }
-  };
+  }, [onEdit, word.id, editedWord]);
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     setEditedWord({
       dutch: word.dutch,
       english: word.english,
@@ -66,13 +66,13 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
       example_en: word.example?.en || ""
     });
     setIsEditing(false);
-  };
+  }, [word.dutch, word.english, word.example?.nl, word.example?.en]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (onDelete && confirm(`Are you sure you want to delete "${word.dutch}"?`)) {
       onDelete(word.id);
     }
-  };
+  }, [onDelete, word.id, word.dutch]);
 
   return (
     <div className="animate-fade-in-scale">
@@ -123,7 +123,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                   )}
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="ml-2 p-2 glass rounded-xl hover:scale-110 transition-all duration-300 hover:rotate-180"
+                    className="ml-2 p-2 glass rounded-xl hover:scale-110 transition-all duration-300 hover:rotate-180 active:scale-95 active:rotate-90"
                     title={isExpanded ? "Show less" : "Show more"}
                   >
                     {isExpanded ? (
@@ -138,14 +138,14 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                     <div className="relative">
                       <button
                         onClick={() => setShowActionMenu(!showActionMenu)}
-                        className={`p-2 glass rounded-xl transition-all duration-300 ${
+                        className={`p-2 glass rounded-xl transition-all duration-300 active:scale-90 ${
                           showActionMenu 
                             ? "bg-purple-100 dark:bg-purple-900/30 scale-110" 
                             : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105"
                         }`}
                         title={showActionMenu ? "Close menu" : "Open menu"}
                       >
-                        <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform ${showActionMenu ? "rotate-45" : ""}`} />
+                        <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform duration-500 ${showActionMenu ? "rotate-180" : ""}`} />
                       </button>
                       
                       {showActionMenu && (
@@ -156,7 +156,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                                 setIsEditing(true);
                                 setShowActionMenu(false);
                               }}
-                              className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 animate-in fade-in slide-in-from-top-2 duration-150"
+                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 animate-in fade-in slide-in-from-top-2 duration-150"
                               title="Edit word"
                             >
                               <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -165,7 +165,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                           {onDelete && (
                             <button
                               onClick={handleDelete}
-                              className="p-3 glass rounded-2xl hover:scale-110 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 animate-in fade-in slide-in-from-top-4 duration-200"
+                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 animate-in fade-in slide-in-from-top-4 duration-200"
                               title="Delete word"
                             >
                               <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -194,14 +194,14 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
               <>
                 <button
                   onClick={handleSaveEdit}
-                  className="p-3 glass rounded-2xl hover:scale-105 transition-all duration-300 hover:shadow-lg bg-green-100 dark:bg-green-900/30"
+                  className="p-3 glass rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-lg bg-green-100 dark:bg-green-900/30"
                   title="Save changes"
                 >
                   <Save className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="p-3 glass rounded-2xl hover:scale-105 transition-all duration-300 hover:shadow-lg bg-gray-100 dark:bg-gray-800/30"
+                  className="p-3 glass rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-lg bg-gray-100 dark:bg-gray-800/30"
                   title="Cancel editing"
                 >
                   <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -211,7 +211,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
               <>
                 <button
                   onClick={() => onProgressChange(word.id, "new")}
-                  className={`p-3 rounded-2xl transition-all duration-300 ${
+                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
                     word.progress === "new"
                       ? "bg-gradient-to-br from-red-500 to-pink-500 shadow-lg scale-110 animate-glow-pulse"
                       : "glass hover:scale-105 hover:animate-float"
@@ -222,7 +222,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "learning")}
-                  className={`p-3 rounded-2xl transition-all duration-300 ${
+                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
                     word.progress === "learning"
                       ? "bg-gradient-to-br from-yellow-500 to-orange-500 shadow-lg scale-110 animate-spin-slow"
                       : "glass hover:scale-105 hover:animate-float"
@@ -233,7 +233,7 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "mastered")}
-                  className={`p-3 rounded-2xl transition-all duration-300 ${
+                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
                     word.progress === "mastered"
                       ? "bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg scale-110 animate-glow-pulse"
                       : "glass hover:scale-105 hover:animate-float"
@@ -442,4 +442,4 @@ export function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracti
       </div>
     </div>
   );
-}
+});

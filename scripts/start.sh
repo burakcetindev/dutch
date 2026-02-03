@@ -43,7 +43,7 @@ else
 fi
 
 # Check if images exist
-if ! docker images | grep -q "infra-app"; then
+if ! docker images | grep -q "dutch-vocab-vocab"; then
   echo "⚠️  Docker image not found!"
   echo "   Running first-time build..."
   echo ""
@@ -59,7 +59,7 @@ echo "⏳ Waiting for services to be ready..."
 sleep 5
 
 # Check if containers are running
-if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutch-app"; then
+if docker ps --filter "name=dutch-vocab-app" --filter "status=running" | grep -q "dutch-vocab-app"; then
   echo ""
   echo "✅ Application started successfully!"
   echo ""
@@ -70,9 +70,9 @@ if docker ps --filter "name=dutch-app" --filter "status=running" | grep -q "dutc
   echo "🐘 PostgreSQL is running on: localhost:5432"
   echo ""
   echo "📝 Useful commands:"
-  echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f app"
+  echo "   View logs:        docker compose -f infra/docker-compose.yml logs -f vocab"
   echo "   Stop app:         docker compose -f infra/docker-compose.yml down"
-  echo "   Restart app:      docker compose -f infra/docker-compose.yml restart app"
+  echo "   Restart app:      docker compose -f infra/docker-compose.yml restart vocab"
   echo "   Rebuild:          ./scripts/build-and-start.sh"
   echo ""
   echo "🎉 Happy learning Dutch! 🇳🇱"
