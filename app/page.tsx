@@ -269,10 +269,17 @@ export default function Home() {
                 </div>
                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from CSV</span>
               </label>
+                <label htmlFor="file-upload-json" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-200 hover:scale-105">
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                    <Upload className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Import from JSON</span>
+                </label>
             </div>
           </div>
           <input id="file-upload-excel" type="file" accept=".xlsx,.xls" onChange={handleFileUpload} className="hidden" />
           <input id="file-upload-csv" type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
+                    <input id="file-upload-json" type="file" accept=".json" onChange={handleFileUpload} className="hidden" />
           
           {/* Export Dropdown */}
           <div className="relative group">

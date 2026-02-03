@@ -1,7 +1,9 @@
+name: dutch-vocab
+
 services:
   db:
     image: postgres:16-alpine
-    container_name: dutch-postgres
+    container_name: dutch-vocab-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-dutch_user}
@@ -18,11 +20,9 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
-    build:
-      context: ..
-      dockerfile: infra/Dockerfile
-    container_name: dutch-app
+  vocab:
+    image: node:20-alpine
+    container_name: dutch-vocab-app
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
