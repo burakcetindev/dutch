@@ -42,16 +42,8 @@ else
   echo ""
 fi
 
-# Check if images exist
-if ! docker images | grep -q "dutch-vocab-vocab"; then
-  echo "⚠️  Docker image not found!"
-  echo "   Running first-time build..."
-  echo ""
-  ./scripts/build-and-start.sh
-  exit 0
-fi
-
-echo "🚀 Starting containers..."
+# Start containers using existing image (no rebuild)
+echo "🚀 Starting containers (using cached image)..."
 docker compose -f infra/docker-compose.yml up -d
 
 echo ""

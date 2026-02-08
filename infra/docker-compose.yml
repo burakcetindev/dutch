@@ -24,6 +24,11 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile
+      cache_from:
+        - dutch-vocab:latest
+      args:
+        BUILDKIT_INLINE_CACHE: "1"
+    image: dutch-vocab:latest
     container_name: dutch-vocab-app
     restart: unless-stopped
     ports:
@@ -31,12 +36,15 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-dutch_user}:${POSTGRES_PASSWORD:-dutch_password}@db:5432/${POSTGRES_DB:-dutch_vocabulary}
       NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+    volumes:
+      - vocab_backups:/app/input
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - ../input:/app/input
 
 volumes:
   postgres_data:
+    driver: local
+  vocab_backups:
     driver: local

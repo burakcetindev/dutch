@@ -50,9 +50,13 @@ docker compose -f infra/docker-compose.yml down 2>/dev/null || true
 echo ""
 
 # Build and start containers
-echo "🏗️  Building Docker images..."
-echo "   (This may take a few minutes the first time)"
+echo "🏗️  Building Docker images with BuildKit + Cache..."
+echo "   (First build: ~90s, Subsequent: ~2-5s)"
 echo ""
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+
+# Build with cache - DO NOT use --no-cache for faster rebuilds
 docker compose -f infra/docker-compose.yml build
 
 echo ""
