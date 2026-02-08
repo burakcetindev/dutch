@@ -16,6 +16,7 @@ import {
   exportVocabularyToJSON,
 } from "@/lib/vocabulary";
 import { calculateStats } from "@/lib/stats";
+import { showToast } from "@/lib/toast";
 import {
   BookOpen,
   Upload,
@@ -150,7 +151,6 @@ export default function Home() {
         setStats(calculateStats(updated));
         
         // Show success toast
-        const { showToast } = await import('@/lib/toast');
         showToast({
           message: `"${newWord.dutch}" added successfully!`,
           type: 'success',
@@ -158,7 +158,6 @@ export default function Home() {
         });
       } else {
         const error = await response.json();
-        const { showToast } = await import('@/lib/toast');
         if (error.duplicateWords && error.duplicateWords.length > 0) {
           showToast({
             message: `Word "${error.duplicateWords[0]}" already exists!`,
@@ -175,7 +174,6 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error adding word:", error);
-      const { showToast } = await import('@/lib/toast');
       showToast({
         message: "Failed to add word",
         type: 'error',
@@ -199,14 +197,12 @@ export default function Home() {
         saveVocabularyToStorage(data.vocabulary);
         setStats(calculateStats(data.vocabulary));
         
-        const { showToast } = await import('@/lib/toast');
         showToast({
           message: `Reloaded ${data.vocabulary.length} words from database!`,
           type: 'success',
           duration: 3000
         });
       } else {
-        const { showToast } = await import('@/lib/toast');
         showToast({
           message: "No vocabulary found in database. Add some words first!",
           type: 'warning',
@@ -215,7 +211,6 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error reloading:", error);
-      const { showToast } = await import('@/lib/toast');
       showToast({
         message: "Failed to reload data from database.",
         type: 'error',
@@ -237,7 +232,6 @@ export default function Home() {
       
       if (response.ok) {
         const data = await response.json();
-        const { showToast } = await import('@/lib/toast');
         showToast({
           message: `Saved ${data.saved} words to database!`,
           type: 'success',
@@ -249,7 +243,6 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error saving state:", error);
-      const { showToast } = await import('@/lib/toast');
       showToast({
         message: `Failed to save state: ${error instanceof Error ? error.message : 'Unknown error'}`,
         type: 'error',

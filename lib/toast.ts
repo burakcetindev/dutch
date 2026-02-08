@@ -7,53 +7,79 @@ interface ToastOptions {
 }
 
 export function showToast({ message, type, duration = 3000 }: ToastOptions) {
-  // Create toast container
-  const toast = document.createElement('div');
-  toast.className = `fixed bottom-6 right-6 z-[9999]`;
-  
   // Color schemes
-  const colors = {
+  const colorConfig = {
     success: {
-      bg: 'from-green-500 to-emerald-500',
-      text: 'text-white',
+      gradient: ['bg-green-500', 'bg-emerald-500'],
       icon: '✨',
     },
     warning: {
-      bg: 'from-yellow-500 to-orange-500',
-      text: 'text-white',
+      gradient: ['bg-yellow-500', 'bg-orange-500'],
       icon: '✏️',
     },
     error: {
-      bg: 'from-red-500 to-pink-500',
-      text: 'text-white',
+      gradient: ['bg-red-500', 'bg-pink-500'],
       icon: '🗑️',
     },
   };
 
-  const { bg, text, icon } = colors[type];
+  const { gradient, icon } = colorConfig[type];
 
-  toast.innerHTML = `
-    <div class="rounded-2xl px-5 py-3 bg-gradient-to-r ${bg} backdrop-blur-md animate-toast-enter shadow-2xl border border-white/20" style="min-width: 280px; max-width: 400px;">
-      <div class="flex items-center gap-3">
-        <span class="text-xl">${icon}</span>
-        <p class="font-semibold ${text} text-sm">${message}</p>
-      </div>
-    </div>
+  // Create toast container
+  const toastContainer = document.createElement('div');
+  toastContainer.style.cssText = 'position: fixed; bottom: 24px; right: 24px; z-index: 9999;';
+
+  // Create toast card
+  const toastCard = document.createElement('div');
+  toastCard.style.cssText = `
+    min-width: 280px;
+    max-width: 400px;
+    padding: 12px 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
   `;
+  
+  // Set gradient background based on type
+  if (type === 'success') {
+    toastCard.style.background = 'linear-gradient(to right, #10b981, #059669)';
+  } else if (type === 'warning') {
+    toastCard.style.background = 'linear-gradient(to right, #f59e0b, #ea580c)';
+  } else {
+    toastCard.style.background = 'linear-gradient(to right, #ef4444, #ec4899)';
+  }
+  
+  toastCard.classList.add('animate-toast-enter');
 
-  document.body.appendChild(toast);
+  // Create icon span
+  const iconSpan = document.createElement('span');
+  iconSpan.textContent = icon;
+  iconSpan.style.fontSize = '20px';
+
+  // Create message paragraph
+  const messagePara = document.createElement('p');
+  messagePara.textContent = message;
+  messagePara.style.cssText = 'font-weight: 600; color: white; font-size: 14px; margin: 0;';
+
+  // Assemble toast
+  toastCard.appendChild(iconSpan);
+  toastCard.appendChild(messagePara);
+  toastContainer.appendChild(toastCard);
+  document.body.appendChild(toastContainer);
 
   // Exit animation
   setTimeout(() => {
-    const toastCard = toast.querySelector('div');
-    if (toastCard) {
-      toastCard.classList.add('animate-toast-exit');
-      
-      // Create dust particles
-      createDustEffect(toastCard, type);
-    }
+    toastCard.classList.remove('animate-toast-enter');
+    toastCard.classList.add('animate-toast-exit');
     
-    setTimeout(() => toast.remove(), 300);
+    // Create dust particles
+    createDustEffect(toastCard, type);
+    
+    setTimeout(() => toastContainer.remove(), 300);
   }, duration);
 }
 
