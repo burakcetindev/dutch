@@ -9,7 +9,7 @@ interface ToastOptions {
 export function showToast({ message, type, duration = 3000 }: ToastOptions) {
   // Create toast container
   const toast = document.createElement('div');
-  toast.className = `fixed bottom-6 right-6 z-[9999] max-w-md`;
+  toast.className = `fixed bottom-6 right-6 z-[9999]`;
   
   // Color schemes
   const colors = {
@@ -33,10 +33,10 @@ export function showToast({ message, type, duration = 3000 }: ToastOptions) {
   const { bg, text, icon } = colors[type];
 
   toast.innerHTML = `
-    <div class="glass-card p-4 bg-gradient-to-r ${bg} backdrop-blur-md animate-toast-enter shadow-2xl">
+    <div class="rounded-2xl px-5 py-3 bg-gradient-to-r ${bg} backdrop-blur-md animate-toast-enter shadow-2xl border border-white/20" style="min-width: 280px; max-width: 400px;">
       <div class="flex items-center gap-3">
-        <span class="text-2xl">${icon}</span>
-        <p class="font-semibold ${text} text-sm leading-relaxed">${message}</p>
+        <span class="text-xl">${icon}</span>
+        <p class="font-semibold ${text} text-sm">${message}</p>
       </div>
     </div>
   `;

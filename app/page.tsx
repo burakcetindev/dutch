@@ -148,17 +148,39 @@ export default function Home() {
         setVocabulary(updated);
         saveVocabularyToStorage(updated);
         setStats(calculateStats(updated));
+        
+        // Show success toast
+        const { showToast } = await import('@/lib/toast');
+        showToast({
+          message: `"${newWord.dutch}" added successfully!`,
+          type: 'success',
+          duration: 3000
+        });
       } else {
         const error = await response.json();
+        const { showToast } = await import('@/lib/toast');
         if (error.duplicateWords && error.duplicateWords.length > 0) {
-          alert(`Word "${error.duplicateWords[0]}" already exists!`);
+          showToast({
+            message: `Word "${error.duplicateWords[0]}" already exists!`,
+            type: 'error',
+            duration: 3000
+          });
         } else {
-          alert("Failed to add word to database");
+          showToast({
+            message: "Failed to add word to database",
+            type: 'error',
+            duration: 3000
+          });
         }
       }
     } catch (error) {
       console.error("Error adding word:", error);
-      alert("Failed to add word");
+      const { showToast } = await import('@/lib/toast');
+      showToast({
+        message: "Failed to add word",
+        type: 'error',
+        duration: 3000
+      });
     }
   };
 
@@ -176,13 +198,29 @@ export default function Home() {
         setVocabulary(data.vocabulary);
         saveVocabularyToStorage(data.vocabulary);
         setStats(calculateStats(data.vocabulary));
-        alert(`✅ Reloaded ${data.vocabulary.length} words from database!`);
+        
+        const { showToast } = await import('@/lib/toast');
+        showToast({
+          message: `Reloaded ${data.vocabulary.length} words from database!`,
+          type: 'success',
+          duration: 3000
+        });
       } else {
-        alert("No vocabulary found in database. Add some words first!");
+        const { showToast } = await import('@/lib/toast');
+        showToast({
+          message: "No vocabulary found in database. Add some words first!",
+          type: 'warning',
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error("Error reloading:", error);
-      alert("Failed to reload data from database.");
+      const { showToast } = await import('@/lib/toast');
+      showToast({
+        message: "Failed to reload data from database.",
+        type: 'error',
+        duration: 3000
+      });
     } finally {
       setIsLoading(false);
     }
@@ -199,18 +237,24 @@ export default function Home() {
       
       if (response.ok) {
         const data = await response.json();
-        const message = data.message || `✅ Successfully saved ${data.saved} words to database!`;
-        const backupInfo = data.backupFiles && data.backupFiles.length > 0 
-          ? `\n\n📦 Backup files created:\n${data.backupFiles.map((f: string) => `  • ${f}`).join('\n')}`
-          : '';
-        alert(message + backupInfo);
+        const { showToast } = await import('@/lib/toast');
+        showToast({
+          message: `Saved ${data.saved} words to database!`,
+          type: 'success',
+          duration: 3000
+        });
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `Failed to save state (${response.status})`);
       }
     } catch (error) {
       console.error("Error saving state:", error);
-      alert(`❌ Failed to save state: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const { showToast } = await import('@/lib/toast');
+      showToast({
+        message: `Failed to save state: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        type: 'error',
+        duration: 3000
+      });
     } finally {
       setIsLoading(false);
     }

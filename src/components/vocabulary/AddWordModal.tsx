@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, X } from "lucide-react";
 import { VocabularyWord } from "@/types/vocabulary";
-import { showToast } from "@/lib/toast";
 
 interface AddWordModalProps {
   isOpen: boolean;
@@ -63,15 +62,6 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
       createdAt: new Date().toISOString(),
     };
 
-    onAdd(newWord);
-    
-    // Show success toast
-    showToast({
-      message: `"${formData.dutch}" added successfully!`,
-      type: 'success',
-      duration: 3000
-    });
-    
     // Reset form
     setFormData({
       dutch: "",
@@ -87,7 +77,11 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
       notes: "",
     });
     
+    // Close modal first
     handleClose();
+    
+    // Then let parent handle the API call and toast
+    onAdd(newWord);
   };
 
   const handleClose = () => {

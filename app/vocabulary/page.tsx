@@ -80,6 +80,9 @@ function VocabularyContent() {
   }, []);
 
   const handleProgressChange = async (wordId: string, progress: "new" | "learning" | "mastered") => {
+    const word = vocabulary.find(w => w.id === wordId);
+    const wordName = word?.dutch || 'Word';
+    
     const updated = updateWordProgress(vocabulary, wordId, progress);
     setVocabulary(updated);
     saveVocabularyToStorage(updated);
@@ -91,8 +94,18 @@ function VocabularyContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: wordId, updates: { progress } })
       });
+      
+      // Show toast with appropriate color based on progress
+      const toastConfig = {
+        new: { message: `"${wordName}" marked as New`, type: 'error' as const },
+        learning: { message: `"${wordName}" marked as Learning`, type: 'warning' as const },
+        mastered: { message: `"${wordName}" marked as Mastered`, type: 'success' as const }
+      };
+      
+      showToast(toastConfig[progress]);
     } catch (error) {
       console.error("Error updating progress in database:", error);
+      showToast({ message: `Failed to update "${wordName}"`, type: 'error' });
     }
   };
 

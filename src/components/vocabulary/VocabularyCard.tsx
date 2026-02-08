@@ -230,36 +230,36 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
               <>
                 <button
                   onClick={() => onProgressChange(word.id, "new")}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 bg-gradient-to-br from-red-500 to-pink-500 interactive ${
                     word.progress === "new"
-                      ? "bg-gradient-to-br from-red-500 to-pink-500 shadow-lg scale-110 animate-glow-pulse"
-                      : "glass hover:scale-110 hover:animate-float"
+                      ? "shadow-2xl scale-110 ring-4 ring-red-300 dark:ring-red-700 animate-glow-pulse"
+                      : "opacity-70 hover:opacity-100 hover:scale-110 hover:shadow-lg"
                   }`}
                   title="New"
                 >
-                  <Circle className={`w-5 h-5 transition-all duration-300 ${word.progress === "new" ? "text-white" : "text-red-500"}`} />
+                  <Circle className="w-5 h-5 text-white transition-all duration-300" />
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "learning")}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 bg-gradient-to-br from-yellow-500 to-orange-500 interactive ${
                     word.progress === "learning"
-                      ? "bg-gradient-to-br from-yellow-500 to-orange-500 shadow-lg scale-110 animate-spin-slow"
-                      : "glass hover:scale-110 hover:animate-float"
+                      ? "shadow-2xl scale-110 ring-4 ring-yellow-300 dark:ring-yellow-700 animate-spin-slow"
+                      : "opacity-70 hover:opacity-100 hover:scale-110 hover:shadow-lg"
                   }`}
                   title="Learning"
                 >
-                  <CircleDot className={`w-5 h-5 transition-all duration-300 ${word.progress === "learning" ? "text-white" : "text-yellow-600"}`} />
+                  <CircleDot className="w-5 h-5 text-white transition-all duration-300" />
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "mastered")}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 bg-gradient-to-br from-green-500 to-emerald-500 interactive ${
                     word.progress === "mastered"
-                      ? "bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg scale-110 animate-glow-pulse"
-                      : "glass hover:scale-110 hover:animate-float"
+                      ? "shadow-2xl scale-110 ring-4 ring-green-300 dark:ring-green-700 animate-glow-pulse"
+                      : "opacity-70 hover:opacity-100 hover:scale-110 hover:shadow-lg"
                   }`}
                   title="Mastered"
                 >
-                  <CheckCircle2 className={`w-5 h-5 transition-all duration-300 ${word.progress === "mastered" ? "text-white" : "text-green-600"}`} />
+                  <CheckCircle2 className="w-5 h-5 text-white transition-all duration-300" />
                 </button>
               </>
             )}
