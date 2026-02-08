@@ -372,20 +372,58 @@ Containers are health-checked and dependencies managed automatically.
 
 ## 🔧 Environment Variables
 
-Create a `.env` file (or copy from `.env.example`):
+### Development Setup
+
+For local development, copy `.env.example` to `.env.local`:
+
+```bash
+cp .env.example .env.local
+# Edit .env.local with your local database credentials
+```
+
+Example `.env.local` for development:
 
 ```env
-# PostgreSQL Database
-DATABASE_URL=postgresql://dutch_user:dutch_pass@localhost:5432/dutch_vocabulary
-DB_HOST=db
-DB_PORT=5432
-DB_NAME=dutch_vocabulary
-DB_USER=dutch_user
-DB_PASSWORD=dutch_pass
+# PostgreSQL Database Configuration
+POSTGRES_USER=dutch_user
+POSTGRES_PASSWORD=dutch_password
+POSTGRES_DB=dutch_vocabulary
+POSTGRES_PORT=5432
 
-# Next.js
-NEXT_PUBLIC_API_URL=http://localhost:3000
+# Database URL
+DATABASE_URL=postgresql://dutch_user:dutch_password@localhost:5432/dutch_vocabulary
+
+# Application
+APP_PORT=3000
+NODE_ENV=development
 ```
+
+### 🔒 Security Best Practices
+
+**⚠️ IMPORTANT:**
+- ✅ `.env.local` is gitignored and safe for local development
+- ✅ `.env.example` contains placeholders only (no real credentials)
+- ❌ **NEVER** commit `.env` files with real credentials
+- 🔐 For production, use environment variable managers:
+  - Docker secrets
+  - Kubernetes secrets
+  - Cloud provider secret managers (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager)
+  - Environment variables from hosting platform (Vercel, Railway, etc.)
+
+**Production Credentials:**
+1. **Change default passwords** - Never use `dutch_password` in production!
+2. **Use strong passwords**: Minimum 16 characters, mix of letters/numbers/symbols
+3. **Rotate credentials regularly**: Update database passwords quarterly
+4. **Limit access**: Use database roles with minimal required permissions
+5. **Enable SSL/TLS**: Force encrypted database connections in production
+
+**Environment File Priority** (Next.js):
+- `.env.local` (highest priority, local development only)
+- `.env.development` (development mode)
+- `.env.production` (production mode)
+- `.env` (all environments - not recommended for secrets)
+
+See `.env.example` for all available configuration options.
 
 ## 🤝 Contributing
 

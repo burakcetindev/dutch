@@ -14,6 +14,7 @@ import {
   updateWordProgress,
 } from "@/lib/vocabulary";
 import { filterVocabulary, getFilterOptions } from "@/lib/stats";
+import { showToast } from "@/lib/toast";
 import {
   ArrowLeft,
   Search,
@@ -180,24 +181,6 @@ function VocabularyContent() {
     }
   };
 
-  // Helper function to show toast notifications
-  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
-    const colors = {
-      success: 'linear-gradient(to right, #10b981, #059669)',
-      error: 'linear-gradient(to right, #ef4444, #dc2626)',
-      info: 'linear-gradient(to right, #3b82f6, #2563eb)'
-    };
-    
-    const Toast = document.createElement('div');
-    Toast.textContent = message;
-    Toast.style.cssText = `position: fixed; bottom: 20px; right: 20px; background: ${colors[type]}; color: white; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-weight: 600; animation: slideIn 0.3s ease;`;
-    document.body.appendChild(Toast);
-    setTimeout(() => {
-      Toast.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => Toast.remove(), 300);
-    }, 2500);
-  };
-
   const handleEdit = async (wordId: string, updates: Partial<VocabularyWord>) => {
     const word = vocabulary.find(w => w.id === wordId);
     const wordName = word?.dutch || 'Word';
@@ -219,13 +202,13 @@ function VocabularyContent() {
       });
       
       if (response.ok) {
-        showToast(`✨ "${wordName}" is modified in the library`, 'success');
+        showToast({ message: `"${wordName}" modified successfully`, type: 'warning' });
       } else {
         throw new Error('Failed to update word');
       }
     } catch (error) {
       console.error("Error updating word in database:", error);
-      showToast(`❌ Failed to modify "${wordName}"`, 'error');
+      showToast({ message: `Failed to modify "${wordName}"`, type: 'error' });
       // Restore original word
       if (word) {
         setVocabulary(vocabulary);
@@ -246,13 +229,13 @@ function VocabularyContent() {
       });
       
       if (response.ok) {
-        showToast(`🗑️ "${wordName}" is deleted from the library`, 'info');
+        showToast({ message: `"${wordName}" deleted from library`, type: 'error' });
       } else {
         throw new Error('Failed to delete word');
       }
     } catch (error) {
       console.error("Error deleting word from database:", error);
-      showToast(`❌ Failed to delete "${wordName}"`, 'error');
+      showToast({ message: `Failed to delete "${wordName}"`, type: 'error' });
       // Restore the word if database delete failed
       if (word) {
         setVocabulary([...updated, word]);

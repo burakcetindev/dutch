@@ -311,7 +311,7 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
 
         {/* Expanded details */}
         {isExpanded && (
-          <div className="space-y-5 mb-5 animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="space-y-5 mb-5 overflow-hidden animate-expand-content">
             {/* Grammar/Tense information */}
             {word.grammar && (word.grammar.present || word.grammar.past || word.grammar.future) && (
               <div className="glass rounded-2xl p-5 bg-gradient-to-br from-green-50/50 to-teal-50/50 dark:from-green-900/20 dark:to-teal-900/20 animate-slide-up">

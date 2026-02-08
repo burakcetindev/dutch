@@ -277,62 +277,102 @@
     background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(236, 72, 153, 0.15) 30%, transparent 70%);
   }
 
-  /* Enhanced GPU-accelerated animations */
+  /* Enhanced GPU-accelerated animations - Optimized for smoothness */
   @keyframes float {
     0%, 100% {
-      transform: translateY(0px) translateX(0px) translateZ(0);
-    }
-    25% {
-      transform: translateY(-10px) translateX(5px) translateZ(0);
+      transform: translate3d(0, 0, 0);
     }
     50% {
-      transform: translateY(-20px) translateX(-5px) translateZ(0);
-    }
-    75% {
-      transform: translateY(-10px) translateX(0px) translateZ(0);
+      transform: translate3d(0, -8px, 0);
     }
   }
 
   @keyframes modalEnter {
     from {
       opacity: 0;
-      transform: scale(0.9) translateY(20px) translateZ(0);
+      transform: scale3d(0.95, 0.95, 1) translateY(10px);
     }
     to {
       opacity: 1;
-      transform: scale(1) translateY(0) translateZ(0);
+      transform: scale3d(1, 1, 1) translateY(0);
     }
   }
 
   @keyframes modalExit {
     from {
       opacity: 1;
-      transform: scale(1) translateY(0) translateZ(0);
+      transform: scale3d(1, 1, 1) translateY(0);
     }
     to {
       opacity: 0;
-      transform: scale(0.9) translateY(20px) translateZ(0);
+      transform: scale3d(0.95, 0.95, 1) translateY(10px);
     }
   }
 
   @keyframes cardEntrance {
     from {
       opacity: 0;
-      transform: translateY(30px) scale(0.95) translateZ(0);
+      transform: translate3d(0, 20px, 0);
     }
     to {
       opacity: 1;
-      transform: translateY(0) scale(1) translateZ(0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes expandContent {
+    from {
+      opacity: 0;
+      max-height: 0;
+      transform: translate3d(0, -10px, 0);
+    }
+    to {
+      opacity: 1;
+      max-height: 2000px;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes toastEnter {
+    from {
+      opacity: 0;
+      transform: translate3d(100%, 0, 0) scale3d(0.9, 0.9, 1);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    }
+  }
+
+  @keyframes toastExit {
+    from {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    }
+    to {
+      opacity: 0;
+      transform: translate3d(100%, 0, 0) scale3d(0.9, 0.9, 1);
+    }
+  }
+
+  @keyframes dustParticle {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--dust-x), var(--dust-y), 0) scale3d(0, 0, 1);
     }
   }
 
   @keyframes successPulse {
     0%, 100% {
-      transform: scale(1) translateZ(0);
+      transform: scale3d(1, 1, 1);
       box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
     }
     50% {
-      transform: scale(1.05) translateZ(0);
+      transform: scale3d(1.03, 1.03, 1);
       box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
     }
   }
@@ -366,23 +406,38 @@
   }
 
   .animate-modal-enter {
-    animation: modalEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: modalEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     will-change: transform, opacity;
   }
 
   .animate-modal-exit {
-    animation: modalExit 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+    animation: modalExit 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
     will-change: transform, opacity;
   }
 
   .animate-card-entrance {
-    animation: cardEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     will-change: transform, opacity;
   }
 
-  .animate-success-pulse {
-    animation: successPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    will-change: transform, box-shadow;
+  .animate-expand-content {
+    animation: expandContent 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity, max-height;
+  }
+
+  .animate-toast-enter {
+    animation: toastEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-toast-exit {
+    animation: toastExit 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-dust-particle {
+    animation: dustParticle 0.6s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    will-change: transform, opacity;
   }
 
   .animate-ripple {
