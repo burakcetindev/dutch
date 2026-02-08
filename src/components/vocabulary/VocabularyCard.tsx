@@ -233,51 +233,72 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                   style={{ 
                     background: 'linear-gradient(to bottom right, #ef4444, #ec4899)',
                     boxShadow: word.progress === "new" 
-                      ? '0 0 20px rgba(239, 68, 68, 0.6), 0 0 40px rgba(239, 68, 68, 0.4)' 
-                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 15px rgba(239, 68, 68, 0.3)'
+                      ? '0 0 25px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.5)' 
+                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px rgba(239, 68, 68, 0.5), 0 0 35px rgba(239, 68, 68, 0.3)',
+                    opacity: word.progress === "new" ? 1 : 0.5
                   }}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`relative p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "new"
                       ? "scale-110 ring-4 ring-red-300 dark:ring-red-700 animate-glow-pulse"
-                      : "hover:scale-110"
+                      : "hover:scale-110 hover:opacity-75"
                   }`}
                   title="New"
                 >
                   <Circle className="w-5 h-5 text-white transition-all duration-300" />
+                  {word.progress === "new" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                      <div className="absolute w-2 h-2 bg-white rounded-full" />
+                    </div>
+                  )}
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "learning")}
                   style={{ 
                     background: 'linear-gradient(to bottom right, #f59e0b, #ea580c)',
                     boxShadow: word.progress === "learning" 
-                      ? '0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(245, 158, 11, 0.4)' 
-                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 15px rgba(245, 158, 11, 0.3)'
+                      ? '0 0 25px rgba(245, 158, 11, 0.7), 0 0 45px rgba(245, 158, 11, 0.5)' 
+                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px rgba(245, 158, 11, 0.5), 0 0 35px rgba(245, 158, 11, 0.3)',
+                    opacity: word.progress === "learning" ? 1 : 0.5
                   }}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`relative p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "learning"
                       ? "scale-110 ring-4 ring-yellow-300 dark:ring-yellow-700 animate-spin-slow"
-                      : "hover:scale-110"
+                      : "hover:scale-110 hover:opacity-75"
                   }`}
                   title="Learning"
                 >
                   <CircleDot className="w-5 h-5 text-white transition-all duration-300" />
+                  {word.progress === "learning" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                      <div className="absolute w-2 h-2 bg-white rounded-full" />
+                    </div>
+                  )}
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "mastered")}
                   style={{ 
                     background: 'linear-gradient(to bottom right, #10b981, #059669)',
                     boxShadow: word.progress === "mastered" 
-                      ? '0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.4)' 
-                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 15px rgba(16, 185, 129, 0.3)'
+                      ? '0 0 25px rgba(16, 185, 129, 0.7), 0 0 45px rgba(16, 185, 129, 0.5)' 
+                      : '0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px rgba(16, 185, 129, 0.5), 0 0 35px rgba(16, 185, 129, 0.3)',
+                    opacity: word.progress === "mastered" ? 1 : 0.5
                   }}
-                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
+                  className={`relative p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "mastered"
                       ? "scale-110 ring-4 ring-green-300 dark:ring-green-700 animate-glow-pulse"
-                      : "hover:scale-110"
+                      : "hover:scale-110 hover:opacity-75"
                   }`}
                   title="Mastered"
                 >
                   <CheckCircle2 className="w-5 h-5 text-white transition-all duration-300" />
+                  {word.progress === "mastered" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                      <div className="absolute w-2 h-2 bg-white rounded-full" />
+                    </div>
+                  )}
                 </button>
               </>
             )}
@@ -358,15 +379,15 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
             )}
 
             {/* Practice Sentences */}
-            <div className="rounded-3xl p-6 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20 animate-slide-up shadow-lg border border-purple-200/30 dark:border-purple-700/30" style={{ animationDelay: '100ms' }}>
+            <div className="glass rounded-2xl p-6 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20 animate-slide-up shadow-lg" style={{ animationDelay: '100ms' }}>
               <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 mb-4">My Practice Sentences</p>
               
               {word.practice && word.practice.length > 0 ? (
-                <div className="space-y-3 mb-4">
+                <div className="space-y-0 mb-4">
                   {word.practice.map((sentence, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-4 rounded-2xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border border-purple-100/50 dark:border-purple-700/50 shadow-sm">
+                    <>
                       {editingPracticeIndex === idx ? (
-                        <>
+                        <div key={idx} className="flex items-start gap-3 pb-4 mb-4">
                           <input
                             type="text"
                             value={editedPracticeSentence}
@@ -390,38 +411,43 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                           >
                             <X className="w-4 h-4 text-gray-500" />
                           </button>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div 
+                          key={idx} 
+                          className="flex items-start gap-3 py-4"
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 dark:bg-purple-500 mt-2 flex-shrink-0" />
                           <p className="flex-1 text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{sentence}</p>
-                          {onPracticeEdit && (
-                            <button
-                              onClick={() => handleStartEditPractice(idx, sentence)}
-                              className="p-1.5 rounded-lg hover:bg-blue-100 transition-all hover:scale-110 duration-300"
-                              title="Edit"
-                            >
-                              <Edit2 className="w-4 h-4 text-blue-500" />
-                            </button>
-                          )}
-                          {onPracticeRemove && (
-                            <button
-                              onClick={() => onPracticeRemove(word.id, idx)}
-                              className="p-1.5 rounded-lg hover:bg-red-100 transition-all hover:scale-110 hover:rotate-90 duration-300"
-                              title="Remove"
-                            >
-                              <X className="w-4 h-4 text-red-500" />
-                            </button>
-                          )}
-                        </>
+                          <div className="flex gap-1">
+                            {onPracticeEdit && (
+                              <button
+                                onClick={() => handleStartEditPractice(idx, sentence)}
+                                className="p-1.5 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all hover:scale-110 duration-300"
+                                title="Edit"
+                              >
+                                <Edit2 className="w-4 h-4 text-purple-500" />
+                              </button>
+                            )}
+                            {onPracticeRemove && (
+                              <button
+                                onClick={() => onPracticeRemove(word.id, idx)}
+                                className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all hover:scale-110 hover:rotate-90 duration-300"
+                                title="Remove"
+                              >
+                                <X className="w-4 h-4 text-red-500" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       )}
-                    </div>
+                    </>
                   ))}
                 </div>
               ) : (
                 <p className="text-sm text-gray-500 dark:text-gray-400 italic mb-4">No practice sentences yet. Add your own!</p>
               )}
 
-              {/* Add practice sentence */}
               <div className="flex gap-3 items-center">
                 <input
                   type="text"
@@ -513,7 +539,9 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
 
         {/* YouGlish Integration - Show in expanded view */}
         {isExpanded && (
-          <YouGlish word={word.dutch} />
+          <div className="mt-12">
+            <YouGlish word={word.dutch} />
+          </div>
         )}
       </div>
   );

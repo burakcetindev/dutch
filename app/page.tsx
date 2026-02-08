@@ -224,21 +224,33 @@ export default function Home() {
   const handleSaveState = async () => {
     setIsLoading(true);
     try {
+      // Save-state API pulls fresh data directly from database
+      // No need to send client-side data
       const response = await fetch("/api/save-state", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vocabulary })
+        method: "POST"
       });
       
       if (response.ok) {
         const data = await response.json();
+        console.log('Save state response:', data);
+        
+        // Defensive check for data structure
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid response from server');
+        }
+        
+        const fileList = Array.isArray(data.backupFiles) 
+          ? data.backupFiles.join(', ') 
+          : 'backup files';
+          
         showToast({
-          message: `Saved ${data.saved} words to database!`,
+          message: `✅ Backup created! Saved ${data.saved || 0} words to ${fileList}`,
           type: 'success',
-          duration: 3000
+          duration: 4000
         });
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Save state error response:', errorData);
         throw new Error(errorData.error || `Failed to save state (${response.status})`);
       }
     } catch (error) {

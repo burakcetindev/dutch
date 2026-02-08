@@ -92,19 +92,21 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
     }, 300);
   };
 
-  if (!isOpen) return null;
-
   // Auto-scroll modal into view when opened
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
+    if (isOpen && typeof window !== 'undefined') {
+      const timer = setTimeout(() => {
         const modal = document.querySelector('[role="dialog"]');
         if (modal) {
           modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 100);
+      
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
     <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}>

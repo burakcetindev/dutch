@@ -217,7 +217,9 @@ function VocabularyContent() {
       if (response.ok) {
         showToast({ message: `"${wordName}" modified successfully`, type: 'warning' });
       } else {
-        throw new Error('Failed to update word');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Update failed:', errorData);
+        throw new Error(errorData.error || 'Failed to update word');
       }
     } catch (error) {
       console.error("Error updating word in database:", error);
