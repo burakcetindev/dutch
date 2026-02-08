@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, X } from "lucide-react";
@@ -94,9 +94,21 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
 
   if (!isOpen) return null;
 
+  // Auto-scroll modal into view when opened
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        const modal = document.querySelector('[role="dialog"]');
+        if (modal) {
+          modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [isOpen]);
+
   return (
     <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}>
-      <div className={`glass-card p-8 bg-white/95 dark:bg-gray-900/95 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isClosing ? 'animate-modal-exit' : 'animate-modal-enter'}`}>
+      <div role="dialog" className={`glass-card p-8 bg-white/95 dark:bg-gray-900/95 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isClosing ? 'animate-modal-exit' : 'animate-modal-enter'}`}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Add New Word
@@ -264,7 +276,7 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
             <Button
               type="button"
               onClick={handleClose}
-              className="px-6 glass hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all duration-300 interactive"
+              className="px-6 glass hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all duration-300 interactive text-gray-700 dark:text-gray-300 font-semibold"
             >
               Cancel
             </Button>

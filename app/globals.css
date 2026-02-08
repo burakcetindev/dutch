@@ -355,6 +355,28 @@
     }
   }
 
+  @keyframes toastSplitLeft {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-100px, 200px, 0) rotate3d(0, 0, 1, -20deg);
+    }
+  }
+
+  @keyframes toastSplitRight {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(100px, 200px, 0) rotate3d(0, 0, 1, 20deg);
+    }
+  }
+
   @keyframes dustParticle {
     0% {
       opacity: 1;

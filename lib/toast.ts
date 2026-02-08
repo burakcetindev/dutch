@@ -71,15 +71,48 @@ export function showToast({ message, type, duration = 3000 }: ToastOptions) {
   toastContainer.appendChild(toastCard);
   document.body.appendChild(toastContainer);
 
-  // Exit animation
+  // Exit animation with split effect
   setTimeout(() => {
     toastCard.classList.remove('animate-toast-enter');
-    toastCard.classList.add('animate-toast-exit');
+    
+    // Split the toast into two halves
+    const rect = toastCard.getBoundingClientRect();
+    const leftHalf = toastCard.cloneNode(true) as HTMLElement;
+    const rightHalf = toastCard.cloneNode(true) as HTMLElement;
+    
+    // Position and animate left half
+    leftHalf.style.position = 'fixed';
+    leftHalf.style.left = rect.left + 'px';
+    leftHalf.style.top = rect.top + 'px';
+    leftHalf.style.width = (rect.width / 2) + 'px';
+    leftHalf.style.height = rect.height + 'px';
+    leftHalf.style.overflow = 'hidden';
+    leftHalf.style.animation = 'toastSplitLeft 0.5s ease-out forwards';
+    
+    // Position and animate right half
+    rightHalf.style.position = 'fixed';
+    rightHalf.style.left = (rect.left + rect.width / 2) + 'px';
+    rightHalf.style.top = rect.top + 'px';
+    rightHalf.style.width = (rect.width / 2) + 'px';
+    rightHalf.style.height = rect.height + 'px';
+    rightHalf.style.overflow = 'hidden';
+    rightHalf.style.clipPath = 'inset(0 0 0 50%)';
+    rightHalf.style.animation = 'toastSplitRight 0.5s ease-out forwards';
+    
+    // Hide original and add split halves
+    toastCard.style.opacity = '0';
+    document.body.appendChild(leftHalf);
+    document.body.appendChild(rightHalf);
     
     // Create dust particles
     createDustEffect(toastCard, type);
     
-    setTimeout(() => toastContainer.remove(), 300);
+    // Cleanup
+    setTimeout(() => {
+      toastContainer.remove();
+      leftHalf.remove();
+      rightHalf.remove();
+    }, 500);
   }, duration);
 }
 
