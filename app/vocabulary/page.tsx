@@ -417,17 +417,22 @@ function VocabularyContent() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {filteredAndSortedWords.map((word) => (
-              <VocabularyCard
+            {filteredAndSortedWords.map((word, index) => (
+              <div 
                 key={word.id}
-                word={word}
-                onProgressChange={handleProgressChange}
-                onPracticeAdd={handlePracticeAdd}
-                onPracticeRemove={handlePracticeRemove}
-                onPracticeEdit={handlePracticeEdit}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
+                className="animate-card-entrance"
+                style={{ animationDelay: `${Math.min(index * 0.05, 1)}s` }}
+              >
+                <VocabularyCard
+                  word={word}
+                  onProgressChange={handleProgressChange}
+                  onPracticeAdd={handlePracticeAdd}
+                  onPracticeRemove={handlePracticeRemove}
+                  onPracticeEdit={handlePracticeEdit}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </div>
             ))}
           </div>
         )}

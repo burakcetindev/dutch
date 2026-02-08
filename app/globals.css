@@ -80,6 +80,15 @@
     }
   }
 
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
   @keyframes slideInFromTop {
     from {
       opacity: 0;
@@ -175,6 +184,10 @@
     animation: fadeIn 0.2s ease-in-out;
   }
 
+  .animate-fadeOut {
+    animation: fadeOut 0.2s ease-in-out forwards;
+  }
+
   .animate-slide-in-top {
     animation: slideInFromTop 0.3s ease-out;
     will-change: transform, opacity;
@@ -264,20 +277,127 @@
     background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(236, 72, 153, 0.15) 30%, transparent 70%);
   }
 
-  /* Enhanced animations */
+  /* Enhanced GPU-accelerated animations */
   @keyframes float {
     0%, 100% {
-      transform: translateY(0px) translateX(0px);
+      transform: translateY(0px) translateX(0px) translateZ(0);
     }
     25% {
-      transform: translateY(-10px) translateX(5px);
+      transform: translateY(-10px) translateX(5px) translateZ(0);
     }
     50% {
-      transform: translateY(-20px) translateX(-5px);
+      transform: translateY(-20px) translateX(-5px) translateZ(0);
     }
     75% {
-      transform: translateY(-10px) translateX(0px);
+      transform: translateY(-10px) translateX(0px) translateZ(0);
     }
+  }
+
+  @keyframes modalEnter {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px) translateZ(0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0) translateZ(0);
+    }
+  }
+
+  @keyframes modalExit {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0) translateZ(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px) translateZ(0);
+    }
+  }
+
+  @keyframes cardEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95) translateZ(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1) translateZ(0);
+    }
+  }
+
+  @keyframes successPulse {
+    0%, 100% {
+      transform: scale(1) translateZ(0);
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    50% {
+      transform: scale(1.05) translateZ(0);
+      box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0) translateZ(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4) translateZ(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0) translateZ(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px) translateZ(0); }
+    20%, 40%, 60%, 80% { transform: translateX(4px) translateZ(0); }
+  }
+
+  @keyframes slideInExpand {
+    from {
+      opacity: 0;
+      transform: translateX(-20px) scaleX(0.9) translateZ(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scaleX(1) translateZ(0);
+    }
+  }
+
+  .animate-modal-enter {
+    animation: modalEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-modal-exit {
+    animation: modalExit 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-card-entrance {
+    animation: cardEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-success-pulse {
+    animation: successPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: transform, box-shadow;
+  }
+
+  .animate-ripple {
+    animation: ripple 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    will-change: transform;
+  }
+
+  .animate-slide-in-expand {
+    animation: slideInExpand 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    will-change: transform, opacity;
   }
 
   @keyframes gradient-shift {
@@ -331,6 +451,23 @@
 
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
+    will-change: transform;
+  }
+
+  /* Micro-interactions */
+  .interactive {
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+    will-change: transform;
+  }
+
+  .interactive:hover {
+    transform: translateY(-2px) translateZ(0);
+  }
+
+  .interactive:active {
+    transform: translateY(0) scale(0.98) translateZ(0);
   }
 
   /* Stagger animations for list items */

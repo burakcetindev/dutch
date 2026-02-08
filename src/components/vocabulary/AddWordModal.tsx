@@ -31,6 +31,8 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
     categories: "",
     notes: "",
   });
+  const [isClosing, setIsClosing] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,42 +63,69 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
       createdAt: new Date().toISOString(),
     };
 
-    onAdd(newWord);
+    // Show success animation
+    setShowSuccess(true);
     
-    // Reset form
-    setFormData({
-      dutch: "",
-      english: "",
-      pos: "",
-      present: "",
-      past: "",
-      future: "",
-      exampleNl: "",
-      exampleEn: "",
-      level: "A1-A2",
-      categories: "",
-      notes: "",
-    });
-    
-    onClose();
+    setTimeout(() => {
+      onAdd(newWord);
+      
+      // Reset form
+      setFormData({
+        dutch: "",
+        english: "",
+        pos: "",
+        present: "",
+        past: "",
+        future: "",
+        exampleNl: "",
+        exampleEn: "",
+        level: "A1-A2",
+        categories: "",
+        notes: "",
+      });
+      
+      setShowSuccess(false);
+      handleClose();
+    }, 600);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 300);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="glass-card p-8 bg-white/95 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-bounce-in">
+    <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}>
+      <div className={`glass-card p-8 bg-white/95 dark:bg-gray-900/95 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isClosing ? 'animate-modal-exit' : 'animate-modal-enter'} ${showSuccess ? 'animate-success-pulse' : ''}`}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Add New Word
           </h2>
           <button
-            onClick={onClose}
-            className="p-2 glass rounded-xl hover:bg-red-100 hover:scale-110 transition-all duration-300"
+            onClick={handleClose}
+            className="p-2 glass rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 hover:scale-110 transition-all duration-300 interactive"
           >
-            <X className="w-6 h-6 text-gray-600 hover:rotate-90 transition-transform duration-300" />
+            <X className="w-6 h-6 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:rotate-90 transition-all duration-300" />
           </button>
         </div>
+
+        {showSuccess && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl z-10 animate-fadeIn">
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center animate-success-pulse">
+                <Plus className="w-10 h-10 text-white animate-bounce-in" />
+              </div>
+              <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Word Added Successfully!
+              </p>
+            </div>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Required Fields */}
@@ -218,7 +247,7 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
           {/* Categories and Notes */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                 Categories (comma-separated)
               </label>
               <Input
@@ -229,7 +258,7 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                 Notes
               </label>
               <Input
@@ -245,15 +274,17 @@ export function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalProps) {
           <div className="flex gap-3 pt-4">
             <Button
               type="submit"
-              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl hover:shadow-lg transition-all"
+              disabled={showSuccess}
+              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed interactive"
             >
               <Plus className="w-5 h-5 mr-2" />
               Add Word
             </Button>
             <Button
               type="button"
-              onClick={onClose}
-              className="px-6 glass hover:bg-gray-100 transition-colors"
+              onClick={handleClose}
+              disabled={showSuccess}
+              className="px-6 glass hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed interactive"
             >
               Cancel
             </Button>

@@ -96,10 +96,8 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
   }, [onDelete, word.id, word.dutch]);
 
   return (
-    <div className="animate-fade-in-scale">
-      {/* Main card with glass effect */}
-      <div className="relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 hover:border-purple-300/50 dark:hover:border-purple-500/50 overflow-visible group animate-subtle-glow">
-        <div className="flex items-start justify-between mb-8">
+    <div className="relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 hover:border-purple-300/50 dark:hover:border-purple-500/50 overflow-visible group animate-subtle-glow">
+      <div className="flex items-start justify-between mb-8">
           <div className="flex-1">
             {isEditing ? (
               <div className="space-y-4 mb-4">
@@ -144,13 +142,13 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                   )}
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="ml-2 p-2 glass rounded-xl hover:scale-110 transition-all duration-300 hover:rotate-180 active:scale-95 active:rotate-90"
+                    className="ml-2 p-2 glass rounded-xl hover:scale-110 transition-all duration-300 hover:rotate-180 active:scale-95 active:rotate-90 interactive"
                     title={isExpanded ? "Show less" : "Show more"}
                   >
                     {isExpanded ? (
-                      <ChevronUp className="w-5 h-5 text-purple-600" />
+                      <ChevronUp className="w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform duration-300" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-purple-600" />
+                      <ChevronDown className="w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform duration-300" />
                     )}
                   </button>
                   
@@ -159,25 +157,25 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                     <div className="relative">
                       <button
                         onClick={() => setShowActionMenu(!showActionMenu)}
-                        className={`p-2 glass rounded-xl transition-all duration-300 active:scale-90 ${
+                        className={`p-2 glass rounded-xl transition-all duration-500 active:scale-90 interactive ${
                           showActionMenu 
-                            ? "bg-purple-100 dark:bg-purple-900/30 scale-110" 
-                            : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105"
+                            ? "bg-purple-100 dark:bg-purple-900/30 scale-110 rotate-180" 
+                            : "bg-purple-100 dark:bg-purple-900/30 hover:scale-105 hover:rotate-90"
                         }`}
                         title={showActionMenu ? "Close menu" : "Open menu"}
                       >
-                        <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform duration-500 ${showActionMenu ? "rotate-180" : ""}`} />
+                        <Settings className={`w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform duration-500 ${showActionMenu ? "" : ""}`} />
                       </button>
                       
                       {showActionMenu && (
-                        <div className="absolute right-0 top-full mt-2 flex flex-col-reverse gap-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div className="absolute right-0 top-full mt-2 flex flex-col-reverse gap-2 animate-slide-in-expand z-50">
                           {onEdit && (
                             <button
                               onClick={() => {
                                 setIsEditing(true);
                                 setShowActionMenu(false);
                               }}
-                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 animate-in fade-in slide-in-from-top-2 duration-150"
+                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg bg-blue-100 dark:bg-blue-900/30 interactive"
                               title="Edit word"
                             >
                               <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -186,7 +184,7 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                           {onDelete && (
                             <button
                               onClick={handleDelete}
-                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 animate-in fade-in slide-in-from-top-4 duration-200"
+                              className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg hover:bg-red-100 dark:hover:bg-red-900/30 interactive"
                               title="Delete word"
                             >
                               <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -215,14 +213,14 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
               <>
                 <button
                   onClick={handleSaveEdit}
-                  className="p-3 glass rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-lg bg-green-100 dark:bg-green-900/30"
+                  className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg bg-green-100 dark:bg-green-900/30 interactive"
                   title="Save changes"
                 >
                   <Save className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="p-3 glass rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-lg bg-gray-100 dark:bg-gray-800/30"
+                  className="p-3 glass rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 hover:shadow-lg bg-gray-100 dark:bg-gray-800/30 interactive"
                   title="Cancel editing"
                 >
                   <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -232,36 +230,36 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
               <>
                 <button
                   onClick={() => onProgressChange(word.id, "new")}
-                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "new"
                       ? "bg-gradient-to-br from-red-500 to-pink-500 shadow-lg scale-110 animate-glow-pulse"
-                      : "glass hover:scale-105 hover:animate-float"
+                      : "glass hover:scale-110 hover:animate-float"
                   }`}
                   title="New"
                 >
-                  <Circle className={`w-5 h-5 ${word.progress === "new" ? "text-white" : "text-red-500"}`} />
+                  <Circle className={`w-5 h-5 transition-all duration-300 ${word.progress === "new" ? "text-white" : "text-red-500"}`} />
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "learning")}
-                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "learning"
                       ? "bg-gradient-to-br from-yellow-500 to-orange-500 shadow-lg scale-110 animate-spin-slow"
-                      : "glass hover:scale-105 hover:animate-float"
+                      : "glass hover:scale-110 hover:animate-float"
                   }`}
                   title="Learning"
                 >
-                  <CircleDot className={`w-5 h-5 ${word.progress === "learning" ? "text-white" : "text-yellow-600"}`} />
+                  <CircleDot className={`w-5 h-5 transition-all duration-300 ${word.progress === "learning" ? "text-white" : "text-yellow-600"}`} />
                 </button>
                 <button
                   onClick={() => onProgressChange(word.id, "mastered")}
-                  className={`p-3 rounded-2xl transition-all duration-300 active:scale-90 ${
+                  className={`p-3 rounded-2xl transition-all duration-500 active:scale-90 interactive ${
                     word.progress === "mastered"
                       ? "bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg scale-110 animate-glow-pulse"
-                      : "glass hover:scale-105 hover:animate-float"
+                      : "glass hover:scale-110 hover:animate-float"
                   }`}
                   title="Mastered"
                 >
-                  <CheckCircle2 className={`w-5 h-5 ${word.progress === "mastered" ? "text-white" : "text-green-600"}`} />
+                  <CheckCircle2 className={`w-5 h-5 transition-all duration-300 ${word.progress === "mastered" ? "text-white" : "text-green-600"}`} />
                 </button>
               </>
             )}
@@ -500,6 +498,5 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
           <YouGlish word={word.dutch} />
         )}
       </div>
-    </div>
   );
 });
