@@ -165,43 +165,24 @@ export default function Home() {
   const handleReload = async () => {
     setIsLoading(true);
     try {
-      // Load from input files
-      const response = await fetch("/api/vocabulary");
+      // Load from database (current state with all edits)
+      const response = await fetch("/api/vocabulary-db");
       if (!response.ok) {
-        throw new Error('Failed to load from input files');
+        throw new Error('Failed to load from database');
       }
       
       const data = await response.json();
       if (data.vocabulary && data.vocabulary.length > 0) {
-        // Convert individual levels to grouped levels
-        const convertedVocabulary = data.vocabulary.map((word: any) => {
-          const level = word.level.toUpperCase();
-          let groupedLevel = 'A1-A2';
-          
-          if (level === 'A1' || level === 'A2') groupedLevel = 'A1-A2';
-          else if (level === 'B1' || level === 'B2') groupedLevel = 'B1-B2';
-          else if (level === 'C1' || level === 'C2') groupedLevel = 'C1-C2';
-          
-          return { ...word, level: groupedLevel };
-        });
-        
-        setVocabulary(convertedVocabulary);
-        saveVocabularyToStorage(convertedVocabulary);
-        setStats(calculateStats(convertedVocabulary));
-        
-        // Save to database
-        console.log("Importing file data to database with grouped levels...");
-        await fetch("/api/vocabulary-db", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ words: convertedVocabulary })
-        });
-        console.log("Successfully imported to database!");
-        alert(`Imported ${convertedVocabulary.length} words to database!`);
+        setVocabulary(data.vocabulary);
+        saveVocabularyToStorage(data.vocabulary);
+        setStats(calculateStats(data.vocabulary));
+        alert(`✅ Reloaded ${data.vocabulary.length} words from database!`);
+      } else {
+        alert("No vocabulary found in database. Add some words first!");
       }
     } catch (error) {
       console.error("Error reloading:", error);
-      alert("Failed to reload data from input files.");
+      alert("Failed to reload data from database.");
     } finally {
       setIsLoading(false);
     }

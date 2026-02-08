@@ -12,15 +12,18 @@ interface VocabularyCardProps {
   onProgressChange: (wordId: string, progress: "new" | "learning" | "mastered") => void;
   onPracticeAdd?: (wordId: string, sentence: string) => void;
   onPracticeRemove?: (wordId: string, index: number) => void;
+  onPracticeEdit?: (wordId: string, index: number, newSentence: string) => void;
   onEdit?: (wordId: string, updates: Partial<VocabularyWord>) => void;
   onDelete?: (wordId: string) => void;
 }
 
-export const VocabularyCard = memo(function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracticeRemove, onEdit, onDelete }: VocabularyCardProps) {
+export const VocabularyCard = memo(function VocabularyCard({ word, onProgressChange, onPracticeAdd, onPracticeRemove, onPracticeEdit, onEdit, onDelete }: VocabularyCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newPractice, setNewPractice] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showActionMenu, setShowActionMenu] = useState(false);
+  const [editingPracticeIndex, setEditingPracticeIndex] = useState<number | null>(null);
+  const [editedPracticeSentence, setEditedPracticeSentence] = useState("");
   const [editedWord, setEditedWord] = useState({
     dutch: word.dutch,
     english: word.english,
@@ -43,6 +46,24 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
       setNewPractice("");
     }
   }, [newPractice, onPracticeAdd, word.id]);
+
+  const handleStartEditPractice = useCallback((index: number, sentence: string) => {
+    setEditingPracticeIndex(index);
+    setEditedPracticeSentence(sentence);
+  }, []);
+
+  const handleSavePracticeEdit = useCallback(() => {
+    if (editingPracticeIndex !== null && editedPracticeSentence.trim() && onPracticeEdit) {
+      onPracticeEdit(word.id, editingPracticeIndex, editedPracticeSentence.trim());
+      setEditingPracticeIndex(null);
+      setEditedPracticeSentence("");
+    }
+  }, [editingPracticeIndex, editedPracticeSentence, onPracticeEdit, word.id]);
+
+  const handleCancelPracticeEdit = useCallback(() => {
+    setEditingPracticeIndex(null);
+    setEditedPracticeSentence("");
+  }, []);
 
   const handleSaveEdit = useCallback(() => {
     if (onEdit) {
@@ -328,15 +349,54 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
                 <div className="space-y-3 mb-4">
                   {word.practice.map((sentence, idx) => (
                     <div key={idx} className="flex items-start gap-3 p-4 glass rounded-xl bg-white/50 dark:bg-gray-800/50">
-                      <p className="flex-1 text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{sentence}</p>
-                      {onPracticeRemove && (
-                        <button
-                          onClick={() => onPracticeRemove(word.id, idx)}
-                          className="p-1.5 rounded-lg hover:bg-red-100 transition-all hover:scale-110 hover:rotate-90 duration-300"
-                          title="Remove"
-                        >
-                          <X className="w-4 h-4 text-red-500" />
-                        </button>
+                      {editingPracticeIndex === idx ? (
+                        <>
+                          <input
+                            type="text"
+                            value={editedPracticeSentence}
+                            onChange={(e) => setEditedPracticeSentence(e.target.value)}
+                            onKeyPress={(e) => e.key === "Enter" && handleSavePracticeEdit()}
+                            className="flex-1 px-3 py-2 glass rounded-lg border border-purple-300 dark:border-purple-600 focus:border-purple-500 focus:outline-none text-sm text-gray-800 dark:text-gray-200"
+                            autoFocus
+                          />
+                          <button
+                            onClick={handleSavePracticeEdit}
+                            disabled={!editedPracticeSentence.trim()}
+                            className="p-1.5 rounded-lg hover:bg-green-100 transition-all hover:scale-110 duration-300 disabled:opacity-50"
+                            title="Save"
+                          >
+                            <Save className="w-4 h-4 text-green-600" />
+                          </button>
+                          <button
+                            onClick={handleCancelPracticeEdit}
+                            className="p-1.5 rounded-lg hover:bg-gray-100 transition-all hover:scale-110 duration-300"
+                            title="Cancel"
+                          >
+                            <X className="w-4 h-4 text-gray-500" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <p className="flex-1 text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{sentence}</p>
+                          {onPracticeEdit && (
+                            <button
+                              onClick={() => handleStartEditPractice(idx, sentence)}
+                              className="p-1.5 rounded-lg hover:bg-blue-100 transition-all hover:scale-110 duration-300"
+                              title="Edit"
+                            >
+                              <Edit2 className="w-4 h-4 text-blue-500" />
+                            </button>
+                          )}
+                          {onPracticeRemove && (
+                            <button
+                              onClick={() => onPracticeRemove(word.id, idx)}
+                              className="p-1.5 rounded-lg hover:bg-red-100 transition-all hover:scale-110 hover:rotate-90 duration-300"
+                              title="Remove"
+                            >
+                              <X className="w-4 h-4 text-red-500" />
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   ))}

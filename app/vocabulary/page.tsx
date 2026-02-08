@@ -151,6 +151,35 @@ function VocabularyContent() {
     }
   };
 
+  const handlePracticeEdit = async (wordId: string, index: number, newSentence: string) => {
+    const updated = vocabulary.map(word => {
+      if (word.id === wordId) {
+        const newPractice = [...(word.practice || [])];
+        newPractice[index] = newSentence;
+        return {
+          ...word,
+          practice: newPractice
+        };
+      }
+      return word;
+    });
+    setVocabulary(updated);
+    
+    // Save to database
+    try {
+      const word = updated.find(w => w.id === wordId);
+      if (word) {
+        await fetch("/api/vocabulary-db", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: wordId, updates: { practice: word.practice } })
+        });
+      }
+    } catch (error) {
+      console.error("Error updating practice in database:", error);
+    }
+  };
+
   // Helper function to show toast notifications
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const colors = {
@@ -395,6 +424,7 @@ function VocabularyContent() {
                 onProgressChange={handleProgressChange}
                 onPracticeAdd={handlePracticeAdd}
                 onPracticeRemove={handlePracticeRemove}
+                onPracticeEdit={handlePracticeEdit}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
