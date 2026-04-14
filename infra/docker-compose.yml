@@ -24,8 +24,6 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile
-      cache_from:
-        - dutch-vocab:latest
       args:
         BUILDKIT_INLINE_CACHE: "1"
     image: dutch-vocab:latest
@@ -38,7 +36,9 @@ services:
       NODE_ENV: production
       NEXT_TELEMETRY_DISABLED: 1
     volumes:
-      - vocab_backups:/app/input
+      - ../input:/app/input
+      - vocab_docker_backups:/app/docker-backup
+    user: "${UID:-501}:${GID:-20}"
     depends_on:
       db:
         condition: service_healthy
@@ -46,5 +46,5 @@ services:
 volumes:
   postgres_data:
     driver: local
-  vocab_backups:
+  vocab_docker_backups:
     driver: local

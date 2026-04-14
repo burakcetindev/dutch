@@ -33,8 +33,9 @@ ENV NODE_ENV=production \
 # Create non-root user and directories with proper permissions
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs && \
-    mkdir -p .next input && \
-    chown -R nextjs:nodejs .next input
+    mkdir -p .next input docker-backup && \
+    chown -R nextjs:nodejs .next input && \
+    chown -R 501:20 docker-backup
 
 # Copy standalone output (already includes minimal node_modules)
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
