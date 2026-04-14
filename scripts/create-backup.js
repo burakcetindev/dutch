@@ -52,6 +52,24 @@ async function createBackup() {
     
     fs.writeFileSync(backupPath, csv);
 
+    const inputDir = '/app/input';
+    const currentBackupFile = path.basename(backupPath);
+    const existingFiles = fs.readdirSync(inputDir);
+    const oldBackups = existingFiles.filter(file =>
+      file.startsWith('vocabulary_backup_') &&
+      file.endsWith('.csv') &&
+      file !== currentBackupFile
+    );
+
+    for (const oldBackup of oldBackups) {
+      try {
+        fs.unlinkSync(path.join(inputDir, oldBackup));
+        console.log(`Deleted old backup: ${oldBackup}`);
+      } catch (err) {
+        console.error(`Failed to delete ${oldBackup}:`, err);
+      }
+    }
+
     await pool.end();
 
     console.log(`✅ Backup created: ${backupPath}`);
