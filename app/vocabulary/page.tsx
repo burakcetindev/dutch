@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { VocabularyWord } from "@/types/vocabulary";
 import { VocabularyCard } from "@/src/components/vocabulary/VocabularyCard";
 import {
-  loadVocabularyFromStorage,
   saveVocabularyToStorage,
   updateWordProgress,
 } from "@/lib/vocabulary";
@@ -23,6 +22,7 @@ import {
   BookOpen,
   Sparkles,
 } from "lucide-react";
+import { ConfettiEffect, SkeletonCard, FloatingParticles } from "@/src/components/animations";
 
 type SortBy = "alphabetical" | "category" | "progress" | "level";
 type SortOrder = "asc" | "desc";
@@ -31,6 +31,8 @@ function VocabularyContent() {
   const searchParams = useSearchParams();
 
   const [vocabulary, setVocabulary] = useState<VocabularyWord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [filterOptions, setFilterOptions] = useState({
     categories: [] as string[],
     levels: [] as string[],
@@ -61,6 +63,7 @@ function VocabularyContent() {
 
   useEffect(() => {
     const loadData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch("/api/vocabulary-db");
         if (!response.ok) {
@@ -73,6 +76,8 @@ function VocabularyContent() {
       } catch (error) {
         console.error("Error loading from database:", error);
         alert("Failed to load data from database. Please return to home and reload.");
+      } finally {
+        setIsLoading(false);
       }
     };
     
@@ -82,6 +87,7 @@ function VocabularyContent() {
   const handleProgressChange = async (wordId: string, progress: "new" | "learning" | "mastered") => {
     const word = vocabulary.find(w => w.id === wordId);
     const wordName = word?.dutch || 'Word';
+    const previousProgress = word?.progress;
     
     const updated = updateWordProgress(vocabulary, wordId, progress);
     setVocabulary(updated);
@@ -103,6 +109,11 @@ function VocabularyContent() {
       };
       
       showToast(toastConfig[progress]);
+      
+      // Trigger confetti when a word is mastered (and wasn't already mastered)
+      if (progress === 'mastered' && previousProgress !== 'mastered') {
+        setShowConfetti(true);
+      }
     } catch (error) {
       console.error("Error updating progress in database:", error);
       showToast({ message: `Failed to update "${wordName}"`, type: 'error' });
@@ -259,7 +270,7 @@ function VocabularyContent() {
   };
 
   const filteredAndSortedWords = useMemo(() => {
-    let filtered = filterVocabulary(vocabulary, filters);
+    const filtered = filterVocabulary(vocabulary, filters);
 
     // Sort
     filtered.sort((a, b) => {
@@ -269,15 +280,17 @@ function VocabularyContent() {
         case "alphabetical":
           comparison = a.dutch.localeCompare(b.dutch);
           break;
-        case "category":
+        case "category": {
           const catA = a.categories[0] || "";
           const catB = b.categories[0] || "";
           comparison = catA.localeCompare(catB);
           break;
-        case "progress":
+        }
+        case "progress": {
           const progressOrder = { new: 0, learning: 1, mastered: 2 };
           comparison = progressOrder[a.progress] - progressOrder[b.progress];
           break;
+        }
         case "level":
           comparison = a.level.localeCompare(b.level);
           break;
@@ -295,11 +308,21 @@ function VocabularyContent() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Confetti effect for mastered words */}
+      <ConfettiEffect 
+        trigger={showConfetti} 
+        onComplete={() => setShowConfetti(false)}
+        particleCount={60}
+      />
+
+      {/* Floating particles background */}
+      <FloatingParticles particleCount={12} />
+
       {/* Animated background blobs */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+      <div className="absolute inset-0 opacity-20 dark:opacity-30">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl animate-blob"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl animate-blob animation-delay-4000"></div>
       </div>
 
       <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
@@ -313,7 +336,7 @@ function VocabularyContent() {
           </Link>
           <div className="flex items-center justify-between mt-4">
             <div>
-              <h1 className="text-5xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-3">
+              <h1 className="text-5xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-3 animate-gradient-text">
                 <BookOpen className="w-12 h-12 text-purple-600 dark:text-purple-400" />
                 Dutch Vocab
               </h1>
@@ -325,7 +348,7 @@ function VocabularyContent() {
         </div>
 
         {/* Filters & Sort */}
-        <div className="glass-card p-6 mb-8">
+        <div className="glass-card p-6 mb-8 animate-wave-entrance">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
             {/* Search */}
             <div className="lg:col-span-2 relative">
@@ -403,13 +426,19 @@ function VocabularyContent() {
         </div>
 
         {/* Word Cards */}
-        {filteredAndSortedWords.length === 0 ? (
-          <div className="glass-card p-12 text-center bg-white/90">
-            <Sparkles className="w-16 h-16 mx-auto mb-4 text-purple-500" />
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-6">
+            {[...Array(5)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : filteredAndSortedWords.length === 0 ? (
+          <div className="glass-card p-12 text-center bg-white/90 dark:bg-gray-900/90 animate-wave-entrance">
+            <Sparkles className="w-16 h-16 mx-auto mb-4 text-purple-500 animate-float" />
             <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               No words found
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Try adjusting your filters or search query
             </p>
           </div>
@@ -418,8 +447,8 @@ function VocabularyContent() {
             {filteredAndSortedWords.map((word, index) => (
               <div 
                 key={word.id}
-                className="animate-card-entrance"
-                style={{ animationDelay: `${Math.min(index * 0.05, 1)}s` }}
+                className="animate-stagger-item"
+                style={{ animationDelay: `${Math.min(index * 0.05, 0.5)}s` }}
               >
                 <VocabularyCard
                   word={word}

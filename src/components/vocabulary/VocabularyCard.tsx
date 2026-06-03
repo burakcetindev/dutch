@@ -2,9 +2,8 @@
 
 import { VocabularyWord } from "@/types/vocabulary";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Circle, CircleDot, CheckCircle2, Volume2, ChevronDown, ChevronUp, Plus, X, Edit2, Trash2, Save, Settings } from "lucide-react";
-import { useState, useCallback, useMemo, memo } from "react";
+import { useState, useCallback, memo } from "react";
 import { YouGlish } from "./YouGlish";
 
 interface VocabularyCardProps {
@@ -30,15 +29,6 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
     example_nl: word.example?.nl || "",
     example_en: word.example?.en || ""
   });
-
-  const getProgressColor = useCallback((progress: string) => {
-    switch (progress) {
-      case "new": return "from-red-500 to-pink-500";
-      case "learning": return "from-yellow-500 to-orange-500";
-      case "mastered": return "from-green-500 to-emerald-500";
-      default: return "from-gray-400 to-gray-500";
-    }
-  }, []);
 
   const handleAddPractice = useCallback(() => {
     if (newPractice.trim() && onPracticeAdd) {
@@ -95,8 +85,11 @@ export const VocabularyCard = memo(function VocabularyCard({ word, onProgressCha
     }
   }, [onDelete, word.id, word.dutch]);
 
+  // Determine if the card should show celebration animation
+  const isMastered = word.progress === 'mastered';
+
   return (
-    <div className="relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 hover:border-purple-300/50 dark:hover:border-purple-500/50 overflow-visible group animate-subtle-glow">
+    <div className={`relative glass-card p-10 pb-20 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 hover:border-purple-300/50 dark:hover:border-purple-500/50 overflow-visible group hover-glow ${isMastered ? 'ring-2 ring-green-400/30' : ''}`}>
       <div className="flex items-start justify-between mb-8">
           <div className="flex-1">
             {isEditing ? (
