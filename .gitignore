@@ -43,3 +43,5 @@ next-env.d.ts
 
 # User data
 /.next/cache
+
+.ai-agent/

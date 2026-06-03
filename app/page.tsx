@@ -3,13 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { VocabularyWord, VocabularyStats } from "@/types/vocabulary";
 import { AddWordModal } from "@/src/components/vocabulary/AddWordModal";
 import {
-  loadVocabularyFromStorage,
   saveVocabularyToStorage,
   parseFileToVocabulary,
   exportVocabularyToCSV,
@@ -30,9 +26,10 @@ import {
   FileText,
   Braces,
 } from "lucide-react";
+import { AnimatedCounter, FloatingParticles, SkeletonDashboard } from "@/src/components/animations";
 
-const ThemeToggleButton = dynamic(
-  () => import("@/src/components/ThemeToggleButton").then((mod) => ({ default: mod.ThemeToggleButton })),
+const EnhancedThemeToggle = dynamic(
+  () => import("@/src/components/EnhancedThemeToggle").then((mod) => ({ default: mod.EnhancedThemeToggle })),
   { ssr: false }
 );
 
@@ -273,6 +270,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Floating particles background - ambient depth */}
+      <FloatingParticles particleCount={15} />
+
       {/* Animated background blobs - Enhanced with more blobs */}
       <div className="absolute inset-0 opacity-20 dark:opacity-30">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl animate-blob"></div>
@@ -386,7 +386,7 @@ export default function Home() {
 
           <div className="w-px h-8 bg-purple-300 dark:bg-purple-700"></div>
 
-          <ThemeToggleButton />
+          <EnhancedThemeToggle />
 
           <Link href="/about" className="glass-card px-6 py-3 hover:scale-110 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
@@ -397,10 +397,7 @@ export default function Home() {
         </div>
 
         {isLoading && (
-          <div className="text-center py-12">
-            <div className="inline-block w-16 h-16 border-4 border-purple-300 border-t-purple-600 dark:border-purple-700 dark:border-t-purple-400 rounded-full animate-spin"></div>
-            <p className="text-gray-800 dark:text-gray-200 mt-4 font-semibold">Loading...</p>
-          </div>
+          <SkeletonDashboard cardCount={2} />
         )}
 
         {!isLoading && vocabulary.length === 0 && (
@@ -420,23 +417,29 @@ export default function Home() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {/* Total Words */}
-              <div className="glass-card p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col justify-center">
+              <div className="glass-card p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col justify-center hover-glow animate-wave-entrance">
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-semibold mb-3 text-center">Total Words</div>
-                <div className="text-6xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-center leading-none">{stats.total}</div>
+                <div className="text-6xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-center leading-none">
+                  <AnimatedCounter value={stats.total} duration={1200} />
+                </div>
               </div>
               
               {/* Current Status */}
-              <div className="glass-card p-6 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 flex flex-col justify-center">
+              <div className="glass-card p-6 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 flex flex-col justify-center hover-glow animate-wave-entrance" style={{ animationDelay: "0.1s" }}>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-semibold mb-3 text-center">Current Status</div>
                 <div className="text-6xl font-black text-gray-800 dark:text-gray-200 text-center leading-none">
-                  <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">{stats.learning}</span>
+                  <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                    <AnimatedCounter value={stats.learning} duration={1000} />
+                  </span>
                   <span className="text-gray-400 dark:text-gray-600 mx-4">|</span>
-                  <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{stats.mastered}</span>
+                  <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                    <AnimatedCounter value={stats.mastered} duration={1000} />
+                  </span>
                 </div>
               </div>
 
               {/* Word Level - Category details with segmented battery */}
-              <div className="glass-card p-6 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 group relative">
+              <div className="glass-card p-6 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 group relative hover-glow animate-wave-entrance" style={{ animationDelay: "0.2s" }}>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-semibold mb-3">Word Level</div>
                 <div className="space-y-3">
                   {/* A1-A2 Segmented Battery */}

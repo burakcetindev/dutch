@@ -17,9 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} antialiased`}>
         <Providers>
-          {children}
+          <main className="min-h-screen">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
